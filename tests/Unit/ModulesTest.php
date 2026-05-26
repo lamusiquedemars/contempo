@@ -15,6 +15,7 @@ class ModulesTest extends TestCase
         $this->assertTrue(Modules::enabled('pages'));
         $this->assertTrue(Modules::enabled('contact'));
         $this->assertFalse(Modules::enabled('notices'));
+        $this->assertFalse(Modules::enabled('content_slots'));
         $this->assertFalse(Modules::enabled('news'));
         $this->assertFalse(Modules::enabled('gallery'));
     }

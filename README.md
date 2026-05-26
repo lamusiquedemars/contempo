@@ -6,6 +6,7 @@ Maracuja CMS is a Laravel + Filament starter for building focused, administrable
 
 - Site Settings: identity, SEO defaults, contact details, social links.
 - Pages: structured Blade pages with protected templates.
+- Content Slots: named short values used by coded templates.
 - Notices: short dated messages such as opening hours or temporary alerts.
 - News: recurring editorial content with publication windows.
 - Gallery: ordered image entries with gallery presets selected by the project.
@@ -50,6 +51,7 @@ Modules live in `config/maracuja.php` and can be overridden through environment 
 
 ```env
 MARACUJA_MODULE_NOTICES=true
+MARACUJA_MODULE_CONTENT_SLOTS=true
 MARACUJA_MODULE_PAGES=true
 MARACUJA_MODULE_NEWS=true
 MARACUJA_MODULE_GALLERY=true

@@ -47,6 +47,13 @@ MARACUJA_OFFER=custom
 
 Le profil fixe la base commerciale. Les variables `MARACUJA_MODULE_*` permettent d enlever un module pour un projet precis.
 
+Exemple:
+
+```env
+MARACUJA_MODULE_CONTENT_SLOTS=true
+MARACUJA_MODULE_NEWS=false
+```
+
 ## Base de donnees
 
 Le starter utilise SQLite en local par defaut. Pour un projet client livre, preferer MySQL/MariaDB si l hebergement est mutualise classique.

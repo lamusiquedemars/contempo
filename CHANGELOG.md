@@ -7,3 +7,4 @@
 - Added public demo pages and Filament resources for the V1 modules.
 - Added offer profiles, content admin rules, front/media/js/seo/theme docs and delivery guidance.
 - Added `maracuja:doctor` delivery health check command.
+- Added Content Slots and simplified Pages admin to keep templates protected.

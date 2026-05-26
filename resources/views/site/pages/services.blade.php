@@ -19,15 +19,15 @@
 
     <x-site.section title="Trois niveaux, un meme socle" intro="La difference se joue sur la richesse du contenu, les modules actifs et le degre de personnalisation." heading-variant="accent">
         <x-site.grid columns="3">
-            <x-site.card title="Essence" :kicker="$page->body_blocks['essence_price'] ?? 'A partir de 1500'" variant="featured">
+            <x-site.card title="Essence" :kicker="\App\Support\ContentSlots::value('services.essence.price', 'A partir de 1500')" variant="featured">
                 Pages essentielles, contact, SEO de base, theme sobre et administration limitee aux contenus utiles.
             </x-site.card>
 
-            <x-site.card title="Signature" :kicker="$page->body_blocks['signature_price'] ?? 'Sur devis cadre'" variant="highlight">
+            <x-site.card title="Signature" :kicker="\App\Support\ContentSlots::value('services.signature.price', 'Sur devis cadre')" variant="highlight">
                 Structure plus riche, actualites, galerie, sections de preuve, CTA, media system et finitions theme.
             </x-site.card>
 
-            <x-site.card title="Sur mesure" :kicker="$page->body_blocks['custom_price'] ?? 'Sur mesure'">
+            <x-site.card title="Sur mesure" :kicker="\App\Support\ContentSlots::value('services.custom.price', 'Sur mesure')">
                 Module metier client, catalogue sans paiement, workflow specifique ou integration externe selon le besoin.
             </x-site.card>
         </x-site.grid>

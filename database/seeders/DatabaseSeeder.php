@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Modules\ContentSlots\Models\ContentSlot;
 use App\Modules\Gallery\Models\GalleryImage;
 use App\Modules\News\Models\NewsPost;
 use App\Modules\Notices\Models\SiteNotice;
@@ -35,6 +36,68 @@ class DatabaseSeeder extends Seeder
                 'LinkedIn' => 'https://linkedin.com',
             ],
         ]);
+
+        collect([
+            [
+                'key' => 'home.hero.cta_label',
+                'label' => 'CTA principal home',
+                'group' => 'Accueil',
+                'type' => 'text',
+                'value' => 'Presenter un projet',
+                'help_text' => 'Texte court du bouton principal de la home.',
+            ],
+            [
+                'key' => 'home.hero.secondary_cta_label',
+                'label' => 'CTA secondaire home',
+                'group' => 'Accueil',
+                'type' => 'text',
+                'value' => 'Voir les services',
+                'help_text' => 'Texte court du bouton secondaire de la home.',
+            ],
+            [
+                'key' => 'home.intro.title',
+                'label' => 'Titre introduction home',
+                'group' => 'Accueil',
+                'type' => 'text',
+                'value' => 'Le socle des offres Essence et Signature',
+                'help_text' => 'Titre court de la section introduction.',
+            ],
+            [
+                'key' => 'home.intro.text',
+                'label' => 'Texte introduction home',
+                'group' => 'Accueil',
+                'type' => 'textarea',
+                'value' => 'Un site vitrine administre, sans surcharge, avec les modules utiles au client et une base front propre.',
+                'help_text' => 'Texte court. Eviter les paragraphes longs.',
+            ],
+            [
+                'key' => 'services.essence.price',
+                'label' => 'Prix Essence',
+                'group' => 'Services',
+                'type' => 'price',
+                'value' => 'A partir de 1500',
+                'help_text' => 'Prix ou mention courte affichee sur la carte Essence.',
+            ],
+            [
+                'key' => 'services.signature.price',
+                'label' => 'Prix Signature',
+                'group' => 'Services',
+                'type' => 'price',
+                'value' => 'Sur devis cadre',
+                'help_text' => 'Prix ou mention courte affichee sur la carte Signature.',
+            ],
+            [
+                'key' => 'services.custom.price',
+                'label' => 'Prix sur mesure',
+                'group' => 'Services',
+                'type' => 'price',
+                'value' => 'Sur mesure',
+                'help_text' => 'Prix ou mention courte affichee sur la carte Sur mesure.',
+            ],
+        ])->each(fn (array $slot) => ContentSlot::query()->updateOrCreate(
+            ['key' => $slot['key']],
+            $slot + ['is_locked' => true],
+        ));
 
         Page::query()->updateOrCreate(['slug' => 'accueil'], [
             'title' => 'Accueil',

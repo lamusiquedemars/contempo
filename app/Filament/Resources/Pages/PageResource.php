@@ -12,7 +12,6 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -55,9 +54,12 @@ class PageResource extends Resource
             ->components([
                 TextInput::make('title')
                     ->label('Titre')
-                    ->required(),
+                    ->required()
+                    ->helperText('Nom de page. Pour les pages systeme, la structure reste dans le template.'),
                 TextInput::make('slug')
                     ->label('Slug')
+                    ->disabled(fn (?Page $record): bool => in_array($record?->slug, ['accueil', 'services'], true))
+                    ->dehydrated(fn (?Page $record): bool => ! in_array($record?->slug, ['accueil', 'services'], true))
                     ->required(),
                 Select::make('template')
                     ->label('Template')
@@ -83,12 +85,6 @@ class PageResource extends Resource
                     ->label('Image hero')
                     ->directory('pages')
                     ->image(),
-                KeyValue::make('body_blocks')
-                    ->label('Blocs administrables')
-                    ->helperText('Contenus utilises par le template. Exemple accueil: intro_title, intro_text, cta_label. Exemple services: essence_price, signature_price, custom_price.')
-                    ->keyLabel('Nom du bloc')
-                    ->valueLabel('Contenu')
-                    ->columnSpanFull(),
                 TextInput::make('seo_title')
                     ->label('Titre SEO'),
                 Textarea::make('seo_description')

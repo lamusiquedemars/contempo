@@ -9,9 +9,9 @@
         :title="$homePage?->hero_title ?? $settings->site_name"
         :subtitle="$homePage?->hero_subtitle ?? $settings->baseline"
         cta-url="{{ route('contact') }}"
-        cta-label="{{ $homePage?->body_blocks['cta_label'] ?? 'Presenter un projet' }}"
+        cta-label="{{ \App\Support\ContentSlots::value('home.hero.cta_label', 'Presenter un projet') }}"
         secondary-cta-url="{{ route('pages.show', 'services') }}"
-        secondary-cta-label="{{ $homePage?->body_blocks['secondary_cta_label'] ?? 'Voir les services' }}"
+        secondary-cta-label="{{ \App\Support\ContentSlots::value('home.hero.secondary_cta_label', 'Voir les services') }}"
     />
 
     @if ($homeNotice)
@@ -21,8 +21,8 @@
     @endif
 
     <x-site.section
-        :title="$homePage?->body_blocks['intro_title'] ?? 'Le socle des offres Essence et Signature'"
-        :intro="$homePage?->body_blocks['intro_text'] ?? 'Un site vitrine administre, sans surcharge, avec les modules utiles au client et une base front propre.'"
+        :title="\App\Support\ContentSlots::value('home.intro.title', 'Le socle des offres Essence et Signature')"
+        :intro="\App\Support\ContentSlots::value('home.intro.text', 'Un site vitrine administre, sans surcharge, avec les modules utiles au client et une base front propre.')"
         heading-variant="accent"
     >
         <x-site.grid columns="3">

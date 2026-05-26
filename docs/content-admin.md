@@ -4,9 +4,23 @@ Maracuja CMS separe les pages codees des contenus vivants. Le client ne modifie 
 
 ## Modules vivants
 
+- `Content Slots`: petites valeurs nommees utilisees par les templates, comme un prix, une date ou un libelle court.
 - `Notices`: annonce courte affichee sur la home si elle est publiee et dans sa periode de visibilite.
 - `News`: actualites publiees entre une date de debut et une date de fin optionnelle.
 - `Gallery`: images, textes courts, alt, credit, ordre et publication.
+
+## Content Slots
+
+Les `Content Slots` remplacent les anciens blocs libres rattaches aux pages. Ils permettent de modifier une petite valeur sans toucher a la page elle-meme.
+
+Exemples:
+
+- `home.hero.cta_label`;
+- `home.intro.title`;
+- `services.essence.price`;
+- `services.signature.price`.
+
+Le template Blade decide ou le slot s affiche. Le client ne choisit pas la section, la mise en page ou le type de composant.
 
 ## Annonce courte
 

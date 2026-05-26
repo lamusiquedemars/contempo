@@ -21,6 +21,7 @@ Profil minimal pour site vitrine simple:
 Modules desactives par defaut:
 
 - annonce courte;
+- contenus courts;
 - actualites;
 - galerie.
 
@@ -30,6 +31,7 @@ Profil vitrine plus complet:
 
 - parametres du site;
 - annonce courte;
+- contenus courts;
 - pages structurees;
 - actualites;
 - galerie;

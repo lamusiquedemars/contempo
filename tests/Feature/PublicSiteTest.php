@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Mail\ContactSubmissionReceived;
 use App\Modules\Contact\Models\ContactSubmission;
+use App\Modules\ContentSlots\Models\ContentSlot;
 use App\Modules\Gallery\Models\GalleryImage;
 use App\Modules\News\Models\NewsPost;
 use App\Modules\Notices\Models\SiteNotice;
@@ -63,6 +64,34 @@ class PublicSiteTest extends TestCase
             ->assertOk()
             ->assertSee('Trois niveaux')
             ->assertSee('A partir de 1500');
+    }
+
+    public function test_services_page_uses_content_slot_for_price(): void
+    {
+        SiteSetting::current();
+
+        Page::query()->create([
+            'title' => 'Services',
+            'slug' => 'services',
+            'template' => 'services',
+            'hero_title' => 'Des sites vitrines administrables',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        ContentSlot::query()->create([
+            'key' => 'services.essence.price',
+            'label' => 'Prix Essence',
+            'group' => 'Services',
+            'type' => 'price',
+            'value' => 'A partir de 1800',
+            'is_locked' => true,
+        ]);
+
+        $this->get('/services')
+            ->assertOk()
+            ->assertSee('A partir de 1800')
+            ->assertDontSee('A partir de 1500');
     }
 
     public function test_home_gallery_uses_configured_layout(): void
