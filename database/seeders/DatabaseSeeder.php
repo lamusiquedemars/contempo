@@ -153,6 +153,8 @@ class DatabaseSeeder extends Seeder
             'excerpt' => 'Le starter prend forme avec Pages, Actualites, Galerie et Contact.',
             'content' => '<p>Cette premiere version sert de base aux sites vitrines administrables.</p>',
             'is_published' => true,
+            'is_pinned' => true,
+            'has_detail_page' => true,
             'published_at' => now(),
             'expires_at' => now()->addDays(30),
         ]);
@@ -162,6 +164,8 @@ class DatabaseSeeder extends Seeder
             'excerpt' => 'Le starter embarque ses composants CSS, Blade et JS sans framework visible.',
             'content' => '<p>Le socle front permet de composer des pages propres sans repartir d un CSS specifique a chaque client.</p>',
             'is_published' => true,
+            'is_pinned' => false,
+            'has_detail_page' => true,
             'published_at' => now()->subDay(),
             'expires_at' => now()->addDays(29),
         ]);
@@ -171,6 +175,8 @@ class DatabaseSeeder extends Seeder
             'excerpt' => 'Filament affiche seulement les sections activees pour le projet client.',
             'content' => '<p>Le client garde un tableau de bord lisible, oriente contenu et sans surcharge inutile.</p>',
             'is_published' => true,
+            'is_pinned' => false,
+            'has_detail_page' => false,
             'published_at' => now()->subDays(2),
             'expires_at' => now()->addDays(28),
         ]);

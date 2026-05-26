@@ -69,6 +69,7 @@ class SeoTest extends TestCase
             'title' => 'Demo',
             'slug' => 'demo',
             'is_published' => true,
+            'has_detail_page' => true,
             'published_at' => now(),
         ]);
 

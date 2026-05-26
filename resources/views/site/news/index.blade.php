@@ -13,7 +13,11 @@
     <x-site.section>
         <x-site.grid columns="3" class="news-list">
             @foreach ($posts as $post)
-                <x-site.card :title="$post->title" :url="route('news.show', $post->slug)">
+                <x-site.card :title="$post->title" :url="$post->hasDetailPage() ? route('news.show', $post->slug) : null">
+                    @if ($post->is_pinned)
+                        <x-site.badge>Epingle</x-site.badge>
+                    @endif
+
                     {{ $post->excerpt }}
                 </x-site.card>
             @endforeach

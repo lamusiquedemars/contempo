@@ -26,7 +26,7 @@ class HomeController extends Controller
                 ? SiteNotice::query()->visible()->forPlacement('home')->latest('starts_at')->first()
                 : null,
             'newsPosts' => Modules::enabled('news')
-                ? NewsPost::query()->visible()->latest('published_at')->limit(3)->get()
+                ? NewsPost::query()->forListing()->limit(3)->get()
                 : collect(),
             'galleryImages' => Modules::enabled('gallery')
                 ? GalleryImage::query()->where('is_published', true)->orderBy('position')->limit(6)->get()

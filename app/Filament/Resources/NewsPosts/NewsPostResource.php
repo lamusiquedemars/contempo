@@ -67,20 +67,29 @@ class NewsPostResource extends Resource
                     ->label('Image')
                     ->directory('news')
                     ->image(),
-                TextInput::make('seo_title')
-                    ->label('Titre SEO'),
-                Textarea::make('seo_description')
-                    ->label('Description SEO')
-                    ->columnSpanFull(),
                 Toggle::make('is_published')
                     ->label('Publie')
                     ->required(),
+                Toggle::make('is_pinned')
+                    ->label('Epingler')
+                    ->helperText('Remonte cette actualite dans les listings.'),
+                Toggle::make('has_detail_page')
+                    ->label('Page detail')
+                    ->default(true)
+                    ->helperText('Desactiver pour une annonce courte visible seulement dans les listings.'),
                 DateTimePicker::make('published_at')
                     ->label('Debut de publication'),
                 DateTimePicker::make('expires_at')
                     ->label('Fin de publication')
                     ->default(fn () => now()->addDays((int) config('maracuja.news.default_duration_days', 30)))
                     ->helperText('Optionnel. Par defaut, une nouvelle actualite expire selon la duree configuree du starter.'),
+                TextInput::make('seo_title')
+                    ->label('Titre SEO')
+                    ->visible(fn (?NewsPost $record): bool => $record?->has_detail_page !== false),
+                Textarea::make('seo_description')
+                    ->label('Description SEO')
+                    ->columnSpanFull()
+                    ->visible(fn (?NewsPost $record): bool => $record?->has_detail_page !== false),
             ]);
     }
 
@@ -94,10 +103,15 @@ class NewsPostResource extends Resource
                 TextColumn::make('slug')
                     ->searchable(),
                 ImageColumn::make('image_path'),
-                TextColumn::make('seo_title')
-                    ->searchable(),
                 IconColumn::make('is_published')
                     ->label('Publie')
+                    ->boolean(),
+                IconColumn::make('is_pinned')
+                    ->label('Epingle')
+                    ->boolean()
+                    ->sortable(),
+                IconColumn::make('has_detail_page')
+                    ->label('Detail')
                     ->boolean(),
                 TextColumn::make('published_at')
                     ->label('Debut')

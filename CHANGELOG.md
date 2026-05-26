@@ -8,3 +8,4 @@
 - Added offer profiles, content admin rules, front/media/js/seo/theme docs and delivery guidance.
 - Added `maracuja:doctor` delivery health check command.
 - Added Content Slots and simplified Pages admin to keep templates protected.
+- Added pinned news posts and optional news detail pages.

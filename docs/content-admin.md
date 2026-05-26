@@ -43,8 +43,10 @@ Les actualites ont une fenetre de publication:
 - `published_at`: debut de publication;
 - `expires_at`: fin de publication;
 - `is_published`: statut manuel.
+- `is_pinned`: remonte l actualite dans les listings.
+- `has_detail_page`: active ou non une page detail publique.
 
-Une actualite expiree est masquee sur la home, la liste publique et la page detail.
+Une actualite expiree est masquee sur la home, la liste publique et la page detail. Une actualite sans page detail reste visible en carte/listing, mais son URL detail retourne 404.
 
 La duree proposee par defaut est configuree avec:
 

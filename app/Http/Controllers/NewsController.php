@@ -16,8 +16,7 @@ class NewsController extends Controller
         return view('site.news.index', [
             'settings' => SiteSetting::current(),
             'posts' => NewsPost::query()
-                ->visible()
-                ->latest('published_at')
+                ->forListing()
                 ->paginate(9),
         ]);
     }
@@ -31,6 +30,7 @@ class NewsController extends Controller
             'post' => NewsPost::query()
                 ->where('slug', $slug)
                 ->visible()
+                ->where('has_detail_page', true)
                 ->firstOrFail(),
         ]);
     }

@@ -69,7 +69,7 @@
         <x-site.section variant="surface" title="Actualites demo" intro="Un module contenu recurrent pour animer le site." heading-variant="accent">
             <x-site.grid columns="3">
                 @foreach ($newsPosts as $post)
-                    <x-site.card :title="$post->title" :url="route('news.show', $post->slug)">
+                    <x-site.card :title="$post->title" :url="$post->hasDetailPage() ? route('news.show', $post->slug) : null">
                         {{ $post->excerpt }}
                     </x-site.card>
                 @endforeach

@@ -278,11 +278,67 @@ class PublicSiteTest extends TestCase
             'excerpt' => 'Invisible maintenant.',
             'content' => '<p>Archive non visible.</p>',
             'is_published' => true,
+            'has_detail_page' => true,
             'published_at' => now()->subDays(5),
             'expires_at' => now()->subDay(),
         ]);
 
         $this->get('/actualites/actualite-expiree')->assertNotFound();
+    }
+
+    public function test_news_listing_orders_pinned_posts_first(): void
+    {
+        SiteSetting::current();
+
+        NewsPost::query()->create([
+            'title' => 'Actualite recente',
+            'slug' => 'actualite-recente',
+            'excerpt' => 'Recente mais non epinglee.',
+            'is_published' => true,
+            'is_pinned' => false,
+            'has_detail_page' => true,
+            'published_at' => now(),
+            'expires_at' => now()->addDay(),
+        ]);
+
+        NewsPost::query()->create([
+            'title' => 'Actualite epinglee',
+            'slug' => 'actualite-epinglee',
+            'excerpt' => 'Prioritaire.',
+            'is_published' => true,
+            'is_pinned' => true,
+            'has_detail_page' => true,
+            'published_at' => now()->subDays(3),
+            'expires_at' => now()->addDay(),
+        ]);
+
+        $this->get('/actualites')
+            ->assertOk()
+            ->assertSeeInOrder(['Actualite epinglee', 'Actualite recente']);
+    }
+
+    public function test_news_without_detail_page_has_no_public_detail(): void
+    {
+        SiteSetting::current();
+
+        NewsPost::query()->create([
+            'title' => 'Annonce simple',
+            'slug' => 'annonce-simple',
+            'excerpt' => 'Visible dans le listing uniquement.',
+            'content' => '<p>Ne doit pas etre visible en page detail.</p>',
+            'is_published' => true,
+            'is_pinned' => false,
+            'has_detail_page' => false,
+            'published_at' => now()->subHour(),
+            'expires_at' => now()->addDay(),
+        ]);
+
+        $this->get('/actualites')
+            ->assertOk()
+            ->assertSee('Annonce simple')
+            ->assertDontSee('href="http://localhost/actualites/annonce-simple"', false);
+
+        $this->get('/actualites/annonce-simple')->assertNotFound();
     }
 
     public function test_news_detail_shows_breadcrumb_and_back_link(): void
@@ -295,6 +351,7 @@ class PublicSiteTest extends TestCase
             'excerpt' => 'Visible maintenant.',
             'content' => '<p>Detail de l actualite.</p>',
             'is_published' => true,
+            'has_detail_page' => true,
             'published_at' => now()->subHour(),
             'expires_at' => now()->addDay(),
         ]);

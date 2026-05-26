@@ -8,7 +8,7 @@ Maracuja CMS is a Laravel + Filament starter for building focused, administrable
 - Pages: structured Blade pages with protected templates.
 - Content Slots: named short values used by coded templates.
 - Notices: short dated messages such as opening hours or temporary alerts.
-- News: recurring editorial content with publication windows.
+- News: recurring editorial content with publication windows, pinned posts and optional detail pages.
 - Gallery: ordered image entries with gallery presets selected by the project.
 - Contact: public form, stored submissions and email notification.
 
