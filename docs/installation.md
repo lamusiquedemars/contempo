@@ -67,10 +67,17 @@ DB_PASSWORD=secret
 Avant livraison:
 
 ```bash
+php artisan maracuja:doctor
 php artisan test
 npm run build
 php artisan view:cache
 php artisan optimize:clear
+```
+
+Avant mise en ligne publique:
+
+```bash
+php artisan maracuja:doctor --production
 ```
 
 Verifier ensuite:

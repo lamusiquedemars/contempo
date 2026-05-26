@@ -79,6 +79,15 @@ MARACUJA_GALLERY_LAYOUT=carousel
 - `docs/seo-system.md`: SEO, sitemap and robots.
 - `docs/theme-system.md`: themes and client visual variants.
 
+## Delivery Check
+
+Run the Maracuja health check before handing over a client installation:
+
+```bash
+php artisan maracuja:doctor
+php artisan maracuja:doctor --production
+```
+
 ## Product Direction
 
 This repository is a versioned starter, not a Composer package yet. The intended path is:
