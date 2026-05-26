@@ -51,7 +51,7 @@ return [
             'gallery' => true,
             'contact' => true,
         ],
-        'custom' => [
+        'univers' => [
             'site_settings' => true,
             'notices' => true,
             'content_slots' => true,

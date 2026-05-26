@@ -38,12 +38,12 @@ The commercial profile is configured with:
 ```env
 MARACUJA_OFFER=essence
 MARACUJA_OFFER=signature
-MARACUJA_OFFER=custom
+MARACUJA_OFFER=univers
 ```
 
 - `essence`: pages, contact and settings.
 - `signature`: full showcase starter with notices, news and gallery.
-- `custom`: open profile for client-specific modules.
+- `univers`: structured business module or connected use case without becoming fully custom.
 
 ## Module Toggles
 
@@ -73,7 +73,7 @@ MARACUJA_GALLERY_LAYOUT=carousel
 ## Documentation
 
 - `docs/installation.md`: fresh install and delivery checklist.
-- `docs/offer-profiles.md`: Essence, Signature and Custom profiles.
+- `docs/offer-profiles.md`: Essence, Signature and Univers profiles.
 - `docs/content-admin.md`: what clients can safely edit.
 - `docs/front-system.md`: Blade/CSS component system.
 - `docs/media-system.md`: images, galleries and lightbox.

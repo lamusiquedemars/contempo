@@ -7,7 +7,7 @@ Maracuja CMS peut etre configure par profil commercial. Le profil donne une base
 ```env
 MARACUJA_OFFER=essence
 MARACUJA_OFFER=signature
-MARACUJA_OFFER=custom
+MARACUJA_OFFER=univers
 ```
 
 ## Essence
@@ -37,9 +37,9 @@ Profil vitrine plus complet:
 - galerie;
 - contact.
 
-## Custom
+## Univers
 
-Profil ouvert pour les sites avec module metier ou besoin specifique.
+Profil cadré pour les sites avec module metier simple, catalogue, reservation ou outil connecte.
 
 ## Interrupteurs par module
 

@@ -42,7 +42,7 @@ Ne passer `MARACUJA_INDEXABLE=true` qu au moment de mise en ligne publique.
 ```env
 MARACUJA_OFFER=essence
 MARACUJA_OFFER=signature
-MARACUJA_OFFER=custom
+MARACUJA_OFFER=univers
 ```
 
 Le profil fixe la base commerciale. Les variables `MARACUJA_MODULE_*` permettent d enlever un module pour un projet precis.

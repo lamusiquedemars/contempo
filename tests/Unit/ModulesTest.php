@@ -30,4 +30,16 @@ class ModulesTest extends TestCase
         $this->assertFalse(Modules::enabled('gallery'));
         $this->assertTrue(Modules::enabled('news'));
     }
+
+    public function test_univers_offer_enables_business_ready_modules(): void
+    {
+        config(['maracuja.offer' => 'univers']);
+
+        $this->assertTrue(Modules::enabled('site_settings'));
+        $this->assertTrue(Modules::enabled('content_slots'));
+        $this->assertTrue(Modules::enabled('pages'));
+        $this->assertTrue(Modules::enabled('news'));
+        $this->assertTrue(Modules::enabled('gallery'));
+        $this->assertTrue(Modules::enabled('contact'));
+    }
 }
