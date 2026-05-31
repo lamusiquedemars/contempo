@@ -14,6 +14,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -62,6 +63,21 @@ class SiteSettingResource extends Resource
                 TextInput::make('contact_email')
                     ->label('Email de contact')
                     ->email(),
+                Toggle::make('contact_form_send_admin_email')
+                    ->label('Envoyer une notification à l’admin')
+                    ->default(true),
+                Toggle::make('contact_form_send_confirmation_email')
+                    ->label('Envoyer une confirmation au visiteur')
+                    ->default(false),
+                Toggle::make('contact_form_show_name')
+                    ->label('Afficher le champ Nom')
+                    ->default(true),
+                Toggle::make('contact_form_show_phone')
+                    ->label('Afficher le champ Téléphone')
+                    ->default(true),
+                Toggle::make('contact_form_show_subject')
+                    ->label('Afficher le champ Sujet')
+                    ->default(true),
                 TextInput::make('phone')
                     ->label('Telephone')
                     ->tel(),

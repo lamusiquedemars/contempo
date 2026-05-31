@@ -22,12 +22,18 @@ return [
         'default_duration_days' => env('MARACUJA_NEWS_DEFAULT_DURATION_DAYS', 30),
     ],
 
+    'articles' => [
+        'public_label' => env('MARACUJA_ARTICLES_PUBLIC_LABEL', 'Articles'),
+        'public_path' => env('MARACUJA_ARTICLES_PUBLIC_PATH', 'articles'),
+    ],
+
     'modules' => [
         'site_settings' => env('MARACUJA_MODULE_SITE_SETTINGS', true),
         'notices' => env('MARACUJA_MODULE_NOTICES', true),
         'content_slots' => env('MARACUJA_MODULE_CONTENT_SLOTS', true),
         'pages' => env('MARACUJA_MODULE_PAGES', true),
         'news' => env('MARACUJA_MODULE_NEWS', true),
+        'articles' => env('MARACUJA_MODULE_ARTICLES', true),
         'gallery' => env('MARACUJA_MODULE_GALLERY', true),
         'contact' => env('MARACUJA_MODULE_CONTACT', true),
     ],
@@ -39,6 +45,7 @@ return [
             'content_slots' => false,
             'pages' => true,
             'news' => false,
+            'articles' => false,
             'gallery' => false,
             'contact' => true,
         ],
@@ -48,6 +55,7 @@ return [
             'content_slots' => true,
             'pages' => true,
             'news' => true,
+            'articles' => true,
             'gallery' => true,
             'contact' => true,
         ],
@@ -57,6 +65,7 @@ return [
             'content_slots' => true,
             'pages' => true,
             'news' => true,
+            'articles' => true,
             'gallery' => true,
             'contact' => true,
         ],

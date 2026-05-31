@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ContactSubmissionConfirmation;
 use App\Mail\ContactSubmissionReceived;
+use App\Modules\Articles\Models\Article;
 use App\Modules\Contact\Models\ContactSubmission;
 use App\Modules\ContentSlots\Models\ContentSlot;
 use App\Modules\Gallery\Models\GalleryImage;
@@ -240,6 +242,70 @@ class PublicSiteTest extends TestCase
         Mail::assertSent(ContactSubmissionReceived::class);
     }
 
+    public function test_contact_form_rejects_invalid_email_without_top_level_domain(): void
+    {
+        SiteSetting::query()->create([
+            'site_name' => 'Maracuja CMS',
+            'contact_email' => 'contact@maracuja.test',
+        ]);
+
+        $this->post('/contact', [
+            'name' => 'Ivo',
+            'email' => 'ivo@mail',
+            'subject' => 'Projet',
+            'message' => 'Bonjour depuis le formulaire.',
+        ])->assertSessionHasErrors('email');
+
+        $this->assertDatabaseCount(ContactSubmission::class, 0);
+    }
+
+    public function test_contact_form_stores_submission_when_admin_email_is_not_configured(): void
+    {
+        Mail::fake();
+
+        SiteSetting::query()->create([
+            'site_name' => 'Maracuja CMS',
+            'contact_email' => null,
+        ]);
+
+        $this->post('/contact', [
+            'name' => 'Ivo',
+            'email' => 'ivo@example.test',
+            'subject' => 'Projet',
+            'message' => 'Bonjour depuis le formulaire.',
+        ])->assertRedirect('/contact');
+
+        $this->assertDatabaseHas(ContactSubmission::class, [
+            'email' => 'ivo@example.test',
+        ]);
+
+        Mail::assertNothingSent();
+    }
+
+    public function test_contact_form_sends_user_confirmation_if_enabled(): void
+    {
+        Mail::fake();
+
+        SiteSetting::query()->create([
+            'site_name' => 'Maracuja CMS',
+            'contact_email' => 'contact@maracuja.test',
+            'contact_form_send_confirmation_email' => true,
+        ]);
+
+        $this->post('/contact', [
+            'name' => 'Ivo',
+            'email' => 'ivo@example.test',
+            'subject' => 'Projet',
+            'message' => 'Bonjour depuis le formulaire.',
+        ])->assertRedirect('/contact');
+
+        $this->assertDatabaseHas(ContactSubmission::class, [
+            'email' => 'ivo@example.test',
+        ]);
+
+        Mail::assertSent(ContactSubmissionConfirmation::class);
+    }
+
     public function test_disabled_news_module_returns_not_found(): void
     {
         config(['maracuja.modules.news' => false]);
@@ -263,9 +329,11 @@ class PublicSiteTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertDontSee('href="http://localhost/actualites"', false)
+            ->assertDontSee('href="http://localhost/articles"', false)
             ->assertDontSee('Galerie demo');
 
         $this->get('/actualites')->assertNotFound();
+        $this->get('/articles')->assertNotFound();
     }
 
     public function test_expired_news_post_detail_returns_not_found(): void
@@ -361,5 +429,54 @@ class PublicSiteTest extends TestCase
             ->assertSee('Fil d Ariane')
             ->assertSee('Actualites')
             ->assertSee('Retour aux actualites');
+    }
+
+    public function test_articles_render_structured_blocks(): void
+    {
+        SiteSetting::current();
+
+        Article::query()->create([
+            'title' => 'Bois et geste',
+            'slug' => 'bois-et-geste',
+            'excerpt' => 'Une note d’atelier.',
+            'body_blocks' => [
+                [
+                    'type' => 'heading',
+                    'level' => '2',
+                    'heading' => 'Une matière vivante',
+                ],
+                [
+                    'type' => 'rich_text',
+                    'text' => '<p>Le bois répond au geste.</p>',
+                ],
+                [
+                    'type' => 'quote',
+                    'quote' => 'Le geste confirme.',
+                    'author' => 'Atelier',
+                ],
+                [
+                    'type' => 'table',
+                    'table_rows' => "Bois | Usage\nCumaru | Archet moderne",
+                ],
+            ],
+            'is_published' => true,
+            'published_at' => now()->subHour(),
+        ]);
+
+        $this->get('/articles')
+            ->assertOk()
+            ->assertSee('Bois et geste')
+            ->assertSee('Une note d’atelier.');
+
+        $this->get('/articles/bois-et-geste')
+            ->assertOk()
+            ->assertSee('Une matière vivante')
+            ->assertSee('Le bois répond au geste.')
+            ->assertSee('Le geste confirme.')
+            ->assertSee('Cumaru')
+            ->assertSee('Retour à articles');
+
+        $this->get('/article.php?slug=bois-et-geste')
+            ->assertRedirect('/articles/bois-et-geste');
     }
 }

@@ -13,24 +13,36 @@
 
         <form method="post" action="{{ route('contact.store') }}" class="contact-form" data-form>
             @csrf
-            <label>
-                Nom
-                <input name="name" value="{{ old('name') }}" required>
-                @error('name') <small>{{ $message }}</small> @enderror
-            </label>
+            <input type="text" name="website" value="" autocomplete="off" tabindex="-1" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">
+
+            @if ($settings->contact_form_show_name)
+                <label>
+                    Nom
+                    <input name="name" value="{{ old('name') }}" required>
+                    @error('name') <small>{{ $message }}</small> @enderror
+                </label>
+            @endif
+
             <label>
                 Email
                 <input name="email" type="email" value="{{ old('email') }}" required>
                 @error('email') <small>{{ $message }}</small> @enderror
             </label>
-            <label>
-                Telephone
-                <input name="phone" value="{{ old('phone') }}">
-            </label>
-            <label>
-                Sujet
-                <input name="subject" value="{{ old('subject') }}">
-            </label>
+
+            @if ($settings->contact_form_show_phone)
+                <label>
+                    Téléphone
+                    <input name="phone" value="{{ old('phone') }}">
+                </label>
+            @endif
+
+            @if ($settings->contact_form_show_subject)
+                <label>
+                    Sujet
+                    <input name="subject" value="{{ old('subject') }}">
+                </label>
+            @endif
+
             <label class="full">
                 Message
                 <textarea name="message" rows="7" required>{{ old('message') }}</textarea>

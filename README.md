@@ -9,6 +9,7 @@ Maracuja CMS is a Laravel + Filament starter for building focused, administrable
 - Content Slots: named short values used by coded templates.
 - Notices: short dated messages such as opening hours or temporary alerts.
 - News: recurring editorial content with publication windows, pinned posts and optional detail pages.
+- Articles: structured editorial pages with reusable blocks, for Confluence-style long-form content without a page builder.
 - Gallery: ordered image entries with gallery presets selected by the project.
 - Contact: public form, stored submissions and email notification.
 
@@ -42,7 +43,7 @@ MARACUJA_OFFER=univers
 ```
 
 - `essence`: pages, contact and settings.
-- `signature`: full showcase starter with notices, news and gallery.
+- `signature`: full showcase starter with notices, news, articles and gallery.
 - `univers`: structured business module or connected use case without becoming fully custom.
 
 ## Module Toggles
@@ -54,11 +55,19 @@ MARACUJA_MODULE_NOTICES=true
 MARACUJA_MODULE_CONTENT_SLOTS=true
 MARACUJA_MODULE_PAGES=true
 MARACUJA_MODULE_NEWS=true
+MARACUJA_MODULE_ARTICLES=true
 MARACUJA_MODULE_GALLERY=true
 MARACUJA_MODULE_CONTACT=true
 ```
 
 Disabled modules disappear from Filament navigation and their public routes return 404.
+
+Article URLs and public wording can be project-specific:
+
+```env
+MARACUJA_ARTICLES_PUBLIC_LABEL=Articles
+MARACUJA_ARTICLES_PUBLIC_PATH=articles
+```
 
 ## Front Presets
 

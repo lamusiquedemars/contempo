@@ -17,6 +17,7 @@ class ModulesTest extends TestCase
         $this->assertFalse(Modules::enabled('notices'));
         $this->assertFalse(Modules::enabled('content_slots'));
         $this->assertFalse(Modules::enabled('news'));
+        $this->assertFalse(Modules::enabled('articles'));
         $this->assertFalse(Modules::enabled('gallery'));
     }
 
@@ -29,6 +30,7 @@ class ModulesTest extends TestCase
 
         $this->assertFalse(Modules::enabled('gallery'));
         $this->assertTrue(Modules::enabled('news'));
+        $this->assertTrue(Modules::enabled('articles'));
     }
 
     public function test_univers_offer_enables_business_ready_modules(): void
@@ -39,6 +41,7 @@ class ModulesTest extends TestCase
         $this->assertTrue(Modules::enabled('content_slots'));
         $this->assertTrue(Modules::enabled('pages'));
         $this->assertTrue(Modules::enabled('news'));
+        $this->assertTrue(Modules::enabled('articles'));
         $this->assertTrue(Modules::enabled('gallery'));
         $this->assertTrue(Modules::enabled('contact'));
     }

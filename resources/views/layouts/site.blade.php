@@ -61,6 +61,9 @@
             @if (\App\Support\Modules::enabled('news'))
                 <a href="{{ route('news.index') }}">Actualites</a>
             @endif
+            @if (\App\Support\Modules::enabled('articles'))
+                <a href="{{ route('articles.index') }}">{{ config('maracuja.articles.public_label', 'Articles') }}</a>
+            @endif
             @if (\App\Support\Modules::enabled('pages'))
                 <a href="{{ route('pages.show', 'services') }}">Services</a>
                 <a href="{{ route('pages.show', 'methode') }}">Methode</a>

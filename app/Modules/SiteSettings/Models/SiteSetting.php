@@ -18,13 +18,48 @@ class SiteSetting extends Model
         'favicon_path',
         'default_og_image_path',
         'social_links',
+        'contact_form_show_name',
+        'contact_form_show_phone',
+        'contact_form_show_subject',
+        'contact_form_send_admin_email',
+        'contact_form_send_confirmation_email',
     ];
 
     protected function casts(): array
     {
         return [
             'social_links' => 'array',
+            'contact_form_show_name' => 'boolean',
+            'contact_form_show_phone' => 'boolean',
+            'contact_form_show_subject' => 'boolean',
+            'contact_form_send_admin_email' => 'boolean',
+            'contact_form_send_confirmation_email' => 'boolean',
         ];
+    }
+
+    public function getContactFormShowNameAttribute(?bool $value): bool
+    {
+        return $value ?? true;
+    }
+
+    public function getContactFormShowPhoneAttribute(?bool $value): bool
+    {
+        return $value ?? true;
+    }
+
+    public function getContactFormShowSubjectAttribute(?bool $value): bool
+    {
+        return $value ?? true;
+    }
+
+    public function getContactFormSendAdminEmailAttribute(?bool $value): bool
+    {
+        return $value ?? true;
+    }
+
+    public function getContactFormSendConfirmationEmailAttribute(?bool $value): bool
+    {
+        return $value ?? false;
     }
 
     public static function current(): self
@@ -36,6 +71,11 @@ class SiteSetting extends Model
             'default_seo_description' => 'Un starter Laravel + Filament pour sites vitrines administrables.',
             'default_og_image_path' => '/demo/theme-system.svg',
             'contact_email' => 'contact@example.test',
+            'contact_form_show_name' => true,
+            'contact_form_show_phone' => true,
+            'contact_form_show_subject' => true,
+            'contact_form_send_admin_email' => true,
+            'contact_form_send_confirmation_email' => false,
         ]);
     }
 }

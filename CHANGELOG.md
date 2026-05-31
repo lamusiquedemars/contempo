@@ -9,4 +9,5 @@
 - Added `maracuja:doctor` delivery health check command.
 - Added Content Slots and simplified Pages admin to keep templates protected.
 - Added pinned news posts and optional news detail pages.
+- Added Articles module with structured content blocks, public routes and Filament admin.
 - Renamed the high offer profile from Custom to Univers.
