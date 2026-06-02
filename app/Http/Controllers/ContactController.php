@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ContactSubmissionConfirmation;
-use App\Mail\ContactSubmissionReceived;
-use App\Modules\Contact\Models\ContactSubmission;
+use App\Modules\ContactForm\Data\ContactMessage;
+use App\Modules\ContactForm\Mail\ContactMessageConfirmation;
+use App\Modules\ContactForm\Mail\ContactMessageReceived;
+use App\Modules\Inquiries\Actions\StoreInquiry;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use App\Support\Modules;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +17,7 @@ class ContactController extends Controller
 {
     public function create(): View
     {
-        abort_unless(Modules::enabled('contact'), 404);
+        abort_unless(Modules::enabled('contact_form'), 404);
 
         return view('site.contact', [
             'settings' => SiteSetting::current(),
@@ -25,7 +26,7 @@ class ContactController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        abort_unless(Modules::enabled('contact'), 404);
+        abort_unless(Modules::enabled('contact_form'), 404);
 
         $settings = SiteSetting::current();
 
@@ -49,18 +50,24 @@ class ContactController extends Controller
             $data['name'] = $data['email'];
         }
 
-        $submission = ContactSubmission::query()->create($data);
+        $message = ContactMessage::fromArray($data);
+
+        if (Modules::enabled('inquiries') && class_exists(StoreInquiry::class)) {
+            StoreInquiry::run($message);
+        }
 
         if ($settings->contact_form_send_admin_email && $settings->contact_email) {
-            Mail::to($settings->contact_email)->send(new ContactSubmissionReceived($submission));
+            Mail::to($settings->contact_email)->send(new ContactMessageReceived($message));
         }
 
         if ($settings->contact_form_send_confirmation_email) {
-            Mail::to($submission->email)->send(new ContactSubmissionConfirmation($submission));
+            Mail::to($message->email)->send(new ContactMessageConfirmation($message));
         }
 
         return redirect()
             ->route('contact')
-            ->with('status', 'Votre message a bien été enregistré. Nous le traitons depuis l’administration.');
+            ->with('status', Modules::enabled('inquiries')
+                ? 'Votre message a bien été enregistré. Nous le traitons depuis l’administration.'
+                : 'Votre message a bien été envoyé.');
     }
 }

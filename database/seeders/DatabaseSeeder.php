@@ -11,6 +11,7 @@ use App\Modules\Pages\Models\Page;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,7 +29,7 @@ class DatabaseSeeder extends Seeder
             'site_name' => 'Maracuja CMS',
             'baseline' => 'Sites vitrines administrables, sobres et sur mesure.',
             'default_seo_title' => 'Maracuja CMS',
-            'default_seo_description' => 'Un starter Laravel + Filament pour creer des sites vitrines administrables sans surcharge.',
+            'default_seo_description' => 'Un starter Laravel + Filament pour créer des sites vitrines administrables sans surcharge.',
             'default_og_image_path' => '/demo/theme-system.svg',
             'contact_email' => 'contact@maracuja.test',
             'social_links' => [
@@ -43,7 +44,7 @@ class DatabaseSeeder extends Seeder
                 'label' => 'CTA principal home',
                 'group' => 'Accueil',
                 'type' => 'text',
-                'value' => 'Presenter un projet',
+                'value' => 'Présenter un projet',
                 'help_text' => 'Texte court du bouton principal de la home.',
             ],
             [
@@ -67,7 +68,7 @@ class DatabaseSeeder extends Seeder
                 'label' => 'Texte introduction home',
                 'group' => 'Accueil',
                 'type' => 'textarea',
-                'value' => 'Un site vitrine administre, sans surcharge, avec les modules utiles au client et une base front propre.',
+                'value' => 'Un site vitrine administré, sans surcharge, avec les modules utiles au client et une base front propre.',
                 'help_text' => 'Texte court. Eviter les paragraphes longs.',
             ],
             [
@@ -75,8 +76,8 @@ class DatabaseSeeder extends Seeder
                 'label' => 'Prix Essence',
                 'group' => 'Services',
                 'type' => 'price',
-                'value' => 'A partir de 1500',
-                'help_text' => 'Prix ou mention courte affichee sur la carte Essence.',
+                'value' => 'À partir de 1500',
+                'help_text' => 'Prix ou mention courte affichée sur la carte Essence.',
             ],
             [
                 'key' => 'services.signature.price',
@@ -84,15 +85,15 @@ class DatabaseSeeder extends Seeder
                 'group' => 'Services',
                 'type' => 'price',
                 'value' => 'Sur devis cadre',
-                'help_text' => 'Prix ou mention courte affichee sur la carte Signature.',
+                'help_text' => 'Prix ou mention courte affichée sur la carte Signature.',
             ],
             [
-                'key' => 'services.custom.price',
-                'label' => 'Prix sur mesure',
+                'key' => 'services.univers.price',
+                'label' => 'Prix Univers',
                 'group' => 'Services',
                 'type' => 'price',
-                'value' => 'Sur mesure',
-                'help_text' => 'Prix ou mention courte affichee sur la carte Sur mesure.',
+                'value' => 'Sur devis métier',
+                'help_text' => 'Prix ou mention courte affichée sur la carte Univers.',
             ],
         ])->each(fn (array $slot) => ContentSlot::query()->updateOrCreate(
             ['key' => $slot['key']],
@@ -102,13 +103,13 @@ class DatabaseSeeder extends Seeder
         Page::query()->updateOrCreate(['slug' => 'accueil'], [
             'title' => 'Accueil',
             'template' => 'landing',
-            'excerpt' => 'Une demo du starter Maracuja CMS.',
+            'excerpt' => 'Une démo du starter Maracuja CMS.',
             'hero_title' => 'Un site clair. Une administration simple.',
-            'hero_subtitle' => 'Maracuja CMS fournit un socle Laravel + Filament pour creer des sites vitrines administrables, sans tableau de bord inutile.',
+            'hero_subtitle' => 'Maracuja CMS fournit un socle Laravel + Filament pour créer des sites vitrines administrables, sans tableau de bord inutile.',
             'body_blocks' => [
                 'intro_title' => 'Le socle des offres Essence et Signature',
-                'intro_text' => 'Un site vitrine administre, sans surcharge, avec les modules utiles au client et une base front propre.',
-                'cta_label' => 'Presenter un projet',
+                'intro_text' => 'Un site vitrine administré, sans surcharge, avec les modules utiles au client et une base front propre.',
+                'cta_label' => 'Présenter un projet',
                 'secondary_cta_label' => 'Voir les services',
             ],
             'seo_title' => 'Maracuja CMS - Starter vitrine administrable',
@@ -118,14 +119,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Page::query()->updateOrCreate(['slug' => 'methode'], [
-            'title' => 'Methode',
+            'title' => 'Méthode',
             'template' => 'default',
-            'excerpt' => 'La methode Maracuja CMS en version starter.',
+            'excerpt' => 'La méthode Maracuja CMS en version starter.',
             'hero_title' => 'Une structure avant les options',
-            'hero_subtitle' => 'Chaque site part d un socle commun puis recoit seulement les modules utiles au client.',
+            'hero_subtitle' => 'Chaque site part d’un socle commun puis reçoit seulement les modules utiles au client.',
             'body_blocks' => [
-                'section_1' => 'Cadrer les pages, les contenus et les modules avant de developper.',
-                'section_2' => 'Garder un admin court, lisible et oriente metier.',
+                'section_1' => 'Cadrer les pages, les contenus et les modules avant de développer.',
+                'section_2' => 'Garder un admin court, lisible et orienté métier.',
             ],
             'is_published' => true,
             'published_at' => now(),
@@ -134,24 +135,24 @@ class DatabaseSeeder extends Seeder
         Page::query()->updateOrCreate(['slug' => 'services'], [
             'title' => 'Services',
             'template' => 'services',
-            'excerpt' => 'Les offres types portees par le starter.',
-            'hero_title' => 'Des sites vitrines administrables, sans usine a gaz',
-            'hero_subtitle' => 'Essence pour aller vite et bien. Signature pour une presence plus complete. Le sur mesure arrive quand le besoin metier le justifie.',
+            'excerpt' => 'Les offres type portées par le starter.',
+            'hero_title' => 'Des sites vitrines administrables, sans usine à gaz',
+            'hero_subtitle' => 'Essence pour aller vite et bien. Signature pour une présence plus complète. Univers couvre les besoins métier cadrés.',
             'body_blocks' => [
-                'essence_price' => 'A partir de 1500',
+                'essence_price' => 'À partir de 1500',
                 'signature_price' => 'Sur devis cadre',
-                'custom_price' => 'Sur mesure',
+                'univers_price' => 'Sur devis métier',
             ],
             'seo_title' => 'Services - Maracuja CMS',
-            'seo_description' => 'Offres Essence, Signature et sur mesure pour sites vitrines administrables.',
+            'seo_description' => 'Offres Essence, Signature et Univers pour sites vitrines administrables.',
             'is_published' => true,
             'published_at' => now(),
         ]);
 
         NewsPost::query()->updateOrCreate(['slug' => 'maracuja-cms-v1'], [
             'title' => 'Maracuja CMS V1',
-            'excerpt' => 'Le starter prend forme avec Pages, Actualites, Galerie et Contact.',
-            'content' => '<p>Cette premiere version sert de base aux sites vitrines administrables.</p>',
+            'excerpt' => 'Le starter prend forme avec Pages, Actualités, Galerie et Contact.',
+            'content' => '<p>Cette première version sert de base aux sites vitrines administrables.</p>',
             'is_published' => true,
             'is_pinned' => true,
             'has_detail_page' => true,
@@ -162,7 +163,7 @@ class DatabaseSeeder extends Seeder
         NewsPost::query()->updateOrCreate(['slug' => 'front-system'], [
             'title' => 'Un front system maison',
             'excerpt' => 'Le starter embarque ses composants CSS, Blade et JS sans framework visible.',
-            'content' => '<p>Le socle front permet de composer des pages propres sans repartir d un CSS specifique a chaque client.</p>',
+            'content' => '<p>Le socle front permet de composer des pages propres sans repartir d’un CSS spécifique à chaque client.</p>',
             'is_published' => true,
             'is_pinned' => false,
             'has_detail_page' => true,
@@ -171,9 +172,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         NewsPost::query()->updateOrCreate(['slug' => 'admin-simplifiee'], [
-            'title' => 'Une admin limitee aux modules utiles',
-            'excerpt' => 'Filament affiche seulement les sections activees pour le projet client.',
-            'content' => '<p>Le client garde un tableau de bord lisible, oriente contenu et sans surcharge inutile.</p>',
+            'title' => 'Une admin limitée aux modules utiles',
+            'excerpt' => 'Filament affiche seulement les sections activées pour le projet client.',
+            'content' => '<p>Le client garde un tableau de bord lisible, orienté contenu et sans surcharge inutile.</p>',
             'is_published' => true,
             'is_pinned' => false,
             'has_detail_page' => false,
@@ -181,8 +182,8 @@ class DatabaseSeeder extends Seeder
             'expires_at' => now()->addDays(28),
         ]);
 
-        SiteNotice::query()->updateOrCreate(['title' => 'Annonce demo'], [
-            'message' => 'Ce bloc est une annonce courte independante des pages. Si aucune annonce active n existe, rien ne s affiche.',
+        SiteNotice::query()->updateOrCreate(['title' => 'Annonce démo'], [
+            'message' => 'Ce bloc est une annonce courte indépendante des pages. Si aucune annonce active n’existe, rien ne s’affiche.',
             'link_label' => 'Contacter',
             'link_url' => '/contact',
             'placement' => 'home',
@@ -193,8 +194,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         GalleryImage::query()->updateOrCreate(['title' => 'Admin simple'], [
-            'caption' => 'Un back-office limite aux modules actives.',
-            'alt_text' => 'Interface d administration simple limitee aux modules utiles.',
+            'caption' => 'Une administration limitée aux modules activés.',
+            'alt_text' => 'Interface d’administration simple limitée aux modules utiles.',
             'credit' => 'Maracuja CMS',
             'image_path' => '/demo/admin-simple.svg',
             'width' => 1200,
@@ -204,8 +205,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         GalleryImage::query()->updateOrCreate(['title' => 'Composants front'], [
-            'caption' => 'Des sections, cartes, CTA, galeries et variantes reutilisables.',
-            'alt_text' => 'Exemple abstrait de composants front organises.',
+            'caption' => 'Des sections, cartes, CTA, galeries et variantes réutilisables.',
+            'alt_text' => 'Exemple abstrait de composants front organisés.',
             'credit' => 'Maracuja CMS',
             'image_path' => '/demo/front-system.svg',
             'width' => 1200,
@@ -214,9 +215,9 @@ class DatabaseSeeder extends Seeder
             'is_published' => true,
         ]);
 
-        GalleryImage::query()->updateOrCreate(['title' => 'Themes clients'], [
+        GalleryImage::query()->updateOrCreate(['title' => 'Thèmes clients'], [
             'caption' => 'Une structure commune peut prendre plusieurs ambiances.',
-            'alt_text' => 'Variantes de themes pour sites clients.',
+            'alt_text' => 'Variantes de thèmes pour sites clients.',
             'credit' => 'Maracuja CMS',
             'image_path' => '/demo/theme-system.svg',
             'width' => 1200,
@@ -224,5 +225,6 @@ class DatabaseSeeder extends Seeder
             'position' => 3,
             'is_published' => true,
         ]);
+
     }
 }

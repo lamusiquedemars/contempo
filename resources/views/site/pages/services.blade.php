@@ -19,16 +19,16 @@
 
     <x-site.section title="Trois niveaux, un meme socle" intro="La difference se joue sur la richesse du contenu, les modules actifs et le degre de personnalisation." heading-variant="accent">
         <x-site.grid columns="3">
-            <x-site.card title="Essence" :kicker="\App\Support\ContentSlots::value('services.essence.price', 'A partir de 1500')" variant="featured">
-                Pages essentielles, contact, SEO de base, theme sobre et administration limitee aux contenus utiles.
+            <x-site.card title="Essence" :kicker="\App\Support\ContentSlots::value('services.essence.price', 'À partir de 1500')" variant="featured">
+                Pages essentielles, contact, SEO de base, thème sobre et administration limitée aux contenus utiles.
             </x-site.card>
 
             <x-site.card title="Signature" :kicker="\App\Support\ContentSlots::value('services.signature.price', 'Sur devis cadre')" variant="highlight">
-                Structure plus riche, actualites, galerie, sections de preuve, CTA, media system et finitions theme.
+                Structure plus riche, actualités, galerie, sections de preuve, CTA, media system et finitions thème.
             </x-site.card>
 
-            <x-site.card title="Sur mesure" :kicker="\App\Support\ContentSlots::value('services.custom.price', 'Sur mesure')">
-                Module metier client, catalogue sans paiement, workflow specifique ou integration externe selon le besoin.
+            <x-site.card title="Univers" :kicker="\App\Support\ContentSlots::value('services.univers.price', 'Sur devis métier')">
+                Module métier client, catalogue sans paiement, workflow spécifique ou intégration externe selon le besoin.
             </x-site.card>
         </x-site.grid>
     </x-site.section>
@@ -39,7 +39,7 @@
                 Laravel, Filament, modules activables, migrations, seeders, tests et conventions de livraison.
             </x-site.feature-card>
             <x-site.feature-card title="Socle front" icon="B">
-                Composants Blade, CSS maison, JS progressif, media system et themes clients.
+                Composants Blade, CSS maison, JS progressif, media system et thèmes clients.
             </x-site.feature-card>
         </x-site.grid>
     </x-site.section>
@@ -47,9 +47,9 @@
     <x-site.section>
         <x-site.cta
             title="Une offre simple a expliquer"
-            text="Le client choisit un niveau de site. Le developpeur garde un socle commun versionne."
+            text="Le client choisit un niveau de site. Le développeur garde un socle commun versionné."
             href="{{ route('contact') }}"
-            label="Presenter un projet"
+            label="Présenter un projet"
             inline
         />
 

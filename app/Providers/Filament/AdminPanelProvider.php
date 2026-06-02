@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Support\Modules;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -23,7 +24,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        $panel = $panel
             ->default()
             ->id('admin')
             ->path('admin')
@@ -55,5 +56,21 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+
+        if (Modules::enabled('inquiries') && is_dir(app_path('Modules/Inquiries/Filament/Resources'))) {
+            $panel->discoverResources(
+                in: app_path('Modules/Inquiries/Filament/Resources'),
+                for: 'App\Modules\Inquiries\Filament\Resources',
+            );
+        }
+
+        if (Modules::enabled('audience') && is_dir(app_path('Modules/Audience/Filament/Resources'))) {
+            $panel->discoverResources(
+                in: app_path('Modules/Audience/Filament/Resources'),
+                for: 'App\Modules\Audience\Filament\Resources',
+            );
+        }
+
+        return $panel;
     }
 }

@@ -59,16 +59,16 @@
         <nav class="site-nav" data-nav-menu aria-label="Navigation principale">
             <a href="{{ route('home') }}">Accueil</a>
             @if (\App\Support\Modules::enabled('news'))
-                <a href="{{ route('news.index') }}">Actualites</a>
+                <a href="{{ route('news.index') }}">Actualités</a>
             @endif
             @if (\App\Support\Modules::enabled('articles'))
                 <a href="{{ route('articles.index') }}">{{ config('maracuja.articles.public_label', 'Articles') }}</a>
             @endif
             @if (\App\Support\Modules::enabled('pages'))
                 <a href="{{ route('pages.show', 'services') }}">Services</a>
-                <a href="{{ route('pages.show', 'methode') }}">Methode</a>
+                <a href="{{ route('pages.show', 'methode') }}">Méthode</a>
             @endif
-            @if (\App\Support\Modules::enabled('contact'))
+            @if (\App\Support\Modules::enabled('contact_form'))
                 <a href="{{ route('contact') }}">Contact</a>
             @endif
             <a href="/admin">Admin</a>

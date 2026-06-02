@@ -5,13 +5,15 @@ Maracuja CMS is a Laravel + Filament starter for building focused, administrable
 ## V1 Modules
 
 - Site Settings: identity, SEO defaults, contact details, social links.
-- Pages: structured Blade pages with protected templates.
+- Pages: developer-only page metadata and protected templates, not a client page builder.
 - Content Slots: named short values used by coded templates.
 - Notices: short dated messages such as opening hours or temporary alerts.
 - News: recurring editorial content with publication windows, pinned posts and optional detail pages.
 - Articles: structured editorial pages with reusable blocks, for Confluence-style long-form content without a page builder.
 - Gallery: ordered image entries with gallery presets selected by the project.
-- Contact: public form, stored submissions and email notification.
+- Contact Form: public form and email notification.
+- Inquiries: stored contact requests and admin follow-up.
+- Audience: contacts, segments and targeted messages, currently experimental.
 
 ## Local Setup
 
@@ -57,7 +59,12 @@ MARACUJA_MODULE_PAGES=true
 MARACUJA_MODULE_NEWS=true
 MARACUJA_MODULE_ARTICLES=true
 MARACUJA_MODULE_GALLERY=true
-MARACUJA_MODULE_CONTACT=true
+MARACUJA_MODULE_CONTACT_FORM=true
+MARACUJA_MODULE_INQUIRIES=true
+MARACUJA_MODULE_AUDIENCE=false
+MARACUJA_MODULE_CAMPAIGNS=false
+MARACUJA_MODULE_APPOINTMENTS=false
+MARACUJA_DEV_PAGES_ADMIN=false
 ```
 
 Disabled modules disappear from Filament navigation and their public routes return 404.
@@ -82,8 +89,12 @@ MARACUJA_GALLERY_LAYOUT=carousel
 ## Documentation
 
 - `docs/installation.md`: fresh install and delivery checklist.
+- `docs/recap-general.md`: current workspace recap and general remaining work.
 - `docs/offer-profiles.md`: Essence, Signature and Univers profiles.
 - `docs/content-admin.md`: what clients can safely edit.
+- `docs/contact-flow.md`: contact form, inquiries and audience flow.
+- `docs/audience.md`: contacts, segments and targeted messages.
+- `docs/catalogue-metier.md`: pattern for business catalog modules.
 - `docs/front-system.md`: Blade/CSS component system.
 - `docs/media-system.md`: images, galleries and lightbox.
 - `docs/js-system.md`: progressive JavaScript modules.

@@ -6,6 +6,7 @@ use App\Filament\Resources\SiteSettings\Pages\ManageSiteSettings;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use App\Support\Modules;
 use BackedEnum;
+use UnitEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -27,11 +28,13 @@ class SiteSettingResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $navigationLabel = 'Parametres';
+    protected static ?string $navigationLabel = 'Paramètres';
 
-    protected static ?string $modelLabel = 'parametres';
+    protected static UnitEnum|string|null $navigationGroup = 'Réglages';
 
-    protected static ?string $pluralModelLabel = 'parametres';
+    protected static ?string $modelLabel = 'paramètres';
+
+    protected static ?string $pluralModelLabel = 'paramètres';
 
     protected static ?int $navigationSort = 90;
 
@@ -56,9 +59,9 @@ class SiteSettingResource extends Resource
                 TextInput::make('baseline')
                     ->label('Baseline'),
                 TextInput::make('default_seo_title')
-                    ->label('Titre SEO par defaut'),
+                    ->label('Titre SEO par défaut'),
                 Textarea::make('default_seo_description')
-                    ->label('Description SEO par defaut')
+                    ->label('Description SEO par défaut')
                     ->columnSpanFull(),
                 TextInput::make('contact_email')
                     ->label('Email de contact')
@@ -79,7 +82,7 @@ class SiteSettingResource extends Resource
                     ->label('Afficher le champ Sujet')
                     ->default(true),
                 TextInput::make('phone')
-                    ->label('Telephone')
+                    ->label('Téléphone')
                     ->tel(),
                 Textarea::make('address')
                     ->label('Adresse')
@@ -93,13 +96,13 @@ class SiteSettingResource extends Resource
                     ->directory('site')
                     ->image(),
                 FileUpload::make('default_og_image_path')
-                    ->label('Image sociale par defaut')
-                    ->helperText('Image utilisee par Open Graph si une page ou actualite n en fournit pas.')
+                    ->label('Image sociale par défaut')
+                    ->helperText('Image utilisée par Open Graph si une page ou actualité n’en fournit pas.')
                     ->directory('site')
                     ->image(),
                 KeyValue::make('social_links')
                     ->label('Liens sociaux')
-                    ->keyLabel('Libelle')
+                    ->keyLabel('Libellé')
                     ->valueLabel('URL')
                     ->columnSpanFull(),
             ]);

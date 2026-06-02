@@ -6,6 +6,7 @@ use App\Filament\Resources\Pages\Pages\ManagePages;
 use App\Modules\Pages\Models\Page;
 use App\Support\Modules;
 use BackedEnum;
+use UnitEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -32,6 +33,8 @@ class PageResource extends Resource
 
     protected static ?string $navigationLabel = 'Pages';
 
+    protected static UnitEnum|string|null $navigationGroup = 'Contenus';
+
     protected static ?string $modelLabel = 'page';
 
     protected static ?string $pluralModelLabel = 'pages';
@@ -40,12 +43,14 @@ class PageResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Modules::enabled('pages');
+        return Modules::enabled('pages') && Modules::developerToolEnabled('pages_admin');
     }
 
     public static function canAccess(): bool
     {
-        return Modules::enabled('pages') && parent::canAccess();
+        return Modules::enabled('pages')
+            && Modules::developerToolEnabled('pages_admin')
+            && parent::canAccess();
     }
 
     public static function form(Schema $schema): Schema
@@ -55,7 +60,7 @@ class PageResource extends Resource
                 TextInput::make('title')
                     ->label('Titre')
                     ->required()
-                    ->helperText('Nom de page. Pour les pages systeme, la structure reste dans le template.'),
+                    ->helperText('Nom de page. Pour les pages système, la structure reste dans le template.'),
                 TextInput::make('slug')
                     ->label('Slug')
                     ->disabled(fn (?Page $record): bool => in_array($record?->slug, ['accueil', 'services'], true))
@@ -68,13 +73,13 @@ class PageResource extends Resource
                         'landing' => 'Page avec sections',
                         'services' => 'Services / offres',
                     ])
-                    ->helperText('Le template definit la structure Blade de la page. Pour les pages systeme, ne le change pas sauf intention claire.')
+                    ->helperText('Le template définit la structure Blade de la page. Pour les pages système, ne le change pas sauf intention claire.')
                     ->disabled(fn (?Page $record): bool => in_array($record?->slug, ['accueil', 'services'], true))
                     ->dehydrated(fn (?Page $record): bool => ! in_array($record?->slug, ['accueil', 'services'], true))
                     ->required()
                     ->default('default'),
                 Textarea::make('excerpt')
-                    ->label('Resume')
+                    ->label('Résumé')
                     ->columnSpanFull(),
                 TextInput::make('hero_title')
                     ->label('Titre hero'),
@@ -91,7 +96,7 @@ class PageResource extends Resource
                     ->label('Description SEO')
                     ->columnSpanFull(),
                 Toggle::make('is_published')
-                    ->label('Publie')
+                    ->label('Publié')
                     ->required(),
                 DateTimePicker::make('published_at')
                     ->label('Date de publication'),
@@ -115,7 +120,7 @@ class PageResource extends Resource
                 TextColumn::make('seo_title')
                     ->searchable(),
                 IconColumn::make('is_published')
-                    ->label('Publie')
+                    ->label('Publié')
                     ->boolean(),
                 TextColumn::make('published_at')
                     ->label('Publication')

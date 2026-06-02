@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Mail\ContactSubmissionConfirmation;
-use App\Mail\ContactSubmissionReceived;
+use App\Modules\ContactForm\Mail\ContactMessageConfirmation;
+use App\Modules\ContactForm\Mail\ContactMessageReceived;
 use App\Modules\Articles\Models\Article;
-use App\Modules\Contact\Models\ContactSubmission;
+use App\Modules\Inquiries\Models\Inquiry;
 use App\Modules\ContentSlots\Models\ContentSlot;
 use App\Modules\Gallery\Models\GalleryImage;
 use App\Modules\News\Models\NewsPost;
@@ -56,7 +56,7 @@ class PublicSiteTest extends TestCase
             'template' => 'services',
             'hero_title' => 'Des sites vitrines administrables',
             'body_blocks' => [
-                'essence_price' => 'A partir de 1500',
+                'essence_price' => 'À partir de 1500',
             ],
             'is_published' => true,
             'published_at' => now(),
@@ -65,7 +65,7 @@ class PublicSiteTest extends TestCase
         $this->get('/services')
             ->assertOk()
             ->assertSee('Trois niveaux')
-            ->assertSee('A partir de 1500');
+            ->assertSee('À partir de 1500');
     }
 
     public function test_services_page_uses_content_slot_for_price(): void
@@ -86,14 +86,14 @@ class PublicSiteTest extends TestCase
             'label' => 'Prix Essence',
             'group' => 'Services',
             'type' => 'price',
-            'value' => 'A partir de 1800',
+            'value' => 'À partir de 1800',
             'is_locked' => true,
         ]);
 
         $this->get('/services')
             ->assertOk()
-            ->assertSee('A partir de 1800')
-            ->assertDontSee('A partir de 1500');
+            ->assertSee('À partir de 1800')
+            ->assertDontSee('À partir de 1500');
     }
 
     public function test_home_gallery_uses_configured_layout(): void
@@ -110,8 +110,8 @@ class PublicSiteTest extends TestCase
         ]);
 
         GalleryImage::query()->create([
-            'title' => 'Image demo',
-            'caption' => 'Legende demo',
+            'title' => 'Image démo',
+            'caption' => 'Légende démo',
             'image_path' => '/demo/admin-simple.svg',
             'width' => 1200,
             'height' => 800,
@@ -137,7 +137,7 @@ class PublicSiteTest extends TestCase
         ]);
 
         SiteNotice::query()->create([
-            'title' => 'Horaires d ete',
+            'title' => 'Horaires d’été',
             'message' => 'Ouverture exceptionnelle sur rendez-vous.',
             'placement' => 'home',
             'tone' => 'warning',
@@ -158,12 +158,12 @@ class PublicSiteTest extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('Horaires d ete')
+            ->assertSee('Horaires d’été')
             ->assertSee('Ouverture exceptionnelle')
             ->assertDontSee('Ancienne annonce');
     }
 
-    public function test_home_news_listing_hides_expired_posts(): void
+    public function test_home_news_list_hides_expired_posts(): void
     {
         SiteSetting::current();
 
@@ -175,7 +175,7 @@ class PublicSiteTest extends TestCase
         ]);
 
         NewsPost::query()->create([
-            'title' => 'Actualite active',
+            'title' => 'Actualité active',
             'slug' => 'actualite-active',
             'excerpt' => 'Visible maintenant.',
             'is_published' => true,
@@ -184,7 +184,7 @@ class PublicSiteTest extends TestCase
         ]);
 
         NewsPost::query()->create([
-            'title' => 'Actualite expiree',
+            'title' => 'Actualité expirée',
             'slug' => 'actualite-expiree',
             'excerpt' => 'Invisible maintenant.',
             'is_published' => true,
@@ -194,8 +194,8 @@ class PublicSiteTest extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('Actualite active')
-            ->assertDontSee('Actualite expiree');
+            ->assertSee('Actualité active')
+            ->assertDontSee('Actualité expirée');
     }
 
     public function test_published_page_is_available_by_slug(): void
@@ -203,7 +203,7 @@ class PublicSiteTest extends TestCase
         SiteSetting::current();
 
         Page::query()->create([
-            'title' => 'Methode',
+            'title' => 'Méthode',
             'slug' => 'methode',
             'hero_title' => 'Une structure avant les options',
             'body_blocks' => ['section' => 'Admin simple'],
@@ -219,7 +219,7 @@ class PublicSiteTest extends TestCase
             ->assertSee('Retour a l accueil');
     }
 
-    public function test_contact_form_stores_submission_and_sends_mail(): void
+    public function test_contact_form_stores_inquiry_and_sends_mail_when_inquiries_module_is_enabled(): void
     {
         Mail::fake();
 
@@ -235,11 +235,34 @@ class PublicSiteTest extends TestCase
             'message' => 'Bonjour depuis le formulaire.',
         ])->assertRedirect('/contact');
 
-        $this->assertDatabaseHas(ContactSubmission::class, [
+        $this->assertDatabaseHas(Inquiry::class, [
             'email' => 'ivo@example.test',
         ]);
 
-        Mail::assertSent(ContactSubmissionReceived::class);
+        Mail::assertSent(ContactMessageReceived::class);
+    }
+
+    public function test_contact_form_sends_mail_without_storing_inquiry_when_inquiries_module_is_not_enabled(): void
+    {
+        config(['maracuja.modules.inquiries' => false]);
+
+        Mail::fake();
+
+        SiteSetting::query()->create([
+            'site_name' => 'Maracuja CMS',
+            'contact_email' => 'contact@maracuja.test',
+        ]);
+
+        $this->post('/contact', [
+            'name' => 'Ivo',
+            'email' => 'ivo@example.test',
+            'subject' => 'Projet',
+            'message' => 'Bonjour depuis le formulaire.',
+        ])->assertRedirect('/contact');
+
+        $this->assertDatabaseCount(Inquiry::class, 0);
+
+        Mail::assertSent(ContactMessageReceived::class);
     }
 
     public function test_contact_form_rejects_invalid_email_without_top_level_domain(): void
@@ -256,10 +279,10 @@ class PublicSiteTest extends TestCase
             'message' => 'Bonjour depuis le formulaire.',
         ])->assertSessionHasErrors('email');
 
-        $this->assertDatabaseCount(ContactSubmission::class, 0);
+        $this->assertDatabaseCount(Inquiry::class, 0);
     }
 
-    public function test_contact_form_stores_submission_when_admin_email_is_not_configured(): void
+    public function test_contact_form_stores_inquiry_when_admin_email_is_not_configured(): void
     {
         Mail::fake();
 
@@ -275,7 +298,7 @@ class PublicSiteTest extends TestCase
             'message' => 'Bonjour depuis le formulaire.',
         ])->assertRedirect('/contact');
 
-        $this->assertDatabaseHas(ContactSubmission::class, [
+        $this->assertDatabaseHas(Inquiry::class, [
             'email' => 'ivo@example.test',
         ]);
 
@@ -299,11 +322,11 @@ class PublicSiteTest extends TestCase
             'message' => 'Bonjour depuis le formulaire.',
         ])->assertRedirect('/contact');
 
-        $this->assertDatabaseHas(ContactSubmission::class, [
+        $this->assertDatabaseHas(Inquiry::class, [
             'email' => 'ivo@example.test',
         ]);
 
-        Mail::assertSent(ContactSubmissionConfirmation::class);
+        Mail::assertSent(ContactMessageConfirmation::class);
     }
 
     public function test_disabled_news_module_returns_not_found(): void
@@ -315,7 +338,11 @@ class PublicSiteTest extends TestCase
 
     public function test_essence_offer_hides_signature_modules_from_public_navigation(): void
     {
-        config(['maracuja.offer' => 'essence']);
+        config([
+            'maracuja.modules.news' => false,
+            'maracuja.modules.articles' => false,
+            'maracuja.modules.gallery' => false,
+        ]);
 
         SiteSetting::current();
 
@@ -330,7 +357,7 @@ class PublicSiteTest extends TestCase
             ->assertOk()
             ->assertDontSee('href="http://localhost/actualites"', false)
             ->assertDontSee('href="http://localhost/articles"', false)
-            ->assertDontSee('Galerie demo');
+            ->assertDontSee('Galerie démo');
 
         $this->get('/actualites')->assertNotFound();
         $this->get('/articles')->assertNotFound();
@@ -341,7 +368,7 @@ class PublicSiteTest extends TestCase
         SiteSetting::current();
 
         NewsPost::query()->create([
-            'title' => 'Actualite expiree',
+            'title' => 'Actualité expirée',
             'slug' => 'actualite-expiree',
             'excerpt' => 'Invisible maintenant.',
             'content' => '<p>Archive non visible.</p>',
@@ -354,14 +381,14 @@ class PublicSiteTest extends TestCase
         $this->get('/actualites/actualite-expiree')->assertNotFound();
     }
 
-    public function test_news_listing_orders_pinned_posts_first(): void
+    public function test_news_list_orders_pinned_posts_first(): void
     {
         SiteSetting::current();
 
         NewsPost::query()->create([
-            'title' => 'Actualite recente',
+            'title' => 'Actualité récente',
             'slug' => 'actualite-recente',
-            'excerpt' => 'Recente mais non epinglee.',
+            'excerpt' => 'Récente mais non épinglée.',
             'is_published' => true,
             'is_pinned' => false,
             'has_detail_page' => true,
@@ -370,7 +397,7 @@ class PublicSiteTest extends TestCase
         ]);
 
         NewsPost::query()->create([
-            'title' => 'Actualite epinglee',
+            'title' => 'Actualité épinglée',
             'slug' => 'actualite-epinglee',
             'excerpt' => 'Prioritaire.',
             'is_published' => true,
@@ -382,7 +409,7 @@ class PublicSiteTest extends TestCase
 
         $this->get('/actualites')
             ->assertOk()
-            ->assertSeeInOrder(['Actualite epinglee', 'Actualite recente']);
+            ->assertSeeInOrder(['Actualité épinglée', 'Actualité récente']);
     }
 
     public function test_news_without_detail_page_has_no_public_detail(): void
@@ -392,8 +419,8 @@ class PublicSiteTest extends TestCase
         NewsPost::query()->create([
             'title' => 'Annonce simple',
             'slug' => 'annonce-simple',
-            'excerpt' => 'Visible dans le listing uniquement.',
-            'content' => '<p>Ne doit pas etre visible en page detail.</p>',
+            'excerpt' => 'Visible dans la liste uniquement.',
+            'content' => '<p>Ne doit pas être visible en page détail.</p>',
             'is_published' => true,
             'is_pinned' => false,
             'has_detail_page' => false,
@@ -414,10 +441,10 @@ class PublicSiteTest extends TestCase
         SiteSetting::current();
 
         NewsPost::query()->create([
-            'title' => 'Actualite active',
+            'title' => 'Actualité active',
             'slug' => 'actualite-active',
             'excerpt' => 'Visible maintenant.',
-            'content' => '<p>Detail de l actualite.</p>',
+            'content' => '<p>Détail de l actualité.</p>',
             'is_published' => true,
             'has_detail_page' => true,
             'published_at' => now()->subHour(),
@@ -427,8 +454,8 @@ class PublicSiteTest extends TestCase
         $this->get('/actualites/actualite-active')
             ->assertOk()
             ->assertSee('Fil d Ariane')
-            ->assertSee('Actualites')
-            ->assertSee('Retour aux actualites');
+            ->assertSee('Actualités')
+            ->assertSee('Retour aux actualités');
     }
 
     public function test_articles_render_structured_blocks(): void

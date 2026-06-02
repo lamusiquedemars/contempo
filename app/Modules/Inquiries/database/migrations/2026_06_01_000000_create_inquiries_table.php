@@ -8,20 +8,24 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('contact_submissions', function (Blueprint $table) {
+        Schema::create('inquiries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('subject')->nullable();
             $table->text('message');
+            $table->string('status')->default('new')->index();
+            $table->text('internal_notes')->nullable();
+            $table->timestamp('read_at')->nullable();
             $table->timestamp('handled_at')->nullable();
+            $table->timestamp('archived_at')->nullable();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('contact_submissions');
+        Schema::dropIfExists('inquiries');
     }
 };

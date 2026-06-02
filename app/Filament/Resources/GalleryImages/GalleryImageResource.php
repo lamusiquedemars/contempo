@@ -6,6 +6,7 @@ use App\Filament\Resources\GalleryImages\Pages\ManageGalleryImages;
 use App\Modules\Gallery\Models\GalleryImage;
 use App\Support\Modules;
 use BackedEnum;
+use UnitEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -29,6 +30,8 @@ class GalleryImageResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $navigationLabel = 'Galerie';
+
+    protected static UnitEnum|string|null $navigationGroup = 'Médias';
 
     protected static ?string $modelLabel = 'image';
 
@@ -54,13 +57,13 @@ class GalleryImageResource extends Resource
                     ->label('Titre')
                     ->required(),
                 Textarea::make('caption')
-                    ->label('Legende')
+                    ->label('Légende')
                     ->columnSpanFull(),
                 TextInput::make('alt_text')
                     ->label('Texte alternatif')
-                    ->helperText('Decrire l image si elle apporte une information. Laisser vide si le titre suffit.'),
+                    ->helperText('Décrire l’image si elle apporte une information. Laisser vide si le titre suffit.'),
                 TextInput::make('credit')
-                    ->label('Credit photo'),
+                    ->label('Crédit photo'),
                 FileUpload::make('image_path')
                     ->label('Image')
                     ->directory('gallery')
@@ -80,7 +83,7 @@ class GalleryImageResource extends Resource
                     ->numeric()
                     ->default(0),
                 Toggle::make('is_published')
-                    ->label('Publie')
+                    ->label('Publié')
                     ->required(),
             ]);
     }
@@ -102,7 +105,7 @@ class GalleryImageResource extends Resource
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('is_published')
-                    ->label('Publie')
+                    ->label('Publié')
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()

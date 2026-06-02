@@ -4,7 +4,7 @@
 ])
 
 @section('content')
-    <x-site.hero title="Contact" subtitle="Un formulaire simple, stocke en admin et envoye par email." />
+    <x-site.hero title="Contact" subtitle="Un formulaire simple pour envoyer un message." />
 
     <x-site.section inner-class="contact-layout">
         @if (session('status'))
@@ -13,7 +13,7 @@
 
         <form method="post" action="{{ route('contact.store') }}" class="contact-form" data-form>
             @csrf
-            <input type="text" name="website" value="" autocomplete="off" tabindex="-1" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">
+            <input type="text" name="website" value="" autocomplète="off" tabindex="-1" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">
 
             @if ($settings->contact_form_show_name)
                 <label>

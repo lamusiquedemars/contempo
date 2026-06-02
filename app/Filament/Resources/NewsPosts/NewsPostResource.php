@@ -6,6 +6,7 @@ use App\Filament\Resources\NewsPosts\Pages\ManageNewsPosts;
 use App\Modules\News\Models\NewsPost;
 use App\Support\Modules;
 use BackedEnum;
+use UnitEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -30,11 +31,13 @@ class NewsPostResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $navigationLabel = 'Actualites';
+    protected static ?string $navigationLabel = 'Actualités';
 
-    protected static ?string $modelLabel = 'actualite';
+    protected static UnitEnum|string|null $navigationGroup = 'Contenus';
 
-    protected static ?string $pluralModelLabel = 'actualites';
+    protected static ?string $modelLabel = 'actualité';
+
+    protected static ?string $pluralModelLabel = 'actualités';
 
     protected static ?int $navigationSort = 20;
 
@@ -58,7 +61,7 @@ class NewsPostResource extends Resource
                 TextInput::make('slug')
                     ->required(),
                 Textarea::make('excerpt')
-                    ->label('Resume')
+                    ->label('Résumé')
                     ->columnSpanFull(),
                 RichEditor::make('content')
                     ->label('Contenu')
@@ -68,21 +71,21 @@ class NewsPostResource extends Resource
                     ->directory('news')
                     ->image(),
                 Toggle::make('is_published')
-                    ->label('Publie')
+                    ->label('Publié')
                     ->required(),
                 Toggle::make('is_pinned')
-                    ->label('Epingler')
-                    ->helperText('Remonte cette actualite dans les listings.'),
+                    ->label('Épingler')
+                    ->helperText('Remonte cette actualité dans les listes.'),
                 Toggle::make('has_detail_page')
-                    ->label('Page detail')
+                    ->label('Page détail')
                     ->default(true)
-                    ->helperText('Desactiver pour une annonce courte visible seulement dans les listings.'),
+                    ->helperText('Désactiver pour une annonce courte visible seulement dans les listes.'),
                 DateTimePicker::make('published_at')
-                    ->label('Debut de publication'),
+                    ->label('Début de publication'),
                 DateTimePicker::make('expires_at')
                     ->label('Fin de publication')
                     ->default(fn () => now()->addDays((int) config('maracuja.news.default_duration_days', 30)))
-                    ->helperText('Optionnel. Par defaut, une nouvelle actualite expire selon la duree configuree du starter.'),
+                    ->helperText('Optionnel. Par défaut, une nouvelle actualité expire selon la durée configurée du starter.'),
                 TextInput::make('seo_title')
                     ->label('Titre SEO')
                     ->visible(fn (?NewsPost $record): bool => $record?->has_detail_page !== false),
@@ -104,17 +107,17 @@ class NewsPostResource extends Resource
                     ->searchable(),
                 ImageColumn::make('image_path'),
                 IconColumn::make('is_published')
-                    ->label('Publie')
+                    ->label('Publié')
                     ->boolean(),
                 IconColumn::make('is_pinned')
-                    ->label('Epingle')
+                    ->label('Épinglé')
                     ->boolean()
                     ->sortable(),
                 IconColumn::make('has_detail_page')
-                    ->label('Detail')
+                    ->label('Détail')
                     ->boolean(),
                 TextColumn::make('published_at')
-                    ->label('Debut')
+                    ->label('Début')
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('expires_at')

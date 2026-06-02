@@ -9,7 +9,7 @@
         :title="$homePage?->hero_title ?? $settings->site_name"
         :subtitle="$homePage?->hero_subtitle ?? $settings->baseline"
         cta-url="{{ route('contact') }}"
-        cta-label="{{ \App\Support\ContentSlots::value('home.hero.cta_label', 'Presenter un projet') }}"
+        cta-label="{{ \App\Support\ContentSlots::value('home.hero.cta_label', 'Présenter un projet') }}"
         secondary-cta-url="{{ route('pages.show', 'services') }}"
         secondary-cta-label="{{ \App\Support\ContentSlots::value('home.hero.secondary_cta_label', 'Voir les services') }}"
     />
@@ -22,7 +22,7 @@
 
     <x-site.section
         :title="\App\Support\ContentSlots::value('home.intro.title', 'Le socle des offres Essence et Signature')"
-        :intro="\App\Support\ContentSlots::value('home.intro.text', 'Un site vitrine administre, sans surcharge, avec les modules utiles au client et une base front propre.')"
+        :intro="\App\Support\ContentSlots::value('home.intro.text', 'Un site vitrine administré, sans surcharge, avec les modules utiles au client et une base front propre.')"
         heading-variant="accent"
     >
         <x-site.grid columns="3">
@@ -30,10 +30,10 @@
                 Un site vitrine clair, rapide a produire, avec pages structurees, contact et SEO de base.
             </x-site.feature-card>
             <x-site.feature-card title="Signature" icon="02" data-reveal data-reveal-delay="120">
-                Une presence plus complete avec actualites, galerie, contenus plus riches et theme affirme.
+                Une présence plus complète avec actualités, galerie, contenus plus riches et thème affirmé.
             </x-site.feature-card>
-            <x-site.feature-card title="Sur mesure" icon="03" data-reveal data-reveal-delay="240">
-                Un module metier est ajoute seulement quand le client a un vrai besoin specifique.
+            <x-site.feature-card title="Univers" icon="03" data-reveal data-reveal-delay="240">
+                Un module métier est ajouté seulement quand le client a un vrai besoin spécifique.
             </x-site.feature-card>
         </x-site.grid>
     </x-site.section>
@@ -46,10 +46,10 @@
 
             <div class="stack stack--lg">
                 <x-site.card title="Modules activables" kicker="Admin">
-                    Pages, Actualites, Galerie, Contact et Parametres s'affichent seulement si le projet en a besoin.
+                    Pages, Actualités, Galerie, Contact et Paramètres s’affichent seulement si le projet en a besoin.
                 </x-site.card>
                 <x-site.card title="Pages cadrées" kicker="Front">
-                    Le developpeur garde la structure en Blade. Le client modifie uniquement les contenus prevus.
+                    Le développeur garde la structure en Blade. Le client modifie uniquement les contenus prévus.
                 </x-site.card>
             </div>
         </x-site.grid>
@@ -66,7 +66,7 @@
     @endif
 
     @if ($newsPosts->isNotEmpty())
-        <x-site.section variant="surface" title="Actualites demo" intro="Un module contenu recurrent pour animer le site." heading-variant="accent">
+        <x-site.section variant="surface" title="Actualités démo" intro="Un module contenu récurrent pour animer le site." heading-variant="accent">
             <x-site.grid columns="3">
                 @foreach ($newsPosts as $post)
                     <x-site.card :title="$post->title" :url="$post->hasDetailPage() ? route('news.show', $post->slug) : null">
@@ -79,10 +79,10 @@
 
     <x-site.section>
         <x-site.cta
-            title="Pret pour une demo client"
+            title="Prêt pour une démo client"
             text="Cette installation montre le socle Essence / Signature: contenu administrable, front system, media system et admin modulee."
             href="{{ route('contact') }}"
-            label="Demander une demo"
+            label="Demander une démo"
             variant="brand"
             inline
         />

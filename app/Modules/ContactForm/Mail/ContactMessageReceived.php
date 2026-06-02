@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Mail;
+namespace App\Modules\ContactForm\Mail;
 
-use App\Modules\Contact\Models\ContactSubmission;
+use App\Modules\ContactForm\Data\ContactMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ContactSubmissionReceived extends Mailable
+class ContactMessageReceived extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public ContactSubmission $submission) {}
+    public function __construct(public ContactMessage $messageData) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            replyTo: [$this->submission->email],
+            replyTo: [$this->messageData->email],
             subject: 'Nouveau message depuis le site',
         );
     }
@@ -26,7 +26,10 @@ class ContactSubmissionReceived extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.contact-submission-received',
+            view: 'mail.contact-message-received',
+            with: [
+                'messageData' => $this->messageData,
+            ],
         );
     }
 }

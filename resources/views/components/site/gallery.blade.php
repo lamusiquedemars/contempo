@@ -2,19 +2,26 @@
     'images',
     'layout' => 'grid',
     'lightbox' => false,
+    'itemsPerView' => null,
 ])
 
 @php
     $allowedLayouts = ['grid', 'featured', 'carousel'];
     $layout = in_array($layout, $allowedLayouts, true) ? $layout : 'grid';
     $isCarousel = $layout === 'carousel';
+    $itemsPerView = $itemsPerView === null ? null : max(1, min(4, (int) $itemsPerView));
     $items = collect($images)->values();
 @endphp
 
 @if ($items->isNotEmpty())
     <div
         {{ $attributes
-            ->class(['media-gallery', 'showcase', 'showcase--' . $layout])
+            ->class([
+                'media-gallery',
+                'showcase',
+                'showcase--' . $layout,
+                'carousel--items-' . $itemsPerView => $isCarousel && $itemsPerView,
+            ])
             ->merge($lightbox ? ['data-lightbox' => true] : [])
             ->merge($isCarousel ? ['data-carousel' => true] : []) }}
     >
@@ -70,7 +77,7 @@
                                 <h3 class="showcase__item-title">{{ $caption }}</h3>
                             @endif
                             @if ($image->credit)
-                                <p class="showcase__meta">Credit: {{ $image->credit }}</p>
+                                <p class="showcase__meta">Crédit : {{ $image->credit }}</p>
                             @endif
                         </div>
                     @endif
@@ -84,7 +91,7 @@
 
         @if ($isCarousel && $items->count() > 1)
             <div class="carousel__controls">
-                <button class="btn btn--secondary btn--small" data-carousel-prev type="button">Precedent</button>
+                <button class="btn btn--secondary btn--small" data-carousel-prev type="button">Précédent</button>
                 <button class="btn btn--secondary btn--small" data-carousel-next type="button">Suivant</button>
             </div>
         @endif

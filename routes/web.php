@@ -23,7 +23,9 @@ if (\App\Support\Modules::enabled('articles')) {
     Route::get('/' . config('maracuja.articles.public_path', 'articles') . '/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 }
 
-Route::get('/contact', [ContactController::class, 'create'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+if (\App\Support\Modules::enabled('contact_form')) {
+    Route::get('/contact', [ContactController::class, 'create'])->name('contact');
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+}
 
 Route::get('/{slug}', [PageController::class, 'show'])->name('pages.show');

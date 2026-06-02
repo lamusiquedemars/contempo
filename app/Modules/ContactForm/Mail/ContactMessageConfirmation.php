@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Mail;
+namespace App\Modules\ContactForm\Mail;
 
-use App\Modules\Contact\Models\ContactSubmission;
+use App\Modules\ContactForm\Data\ContactMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ContactSubmissionConfirmation extends Mailable
+class ContactMessageConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public ContactSubmission $submission) {}
+    public function __construct(public ContactMessage $messageData) {}
 
     public function envelope(): Envelope
     {
@@ -25,7 +25,10 @@ class ContactSubmissionConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.contact-submission-confirmation',
+            view: 'mail.contact-message-confirmation',
+            with: [
+                'messageData' => $this->messageData,
+            ],
         );
     }
 }

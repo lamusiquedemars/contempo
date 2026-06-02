@@ -21,7 +21,7 @@
                 <span>{{ $caption }}</span>
             @endif
             @if ($credit)
-                <small>Credit: {{ $credit }}</small>
+                <small>Crédit : {{ $credit }}</small>
             @endif
         </figcaption>
     @endif
