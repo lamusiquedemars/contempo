@@ -43,6 +43,7 @@ return [
 
     'developer_tools' => [
         'pages_admin' => env('MARACUJA_DEV_PAGES_ADMIN', false),
+        'image_optimization' => env('MARACUJA_DEV_IMAGE_OPTIMIZATION', false),
     ],
 
     'offers' => [
