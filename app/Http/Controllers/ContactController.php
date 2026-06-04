@@ -67,7 +67,7 @@ class ContactController extends Controller
         return redirect()
             ->route('contact')
             ->with('status', Modules::enabled('inquiries')
-                ? 'Votre message a bien été enregistré. Nous le traitons depuis l’administration.'
+                ? 'Votre message a bien été enregistré. Nous répondrons dans les meilleurs délais.'
                 : 'Votre message a bien été envoyé.');
     }
 }
