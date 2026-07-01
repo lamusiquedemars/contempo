@@ -209,6 +209,34 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('Ancienne annonce');
     }
 
+    public function test_notice_message_preserves_line_breaks_without_rendering_html(): void
+    {
+        SiteSetting::current();
+
+        Page::query()->create([
+            'title' => 'Accueil',
+            'slug' => 'accueil',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        SiteNotice::query()->create([
+            'title' => 'Horaires',
+            'message' => "Lundi sur rendez-vous\nMardi <strong>fermé</strong>",
+            'placement' => 'home',
+            'tone' => 'info',
+            'is_published' => true,
+            'starts_at' => now()->subHour(),
+            'ends_at' => now()->addHour(),
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Lundi sur rendez-vous<br />', false)
+            ->assertSee('Mardi &lt;strong&gt;fermé&lt;/strong&gt;', false)
+            ->assertDontSee('<strong>fermé</strong>', false);
+    }
+
     public function test_home_does_not_render_news_when_news_module_is_disabled(): void
     {
         SiteSetting::current();

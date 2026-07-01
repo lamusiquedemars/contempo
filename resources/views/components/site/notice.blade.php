@@ -12,7 +12,7 @@
             <strong class="notice__title">{{ $notice->title }}</strong>
         @endif
 
-        <p class="notice__message">{{ $notice->message }}</p>
+        <p class="notice__message">{!! nl2br(e($notice->message)) !!}</p>
     </div>
 
     @if ($notice->link_label && $notice->link_url)
