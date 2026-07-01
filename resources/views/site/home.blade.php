@@ -6,7 +6,7 @@
 @section('content')
 <x-site.hero
     variant="home"
-    eyebrow="Contempo luthiers"
+    eyebrow="Giovanni Corazzol, maître luthier"
     :title="$homePage?->hero_title ?? $settings->site_name"
     :subtitle="$homePage?->hero_subtitle ?? $settings->baseline"
     image="/media/contempo/atelier-hero.jpg"
@@ -44,27 +44,18 @@
     intro="Au coeur de Lyon, nous prenons soin de vos instruments avec un savoir-faire artisanal : entretien, restauration, réglages et fabrication."
     heading-variant="underline">
     <x-site.grid columns="2-3">
-        <x-site.quote author="Contempo luthiers" meta="32 rue de la République, Lyon">
-            Poussez la porte de l'atelier pour un échange simple et chaleureux.
-        </x-site.quote>
+        <x-site.cta
+            title="Poussez la porte de l'atelier"
+            text="32 rue de la République, 69002 Lyon. Nous vous accueillons pour un échange simple et chaleureux."
+            :href="$contactUrl"
+            label="Horaires et accès"
+            inline />
         <div class="stack stack--lg">
-            <x-site.card title="Téléphone" kicker="Contact">
-                04 78 42 40 65
-            </x-site.card>
-            <x-site.card title="Adresse" kicker="Atelier">
-                32 rue de la République, 69002 Lyon
+            <x-site.card title="Contact" kicker="Téléphone et email">
+                04 78 42 40 65<br>
+                atelier@contempoluthiers.fr
             </x-site.card>
         </div>
     </x-site.grid>
-</x-site.section>
-
-<x-site.section>
-    <x-site.cta
-        title="Préparer votre visite"
-        text="L'atelier est situé au 32 rue de la République, 69002 Lyon. Un message suffit pour organiser un rendez-vous."
-        :href="$contactUrl"
-        label="Contacter l'atelier"
-        variant="brand"
-        inline />
 </x-site.section>
 @endsection

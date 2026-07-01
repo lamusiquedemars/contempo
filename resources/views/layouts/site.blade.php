@@ -51,7 +51,6 @@
         </button>
 
         <nav class="site-nav" data-nav-menu aria-label="Navigation principale">
-            <a href="{{ route('home') }}">Accueil</a>
             @if (\App\Support\Modules::enabled('pages'))
                 <a href="{{ route('pages.show', 'atelier') }}">L'atelier</a>
                 <a href="{{ route('pages.show', 'instruments') }}">Instruments</a>
