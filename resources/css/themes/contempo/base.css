@@ -1,0 +1,59 @@
+/**
+ * Thème Contempo - Base
+ *
+ * Point d'entrée central pour le thème spécifique Contempo Luthiers.
+ * Hérite des composants et primitives Maracuja, puis ajoute uniquement les
+ * variables et ajustements visuels propres à Contempo.
+ */
+
+.theme-contempo {
+    --theme-name: 'contempo';
+    --color-bg: #fbfaf7;
+    --color-surface: #ffffff;
+    --color-surface-muted: #f4f0e8;
+    --color-text: #181614;
+    --color-muted: #685f55;
+    --color-line: #ded6ca;
+    --color-brand: #2d5e54;
+    --color-brand-strong: #1d4039;
+    --color-brand-soft: #dbe8e3;
+    --color-link: var(--color-brand-strong);
+    --hero-overlay: linear-gradient(180deg, rgb(15 17 16 / 58%), rgb(15 17 16 / 34%));
+    --font-heading: Georgia, 'Times New Roman', serif;
+}
+
+.theme-contempo a {
+    color: var(--color-link);
+}
+
+.theme-contempo .site-header {
+    background: #ffffff;
+}
+
+.theme-contempo .site-brand img {
+    display: block;
+    width: min(260px, 58vw);
+    height: auto;
+}
+
+.theme-contempo .hero {
+    background: linear-gradient(180deg, #ffffff 0%, var(--color-surface-muted) 100%);
+}
+
+.theme-contempo .hero--image::before {
+    background: var(--hero-overlay);
+}
+
+.theme-contempo .btn--primary {
+    background: var(--color-brand);
+}
+
+.theme-contempo .btn--primary:hover {
+    background: var(--color-brand-strong);
+}
+
+.theme-contempo .card,
+.theme-contempo .cta,
+.theme-contempo .quote {
+    border-color: var(--color-line);
+}
