@@ -51,9 +51,12 @@
             label="Horaires et accès"
             inline />
         <div class="stack stack--lg">
-            <x-site.card title="Contact" kicker="Téléphone et email">
+            <x-site.card title="Nous contacter" kicker="Téléphone et email">
                 04 78 42 40 65<br>
                 atelier@contempoluthiers.fr
+            </x-site.card>
+            <x-site.card title="Nous retrouver" kicker="Atelier">
+                32 rue de la République, 69002 Lyon
             </x-site.card>
         </div>
     </x-site.grid>
