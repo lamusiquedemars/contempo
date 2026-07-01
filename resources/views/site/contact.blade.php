@@ -8,7 +8,7 @@
     <x-site.hero
         :title="$page?->hero_title ?? $page?->title ?? 'Contact'"
         :subtitle="$page?->hero_subtitle ?? $page?->excerpt ?? 'Un formulaire simple pour envoyer un message.'"
-        :image="\App\Support\MediaFiles::url($page?->hero_image_path) ?? '/media/contempo/location.jpg'"
+        :image="\App\Support\MediaFiles::url($page?->hero_image_path) ?? '/media/location.jpg'"
     />
 
     <x-site.section inner-class="contact-layout">

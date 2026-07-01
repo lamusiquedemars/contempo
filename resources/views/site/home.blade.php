@@ -9,7 +9,7 @@
     eyebrow="Giovanni Corazzol, maître luthier"
     :title="$homePage?->hero_title ?? $settings->site_name"
     :subtitle="$homePage?->hero_subtitle ?? $settings->baseline"
-    image="/media/contempo/atelier-hero.jpg"
+    image="/media/atelier-hero.jpg"
     :cta-url="$contactUrl"
     cta-label="Prendre rendez-vous"
     :secondary-cta-url="$servicesUrl"
@@ -26,13 +26,13 @@
     intro="Contempo Lutherie poursuit l'histoire de l'atelier Tranin, héritier de la maison Blanchard (1876), et y associe le savoir-faire crémonais de Giovanni pour une lutherie résolument contemporaine."
     heading-variant="accent">
     <x-site.grid columns="3">
-        <x-site.card title="L'atelier" kicker="Héritage" image="/media/contempo/atelier-hero.jpg" :url="route('pages.show', 'atelier')">
+        <x-site.card title="L'atelier" kicker="Héritage" image="/media/atelier-hero.jpg" :url="route('pages.show', 'atelier')">
             Je fabrique, je vends et j'entretiens des instruments pensés pour les musiciens d'aujourd'hui : leurs gestes, leurs besoins, leurs manières de jouer.
         </x-site.card>
-        <x-site.card title="Les instruments" kicker="Sélection" image="/media/contempo/instrument.jpg" :url="route('pages.show', 'instruments')">
+        <x-site.card title="Les instruments" kicker="Sélection" image="/media/instrument.jpg" :url="route('pages.show', 'instruments')">
             Des modèles contemporains, des instruments anciens soigneusement sélectionnés, et des instruments d'étude réglés pour accompagner chaque parcours.
         </x-site.card>
-        <x-site.card title="Les services" kicker="Accompagnement" image="/media/contempo/entretien.jpg" :url="route('pages.show', 'services')">
+        <x-site.card title="Les services" kicker="Accompagnement" image="/media/entretien.jpg" :url="route('pages.show', 'services')">
             De la fabrication sur mesure à la vente, de la location à la restauration, l'expérience de l'atelier sert les besoins réels des musiciens.
         </x-site.card>
     </x-site.grid>

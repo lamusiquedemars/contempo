@@ -150,9 +150,9 @@ class PublicSiteTest extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('/media/contempo/atelier-hero.jpg')
-            ->assertSee('/media/contempo/instrument.jpg')
-            ->assertSee('/media/contempo/entretien.jpg');
+            ->assertSee('/media/atelier-hero.jpg')
+            ->assertSee('/media/instrument.jpg')
+            ->assertSee('/media/entretien.jpg');
     }
 
     public function test_home_does_not_render_old_demo_gallery(): void

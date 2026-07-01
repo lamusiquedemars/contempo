@@ -8,7 +8,7 @@
     eyebrow="Services"
     :title="$page->hero_title ?? $page->title"
     :subtitle="$page->hero_subtitle ?? $page->excerpt"
-    image="/media/contempo/entretien-detail.jpg"
+    image="/media/entretien-detail.jpg"
     :cta-url="$contactUrl"
     cta-label="Prendre rendez-vous" />
 
