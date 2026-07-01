@@ -1,18 +1,19 @@
 @extends('layouts.site', [
-'seoTitle' => $homePage?->seo_title,
-'seoDescription' => $homePage?->seo_description,
+    'seoTitle' => $homePage?->seo_title,
+    'seoDescription' => $homePage?->seo_description,
 ])
 
 @section('content')
 <x-site.hero
     variant="home"
+    eyebrow="Contempo luthiers"
     :title="$homePage?->hero_title ?? $settings->site_name"
     :subtitle="$homePage?->hero_subtitle ?? $settings->baseline"
-    :image="\App\Support\MediaFiles::url($homePage?->hero_image_path)"
+    image="/media/contempo/atelier-hero.jpg"
     :cta-url="$contactUrl"
-    cta-label="{{ \App\Support\ContentSlots::value('home.hero.cta_label', 'Présenter un projet') }}"
+    cta-label="Prendre rendez-vous"
     :secondary-cta-url="$servicesUrl"
-        secondary-cta-label="{{ \App\Support\ContentSlots::value('home.hero.secondary_cta_label', 'Voir les services') }}" />
+    secondary-cta-label="Voir les services" />
 
 @if ($homeNotice)
 <div class="container notice-wrap">
@@ -21,77 +22,48 @@
 @endif
 
 <x-site.section
-    :title="\App\Support\ContentSlots::value('home.intro.title', 'Le socle des offres Essence et Signature')"
-    :intro="\App\Support\ContentSlots::value('home.intro.text', 'Un site vitrine administré, sans surcharge, avec les modules utiles au client et une base front propre.')"
+    title="Atelier et vitrine de lutherie contemporaine"
+    intro="À Lyon, Contempo réunit conseil, entretien, restauration, vente et location autour d'une même attention portée aux musiciens."
     heading-variant="accent">
     <x-site.grid columns="3">
-        <x-site.feature-card title="Essence" icon="01" data-reveal>
-            {{ \App\Support\ContentSlots::value('home.offer.essence.text', 'Un site vitrine clair, rapide a produire, avec pages structurées, contact et SEO de base.') }}
-        </x-site.feature-card>
-        <x-site.feature-card title="Signature" icon="02" data-reveal data-reveal-delay="120">
-            {{ \App\Support\ContentSlots::value('home.offer.signature.text', 'Une présence plus complète avec actualités, galerie, contenus plus riches et thème affirmé.') }}
-        </x-site.feature-card>
-        <x-site.feature-card title="Univers" icon="03" data-reveal data-reveal-delay="240">
-            {{ \App\Support\ContentSlots::value('home.offer.univers.text', 'Un module métier est ajouté seulement quand le client a un vrai besoin spécifique.') }}
-        </x-site.feature-card>
+        <x-site.card title="L'atelier" kicker="Savoir-faire" image="/media/contempo/atelier-hero.jpg" :url="route('pages.show', 'atelier')">
+            Un lieu de travail et d'échange pour régler, restaurer et accompagner les instruments.
+        </x-site.card>
+        <x-site.card title="Instruments" kicker="Essais" image="/media/contempo/instrument.jpg" :url="route('pages.show', 'instruments')">
+            Une sélection d'instruments et d'archets à découvrir dans de bonnes conditions.
+        </x-site.card>
+        <x-site.card title="Services" kicker="Accompagnement" image="/media/contempo/entretien.jpg" :url="route('pages.show', 'services')">
+            Fabrication, entretien, restauration, location et conseil selon les besoins réels.
+        </x-site.card>
     </x-site.grid>
 </x-site.section>
 
 <x-site.section
     variant="muted"
-    :title="\App\Support\ContentSlots::value('home.admin.title', 'Une admin simple')"
-    :intro="\App\Support\ContentSlots::value('home.admin.intro', 'Le client voit ses contenus, pas un cockpit inutile.')"
+    title="Un choix accompagné"
+    intro="Un instrument se choisit avec le corps, l'oreille et le temps. Contempo prépare les essais et aide à formuler les critères importants."
     heading-variant="underline">
     <x-site.grid columns="2-3">
-        <x-site.quote author="Maracuja CMS" meta="Principe produit">
-            {{ \App\Support\ContentSlots::value('home.admin.quote', 'Moins d’options visibles, plus de structure derrière.') }}
+        <x-site.quote author="Contempo luthiers" meta="Lyon">
+            Le bon instrument n'est pas seulement celui qui sonne. C'est celui avec lequel le musicien peut travailler, chercher et progresser.
         </x-site.quote>
-
         <div class="stack stack--lg">
-            <x-site.card title="Modules activables" kicker="Admin">
-                {{ \App\Support\ContentSlots::value('home.admin.modules.text', 'Pages, Actualités, Galerie, Contact et Paramètres s’affichent seulement si le projet en a besoin.') }}
+            <x-site.card title="Essais sur rendez-vous" kicker="Salon">
+                Un espace est disponible pour essayer les instruments avec calme et recul.
             </x-site.card>
-            <x-site.card title="Pages cadrées" kicker="Front">
-                {{ \App\Support\ContentSlots::value('home.admin.pages.text', 'Le développeur garde la structure en Blade. Le client modifie uniquement les contenus prévus.') }}
+            <x-site.card title="Conseil musical" kicker="Écoute">
+                Selon le besoin, un musicien peut accompagner la visite et aider à comparer les réponses.
             </x-site.card>
         </div>
     </x-site.grid>
 </x-site.section>
 
-@if ($galleryImages->isNotEmpty())
-<x-site.section
-    :title="$gallery?->title ?? \App\Support\ContentSlots::value('gallery.title', 'Galerie demo')"
-    :intro="$gallery?->intro ?? \App\Support\ContentSlots::value('gallery.intro', 'Le Media System gere alt, legende, credit, dimensions et lightbox.')"
-    heading-variant="decorated">
-    <x-site.gallery
-        :images="$galleryImages"
-        :layout="config('maracuja.gallery.layout')"
-        :lightbox="config('maracuja.gallery.lightbox')" />
-</x-site.section>
-@endif
-
-@if ($newsPosts->isNotEmpty())
-<x-site.section
-    variant="surface"
-    :title="\App\Support\ContentSlots::value('home.news.title', 'Actualités démo')"
-    :intro="\App\Support\ContentSlots::value('home.news.intro', 'Un module contenu récurrent pour animer le site.')"
-    heading-variant="accent">
-    <x-site.grid columns="3">
-        @foreach ($newsPosts as $post)
-        <x-site.card :title="$post->title" :url="$post->hasDetailPage() ? route('news.show', $post->slug) : null">
-            {{ $post->excerpt }}
-        </x-site.card>
-        @endforeach
-    </x-site.grid>
-</x-site.section>
-@endif
-
 <x-site.section>
     <x-site.cta
-        :title="\App\Support\ContentSlots::value('home.cta.title', 'Prêt pour une démo client')"
-        :text="\App\Support\ContentSlots::value('home.cta.text', 'Cette installation montre le socle Essence / Signature: contenu administrable, front system, media system et admin modulee.')"
+        title="Préparer votre visite"
+        text="L'atelier est situé au 32 rue de la République, 69002 Lyon. Un message suffit pour organiser un rendez-vous."
         :href="$contactUrl"
-        :label="\App\Support\ContentSlots::value('home.cta.label', 'Demander une démo')"
+        label="Contacter l'atelier"
         variant="brand"
         inline />
 </x-site.section>

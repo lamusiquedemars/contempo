@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Modules\ContactForm\Mail\ContactMessageConfirmation;
 use App\Modules\ContactForm\Mail\ContactMessageReceived;
-use App\Modules\Articles\Models\Article;
 use App\Modules\Inquiries\Models\Inquiry;
 use App\Modules\ContentSlots\Models\ContentSlot;
 use App\Modules\Gallery\Models\Gallery;
@@ -28,26 +27,27 @@ class PublicSiteTest extends TestCase
         $this->withoutVite();
     }
 
-    public function test_home_page_renders_the_starter_pitch(): void
+    public function test_home_page_renders_the_contempo_pitch(): void
     {
         SiteSetting::current();
 
         Page::query()->create([
             'title' => 'Accueil',
             'slug' => 'accueil',
-            'hero_title' => 'Un site clair',
-            'hero_subtitle' => 'Une administration simple',
+            'hero_title' => 'Atelier et vitrine de lutherie contemporaine à Lyon',
+            'hero_subtitle' => 'Instruments, archets et entretien.',
             'is_published' => true,
             'published_at' => now(),
         ]);
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('Un site clair')
-            ->assertSee('Essence');
+            ->assertSee('Atelier et vitrine de lutherie contemporaine')
+            ->assertSee('Instruments')
+            ->assertDontSee('Essence');
     }
 
-    public function test_services_page_uses_dedicated_demo_template(): void
+    public function test_services_page_uses_dedicated_contempo_template(): void
     {
         SiteSetting::current();
 
@@ -55,18 +55,19 @@ class PublicSiteTest extends TestCase
             'title' => 'Services',
             'slug' => 'services',
             'template' => 'services',
-            'hero_title' => 'Des sites vitrines administrables',
+            'hero_title' => 'Services de lutherie pour musiciens',
             'is_published' => true,
             'published_at' => now(),
         ]);
 
         $this->get('/services')
             ->assertOk()
-            ->assertSee('Trois niveaux')
-            ->assertSee('À partir de 1500');
+            ->assertSee('Accompagner la vie de l&#039;instrument', false)
+            ->assertSee('Fabrication')
+            ->assertSee('Restauration');
     }
 
-    public function test_services_page_uses_content_slot_for_price(): void
+    public function test_services_page_ignores_old_starter_offer_slots(): void
     {
         SiteSetting::current();
 
@@ -74,7 +75,7 @@ class PublicSiteTest extends TestCase
             'title' => 'Services',
             'slug' => 'services',
             'template' => 'services',
-            'hero_title' => 'Des sites vitrines administrables',
+            'hero_title' => 'Services de lutherie pour musiciens',
             'is_published' => true,
             'published_at' => now(),
         ]);
@@ -90,8 +91,9 @@ class PublicSiteTest extends TestCase
 
         $this->get('/services')
             ->assertOk()
-            ->assertSee('À partir de 1800')
-            ->assertDontSee('À partir de 1500');
+            ->assertDontSee('À partir de 1800')
+            ->assertDontSee('À partir de 1500')
+            ->assertSee('Prendre rendez-vous');
     }
 
     public function test_home_hides_contact_and_services_ctas_when_targets_are_unavailable(): void
@@ -135,10 +137,8 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('href="http://localhost/contact"', false);
     }
 
-    public function test_home_gallery_uses_configured_layout(): void
+    public function test_home_uses_contempo_media_cards(): void
     {
-        config(['maracuja.gallery.layout' => 'featured']);
-
         SiteSetting::current();
 
         Page::query()->create([
@@ -148,29 +148,14 @@ class PublicSiteTest extends TestCase
             'published_at' => now(),
         ]);
 
-        $gallery = Gallery::query()->updateOrCreate(['slug' => 'home'], [
-            'title' => 'Galerie home',
-            'is_published' => true,
-        ]);
-
-        GalleryImage::query()->create([
-            'title' => 'Image démo',
-            'gallery_id' => $gallery->id,
-            'caption' => 'Légende démo',
-            'image_path' => '/demo/admin-simple.svg',
-            'width' => 1200,
-            'height' => 800,
-            'position' => 1,
-            'is_published' => true,
-        ]);
-
         $this->get('/')
             ->assertOk()
-            ->assertSee('showcase--featured')
-            ->assertSee('/demo/admin-simple.svg');
+            ->assertSee('/media/contempo/atelier-hero.jpg')
+            ->assertSee('/media/contempo/instrument.jpg')
+            ->assertSee('/media/contempo/entretien.jpg');
     }
 
-    public function test_home_uses_only_the_configured_gallery(): void
+    public function test_home_does_not_render_old_demo_gallery(): void
     {
         SiteSetting::current();
 
@@ -181,37 +166,9 @@ class PublicSiteTest extends TestCase
             'published_at' => now(),
         ]);
 
-        $homeGallery = Gallery::query()->updateOrCreate(['slug' => 'home'], [
-            'title' => 'Galerie home',
-            'is_published' => true,
-        ]);
-
-        $otherGallery = Gallery::query()->create([
-            'title' => 'Autre galerie',
-            'slug' => 'autre',
-            'is_published' => true,
-        ]);
-
-        GalleryImage::query()->create([
-            'title' => 'Image home',
-            'gallery_id' => $homeGallery->id,
-            'image_path' => '/demo/admin-simple.svg',
-            'position' => 1,
-            'is_published' => true,
-        ]);
-
-        GalleryImage::query()->create([
-            'title' => 'Image autre',
-            'gallery_id' => $otherGallery->id,
-            'image_path' => '/demo/theme-system.svg',
-            'position' => 1,
-            'is_published' => true,
-        ]);
-
         $this->get('/')
             ->assertOk()
-            ->assertSee('/demo/admin-simple.svg')
-            ->assertDontSee('Image autre');
+            ->assertDontSee('/demo/admin-simple.svg');
     }
 
     public function test_home_renders_active_notice_only(): void
@@ -252,7 +209,7 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('Ancienne annonce');
     }
 
-    public function test_home_news_list_hides_expired_posts(): void
+    public function test_home_does_not_render_news_when_news_module_is_disabled(): void
     {
         SiteSetting::current();
 
@@ -263,28 +220,10 @@ class PublicSiteTest extends TestCase
             'published_at' => now(),
         ]);
 
-        NewsPost::query()->create([
-            'title' => 'Actualité active',
-            'slug' => 'actualite-active',
-            'excerpt' => 'Visible maintenant.',
-            'is_published' => true,
-            'published_at' => now()->subHour(),
-            'expires_at' => now()->addDay(),
-        ]);
-
-        NewsPost::query()->create([
-            'title' => 'Actualité expirée',
-            'slug' => 'actualite-expiree',
-            'excerpt' => 'Invisible maintenant.',
-            'is_published' => true,
-            'published_at' => now()->subDays(5),
-            'expires_at' => now()->subDay(),
-        ]);
-
         $this->get('/')
             ->assertOk()
-            ->assertSee('Actualité active')
-            ->assertDontSee('Actualité expirée');
+            ->assertDontSee('Actualités')
+            ->assertDontSee('Actualité active');
     }
 
     public function test_text_page_is_available_by_slug(): void
@@ -495,129 +434,24 @@ class PublicSiteTest extends TestCase
         $this->get('/actualites/actualite-expiree')->assertNotFound();
     }
 
-    public function test_news_list_orders_pinned_posts_first(): void
+    public function test_news_list_is_not_available_for_contempo(): void
     {
-        SiteSetting::current();
-
-        NewsPost::query()->create([
-            'title' => 'Actualité récente',
-            'slug' => 'actualite-recente',
-            'excerpt' => 'Récente mais non épinglée.',
-            'is_published' => true,
-            'is_pinned' => false,
-            'has_detail_page' => true,
-            'published_at' => now(),
-            'expires_at' => now()->addDay(),
-        ]);
-
-        NewsPost::query()->create([
-            'title' => 'Actualité épinglée',
-            'slug' => 'actualite-epinglee',
-            'excerpt' => 'Prioritaire.',
-            'is_published' => true,
-            'is_pinned' => true,
-            'has_detail_page' => true,
-            'published_at' => now()->subDays(3),
-            'expires_at' => now()->addDay(),
-        ]);
-
-        $this->get('/actualites')
-            ->assertOk()
-            ->assertSeeInOrder(['Actualité épinglée', 'Actualité récente']);
+        $this->get('/actualites')->assertNotFound();
     }
 
-    public function test_news_without_detail_page_has_no_public_detail(): void
+    public function test_news_detail_is_not_available_for_contempo(): void
     {
-        SiteSetting::current();
-
-        NewsPost::query()->create([
-            'title' => 'Annonce simple',
-            'slug' => 'annonce-simple',
-            'excerpt' => 'Visible dans la liste uniquement.',
-            'content' => '<p>Ne doit pas être visible en page détail.</p>',
-            'is_published' => true,
-            'is_pinned' => false,
-            'has_detail_page' => false,
-            'published_at' => now()->subHour(),
-            'expires_at' => now()->addDay(),
-        ]);
-
-        $this->get('/actualites')
-            ->assertOk()
-            ->assertSee('Annonce simple')
-            ->assertDontSee('href="http://localhost/actualites/annonce-simple"', false);
-
         $this->get('/actualites/annonce-simple')->assertNotFound();
     }
 
-    public function test_news_detail_shows_breadcrumb_and_back_link(): void
+    public function test_articles_are_not_available_for_contempo(): void
     {
-        SiteSetting::current();
-
-        NewsPost::query()->create([
-            'title' => 'Actualité active',
-            'slug' => 'actualite-active',
-            'excerpt' => 'Visible maintenant.',
-            'content' => '<p>Détail de l actualité.</p>',
-            'is_published' => true,
-            'has_detail_page' => true,
-            'published_at' => now()->subHour(),
-            'expires_at' => now()->addDay(),
-        ]);
-
-        $this->get('/actualites/actualite-active')
-            ->assertOk()
-            ->assertSee('Fil d Ariane')
-            ->assertSee('Actualités')
-            ->assertSee('Retour aux actualités');
+        $this->get('/articles')->assertNotFound();
+        $this->get('/articles/bois-et-geste')->assertNotFound();
     }
 
-    public function test_articles_render_structured_blocks(): void
+    public function test_legacy_article_route_is_not_available_for_contempo(): void
     {
-        SiteSetting::current();
-
-        Article::query()->create([
-            'title' => 'Bois et geste',
-            'slug' => 'bois-et-geste',
-            'excerpt' => 'Une note d’atelier.',
-            'body_blocks' => [
-                [
-                    'type' => 'heading',
-                    'level' => '2',
-                    'heading' => 'Une matière vivante',
-                ],
-                [
-                    'type' => 'rich_text',
-                    'text' => '<p>Le bois répond au geste.</p>',
-                ],
-                [
-                    'type' => 'quote',
-                    'quote' => 'Le geste confirme.',
-                    'author' => 'Atelier',
-                ],
-                [
-                    'type' => 'table',
-                    'table_rows' => "Bois | Usage\nCumaru | Archet moderne",
-                ],
-            ],
-            'is_published' => true,
-            'published_at' => now()->subHour(),
-        ]);
-
-        $this->get('/articles')
-            ->assertOk()
-            ->assertSee('Bois et geste')
-            ->assertSee('Une note d’atelier.');
-
-        $this->get('/articles/bois-et-geste')
-            ->assertOk()
-            ->assertSee('Une matière vivante')
-            ->assertSee('Le bois répond au geste.')
-            ->assertSee('Le geste confirme.')
-            ->assertSee('Cumaru')
-            ->assertSee('Retour à articles');
-
-        $this->get('/article.php?slug=bois-et-geste')
-            ->assertRedirect('/articles/bois-et-geste');
+        $this->get('/article.php?slug=bois-et-geste')->assertNotFound();
     }
 }

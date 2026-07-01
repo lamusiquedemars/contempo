@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Modules\News\Models\NewsPost;
 use App\Modules\Pages\Models\Page;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -67,19 +66,11 @@ class SeoTest extends TestCase
             'published_at' => now(),
         ]);
 
-        NewsPost::query()->create([
-            'title' => 'Demo',
-            'slug' => 'demo',
-            'is_published' => true,
-            'has_detail_page' => true,
-            'published_at' => now(),
-        ]);
-
         $this->get('/sitemap.xml')
             ->assertOk()
             ->assertHeader('content-type', 'application/xml')
             ->assertSee('<loc>'.url('/').'</loc>', false)
             ->assertSee('<loc>'.url('/services').'</loc>', false)
-            ->assertSee('<loc>'.url('/actualites/demo').'</loc>', false);
+            ->assertDontSee('<loc>'.url('/actualites/demo').'</loc>', false);
     }
 }

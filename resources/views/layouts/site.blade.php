@@ -43,7 +43,7 @@
 <body class="site-shell theme-{{ config('maracuja.theme', 'default') }}">
     <header class="site-header container" data-nav>
         <a class="site-brand" href="{{ route('home') }}">
-            <span class="site-brand__mark">M</span>
+            <span class="site-brand__mark">C</span>
             <span>
                 <strong>{{ $settings->site_name }}</strong>
                 @if ($settings->baseline)
@@ -58,16 +58,9 @@
 
         <nav class="site-nav" data-nav-menu aria-label="Navigation principale">
             <a href="{{ route('home') }}">Accueil</a>
-            @if (\App\Support\Modules::enabled('news'))
-                <a href="{{ route('news.index') }}">Actualités</a>
-            @endif
-            @if (\App\Support\Modules::enabled('articles'))
-                <a href="{{ route('articles.index') }}">{{ \App\Support\ContentSlots::value('articles.public_label', 'Articles') }}</a>
-            @endif
-            @if (\App\Support\Modules::enabled('events'))
-                <a href="{{ route('events.index') }}">{{ \App\Support\ContentSlots::value('events.public_label', 'Événements') }}</a>
-            @endif
             @if (\App\Support\Modules::enabled('pages'))
+                <a href="{{ route('pages.show', 'atelier') }}">L'atelier</a>
+                <a href="{{ route('pages.show', 'instruments') }}">Instruments</a>
                 <a href="{{ route('pages.show', 'services') }}">Services</a>
             @endif
             @if (\App\Support\Modules::enabled('contact_form'))
