@@ -48,8 +48,7 @@
             title="Poussez la porte de l'atelier"
             text="Nous vous accueillons pour un échange simple et chaleureux."
             :href="$contactUrl"
-            label="Horaires et accès"
-            inline />
+            label="Horaires et accès" />
         <div class="stack stack--lg">
             <x-site.card title="Nous contacter" kicker="Téléphone et email">
                 04 78 42 40 65<br>
