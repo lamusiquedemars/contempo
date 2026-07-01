@@ -46,7 +46,7 @@
     <x-site.grid columns="2-3">
         <x-site.cta
             title="Poussez la porte de l'atelier"
-            text="32 rue de la République, 69002 Lyon. Nous vous accueillons pour un échange simple et chaleureux."
+            text="Nous vous accueillons pour un échange simple et chaleureux."
             :href="$contactUrl"
             label="Horaires et accès"
             inline />
