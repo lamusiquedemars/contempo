@@ -36,8 +36,14 @@
     height: auto;
 }
 
-.theme-contempo .hero {
+.theme-contempo .hero:not(.hero--image) {
     background: linear-gradient(180deg, #ffffff 0%, var(--color-surface-muted) 100%);
+}
+
+.theme-contempo .hero--image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .theme-contempo .hero--image::before {
