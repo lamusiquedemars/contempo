@@ -13,18 +13,18 @@
     cta-label="Demander conseil" />
 
 <x-site.section
-    title="Choisir, essayer, comparer"
-    intro="L'atelier présente une sélection d'instruments et d'archets pour accompagner les musiciens dans leur recherche."
+    title="Entre tradition, création et étude : ma sélection"
+    intro="Je propose une sélection d'instruments choisis avec soin : des pièces anciennes, comme il est de tradition en lutherie ; des instruments d'auteur contemporains, réalisés par des confrères dont j'apprécie le travail ; et des instruments d'étude réglés pour accompagner sereinement les élèves."
     heading-variant="accent">
     <x-site.grid columns="3">
-        <x-site.card title="Instruments" kicker="Sélection" image="/media/contempo/instrument.jpg">
-            Violons, altos, violoncelles et instruments d'étude ou de progression selon les disponibilités.
+        <x-site.card title="Instruments contemporains" kicker="Auteurs" image="/media/contempo/instrument.jpg">
+            Choisis pour la qualité du travail de mes confrères artisans, ces instruments offrent un toucher et une sonorité exceptionnels.
         </x-site.card>
-        <x-site.card title="Archets" kicker="Équilibre" image="/media/contempo/archets.jpg">
-            Des archets à essayer avec son instrument pour sentir la réponse, l'attaque et la couleur.
+        <x-site.card title="Instruments anciens" kicker="Tradition" image="/media/contempo/atelier-hero.jpg">
+            Ces instruments respectent des prérequis de qualité précis et sont adaptés au niveau du musicien, pour une expérience authentique.
         </x-site.card>
-        <x-site.card title="Location" kicker="Souplesse" image="/media/contempo/entretien.jpg">
-            Des solutions de location et d'accompagnement pour les étapes de travail ou de formation.
+        <x-site.card title="Instruments d'étude" kicker="Apprentissage" image="/media/contempo/entretien.jpg">
+            Réglés pour être joués dans les meilleures conditions, ces instruments permettent aux élèves et étudiants de progresser sereinement.
         </x-site.card>
     </x-site.grid>
 </x-site.section>

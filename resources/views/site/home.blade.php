@@ -22,37 +22,37 @@
 @endif
 
 <x-site.section
-    title="Atelier et vitrine de lutherie contemporaine"
-    intro="À Lyon, Contempo réunit conseil, entretien, restauration, vente et location autour d'une même attention portée aux musiciens."
+    title="L'atelier"
+    intro="Contempo Lutherie poursuit l'histoire de l'atelier Tranin, héritier de la maison Blanchard (1876), et y associe le savoir-faire crémonais de Giovanni pour une lutherie résolument contemporaine."
     heading-variant="accent">
     <x-site.grid columns="3">
-        <x-site.card title="L'atelier" kicker="Savoir-faire" image="/media/contempo/atelier-hero.jpg" :url="route('pages.show', 'atelier')">
-            Un lieu de travail et d'échange pour régler, restaurer et accompagner les instruments.
+        <x-site.card title="L'atelier" kicker="Héritage" image="/media/contempo/atelier-hero.jpg" :url="route('pages.show', 'atelier')">
+            Je fabrique, je vends et j'entretiens des instruments pensés pour les musiciens d'aujourd'hui : leurs gestes, leurs besoins, leurs manières de jouer.
         </x-site.card>
-        <x-site.card title="Instruments" kicker="Essais" image="/media/contempo/instrument.jpg" :url="route('pages.show', 'instruments')">
-            Une sélection d'instruments et d'archets à découvrir dans de bonnes conditions.
+        <x-site.card title="Les instruments" kicker="Sélection" image="/media/contempo/instrument.jpg" :url="route('pages.show', 'instruments')">
+            Des modèles contemporains, des instruments anciens soigneusement sélectionnés, et des instruments d'étude réglés pour accompagner chaque parcours.
         </x-site.card>
-        <x-site.card title="Services" kicker="Accompagnement" image="/media/contempo/entretien.jpg" :url="route('pages.show', 'services')">
-            Fabrication, entretien, restauration, location et conseil selon les besoins réels.
+        <x-site.card title="Les services" kicker="Accompagnement" image="/media/contempo/entretien.jpg" :url="route('pages.show', 'services')">
+            De la fabrication sur mesure à la vente, de la location à la restauration, l'expérience de l'atelier sert les besoins réels des musiciens.
         </x-site.card>
     </x-site.grid>
 </x-site.section>
 
 <x-site.section
     variant="muted"
-    title="Un choix accompagné"
-    intro="Un instrument se choisit avec le corps, l'oreille et le temps. Contempo prépare les essais et aide à formuler les critères importants."
+    title="Nous retrouver"
+    intro="Au coeur de Lyon, nous prenons soin de vos instruments avec un savoir-faire artisanal : entretien, restauration, réglages et fabrication."
     heading-variant="underline">
     <x-site.grid columns="2-3">
-        <x-site.quote author="Contempo luthiers" meta="Lyon">
-            Le bon instrument n'est pas seulement celui qui sonne. C'est celui avec lequel le musicien peut travailler, chercher et progresser.
+        <x-site.quote author="Contempo luthiers" meta="32 rue de la République, Lyon">
+            Poussez la porte de l'atelier pour un échange simple et chaleureux.
         </x-site.quote>
         <div class="stack stack--lg">
-            <x-site.card title="Essais sur rendez-vous" kicker="Salon">
-                Un espace est disponible pour essayer les instruments avec calme et recul.
+            <x-site.card title="Téléphone" kicker="Contact">
+                04 78 42 40 65
             </x-site.card>
-            <x-site.card title="Conseil musical" kicker="Écoute">
-                Selon le besoin, un musicien peut accompagner la visite et aider à comparer les réponses.
+            <x-site.card title="Adresse" kicker="Atelier">
+                32 rue de la République, 69002 Lyon
             </x-site.card>
         </div>
     </x-site.grid>

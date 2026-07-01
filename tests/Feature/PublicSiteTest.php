@@ -62,8 +62,8 @@ class PublicSiteTest extends TestCase
 
         $this->get('/services')
             ->assertOk()
-            ->assertSee('Accompagner la vie de l&#039;instrument', false)
-            ->assertSee('Fabrication')
+            ->assertSee('C&#039;est un plaisir de me mettre au service de vos instruments', false)
+            ->assertSee('Vente')
             ->assertSee('Restauration');
     }
 

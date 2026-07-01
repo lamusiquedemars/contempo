@@ -43,13 +43,7 @@
 <body class="site-shell theme-{{ config('maracuja.theme', 'default') }}">
     <header class="site-header container" data-nav>
         <a class="site-brand" href="{{ route('home') }}">
-            <span class="site-brand__mark">C</span>
-            <span>
-                <strong>{{ $settings->site_name }}</strong>
-                @if ($settings->baseline)
-                    <small>{{ $settings->baseline }}</small>
-                @endif
-            </span>
+            <img src="{{ \App\Support\MediaFiles::url($settings->logo_path) ?? '/media/contempo/logo.jpg' }}" alt="{{ $settings->site_name }}" width="260" height="50">
         </a>
 
         <button class="btn btn--secondary nav-toggle" data-nav-toggle type="button">
