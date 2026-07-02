@@ -8,7 +8,7 @@
     eyebrow="Contempo luthiers"
     :title="$page->hero_title"
     :subtitle="$page->hero_subtitle"
-    image="/media/giovanni.jpg"
+    :image="\App\Support\MediaFiles::url($page->hero_image_path) ?? '/media/giovanni.jpg'"
     :cta-url="$contactUrl"
     cta-label="Nous rejoindre" />
 

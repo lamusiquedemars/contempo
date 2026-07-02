@@ -8,7 +8,7 @@
     eyebrow="Instruments"
     :title="$page->hero_title"
     :subtitle="$page->hero_subtitle"
-    image="/media/instrument.jpg"
+    :image="\App\Support\MediaFiles::url($page->hero_image_path) ?? '/media/instrument.jpg'"
     :cta-url="$contactUrl"
     cta-label="Demander conseil" />
 
