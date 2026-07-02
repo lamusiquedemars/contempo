@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'contact_email' => 'atelier@contempoluthiers.fr',
             'phone' => '04 78 42 40 65',
             'address' => '32 rue de la République, 69002 Lyon',
-            'contact_form_send_admin_email' => false,
+            'contact_form_send_admin_email' => true,
             'contact_form_send_confirmation_email' => false,
             'social_links' => [],
         ]);
