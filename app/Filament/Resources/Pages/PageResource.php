@@ -83,6 +83,8 @@ class PageResource extends Resource
                     ->options([
                         'default' => 'Page simple',
                         'landing' => 'Page avec sections',
+                        'atelier' => 'Atelier',
+                        'instruments' => 'Instruments',
                         'services' => 'Services / offres',
                         'contact' => 'Contact',
                         'module' => 'Module',
