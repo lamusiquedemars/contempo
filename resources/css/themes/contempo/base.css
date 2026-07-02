@@ -61,7 +61,7 @@
     min-height: var(--contempo-hero-home-min-height);
 }
 
-.theme-contempo .hero--home .hero__subtitle {
+.theme-contempo .hero--image .hero__subtitle {
     color: var(--color-bg);
 }
 
