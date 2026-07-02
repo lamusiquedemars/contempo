@@ -3,6 +3,7 @@
 use App\Http\Controllers\AudienceUnsubscribeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RobotsController;
@@ -15,6 +16,9 @@ Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/', HomeController::class)->name('home');
 
 Route::get('/audience/desinscription/{token}', AudienceUnsubscribeController::class)->name('audience.unsubscribe');
+
+Route::get('/mentions-legales', [LegalPageController::class, 'legal'])->name('legal.mentions');
+Route::get('/confidentialite', [LegalPageController::class, 'privacy'])->name('legal.privacy');
 
 if (\App\Support\Modules::enabled('news')) {
     Route::get('/actualites', [NewsController::class, 'index'])->name('news.index');

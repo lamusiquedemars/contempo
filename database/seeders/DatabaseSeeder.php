@@ -119,30 +119,6 @@ class DatabaseSeeder extends Seeder
                 'seo_title' => 'Contact - Contempo luthiers',
                 'seo_description' => 'Contacter Contempo luthiers, 32 rue de la République, 69002 Lyon.',
             ],
-            [
-                'slug' => 'mentions-legales',
-                'title' => 'Mentions légales',
-                'template' => 'default',
-                'type' => Page::TYPE_TEXT,
-                'excerpt' => 'Informations légales du site Contempo luthiers.',
-                'hero_title' => 'Mentions légales',
-                'hero_subtitle' => 'Informations légales du site Contempo luthiers.',
-                'content' => '<h2>1. Éditeur du site</h2><p><strong>Éditeur :</strong> Contempo luthiers<br><strong>Responsable de publication :</strong> Giovanni Corazzol<br><strong>Adresse de l atelier :</strong> 32 rue de la République, 69002 Lyon<br><strong>E-mail :</strong> <a href="mailto:atelier@contempoluthiers.fr">atelier@contempoluthiers.fr</a></p><h2>2. Hébergeur</h2><p>Ce site est hébergé par :<br><strong>Ligne Web Services (LWS)</strong><br>Adresse : 10 rue de Penthièvre, 75008 Paris, France.<br>SIREN / SIRET : 851 993 683.</p><h2>3. Propriété intellectuelle</h2><p>L ensemble du contenu présent sur ce site, notamment les textes, photographies, images, logos et éléments graphiques, est protégé par le droit de la propriété intellectuelle. Toute reproduction, adaptation, diffusion ou réutilisation, partielle ou totale, est interdite sans autorisation écrite préalable.</p><h2>4. Données personnelles</h2><p>Les informations relatives aux données personnelles sont détaillées dans la page <a href="/confidentialite">Confidentialité</a>.</p><h2>5. Responsabilité</h2><p>Ce site présente l activité de Contempo luthiers et les informations pratiques de l atelier. Les informations publiées sont fournies avec soin, mais peuvent être modifiées ou corrigées à tout moment.</p><h2>6. Liens externes</h2><p>Le site peut contenir des liens vers d autres sites. Contempo luthiers n exerce pas de contrôle sur leur contenu, leur disponibilité ou leurs pratiques relatives aux données personnelles.</p><h2>7. Modification des mentions légales</h2><p>Ces mentions légales peuvent être modifiées à tout moment. La version en ligne actuelle prévaut sur toute version antérieure.</p>',
-                'seo_title' => 'Mentions légales - Contempo luthiers',
-                'seo_description' => 'Mentions légales du site Contempo luthiers.',
-            ],
-            [
-                'slug' => 'confidentialite',
-                'title' => 'Confidentialité',
-                'template' => 'default',
-                'type' => Page::TYPE_TEXT,
-                'excerpt' => 'Traitement des données personnelles sur le site Contempo luthiers.',
-                'hero_title' => 'Confidentialité',
-                'hero_subtitle' => 'Données personnelles, relation client et droits des personnes.',
-                'content' => '<h2>1. Responsable du traitement</h2><p>Les données collectées sur ce site sont traitées par Contempo luthiers, sous la responsabilité de Giovanni Corazzol. Contact : <a href="mailto:atelier@contempoluthiers.fr">atelier@contempoluthiers.fr</a>.</p><h2>2. Données collectées</h2><p>Le site peut collecter les données transmises via le formulaire de contact : nom, adresse e-mail, téléphone, sujet et contenu du message. Le module relation client peut aussi conserver des informations de suivi utiles à la relation avec l atelier.</p><h2>3. Finalités</h2><p>Ces données sont utilisées pour répondre aux demandes, préparer un rendez-vous, assurer le suivi des clients, informer les personnes concernées sur les horaires, les tarifs, les services de l atelier ou les informations pratiques liées à la relation avec Contempo luthiers.</p><h2>4. Bases légales</h2><p>Le traitement repose, selon les cas, sur la demande de la personne lorsqu elle contacte l atelier, sur l intérêt légitime de Contempo luthiers à assurer le suivi de sa relation client, ou sur le consentement lorsque celui-ci est nécessaire.</p><h2>5. Messages d information et désinscription</h2><p>Les messages envoyés depuis le module relation client sont destinés aux contacts concernés par l activité de l atelier. Chaque message cible comporte un lien permettant de ne plus recevoir ces communications. Les contacts désinscrits ne sont plus inclus dans les envois.</p><h2>6. Durée de conservation</h2><p>Les demandes de contact et informations de suivi sont conservées pendant la durée nécessaire à la relation avec l atelier, puis peuvent être supprimées ou archivées lorsqu elles ne sont plus utiles. Une personne peut demander la suppression de ses données à tout moment, sauf obligation légale contraire.</p><h2>7. Destinataires</h2><p>Les données sont destinées à Contempo luthiers. Elles peuvent être traitées par les prestataires techniques nécessaires au fonctionnement du site, notamment l hébergeur, dans la limite de leurs missions.</p><h2>8. Droits des personnes</h2><p>Vous pouvez demander l accès, la rectification, l effacement ou l opposition au traitement de vos données personnelles. Pour exercer ces droits, écrivez à <a href="mailto:atelier@contempoluthiers.fr">atelier@contempoluthiers.fr</a>. Vous pouvez également introduire une réclamation auprès de la CNIL.</p><h2>9. Cookies</h2><p>Le site n utilise pas de cookies publicitaires ni de traceurs de mesure d audience soumis au consentement. Les seuls cookies ou mécanismes techniques éventuels sont ceux strictement nécessaires au fonctionnement du site, à la sécurité ou à l administration.</p>',
-                'seo_title' => 'Confidentialité - Contempo luthiers',
-                'seo_description' => 'Politique de confidentialité du site Contempo luthiers.',
-            ],
         ];
 
         $heroImages = [

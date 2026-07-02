@@ -96,7 +96,7 @@
                 et assurer le suivi de la relation avec l'atelier. Vous pouvez exercer vos droits à
                 <a href="mailto:atelier@contempoluthiers.fr">atelier@contempoluthiers.fr</a>.
                 Plus d'informations dans la
-                <a href="{{ route('pages.show', 'confidentialite') }}">politique de confidentialité</a>.
+                <a href="{{ route('legal.privacy') }}">politique de confidentialité</a>.
             </p>
             <x-site.button type="submit">Envoyer</x-site.button>
         </form>

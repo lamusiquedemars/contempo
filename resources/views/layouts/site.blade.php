@@ -72,10 +72,8 @@
         @if ($settings->contact_email)
             <a href="mailto:{{ $settings->contact_email }}">{{ $settings->contact_email }}</a>
         @endif
-        @if (\App\Support\Modules::enabled('pages'))
-            <a href="{{ route('pages.show', 'mentions-legales') }}">Mentions légales</a>
-            <a href="{{ route('pages.show', 'confidentialite') }}">Confidentialité</a>
-        @endif
+        <a href="{{ route('legal.mentions') }}">Mentions légales</a>
+        <a href="{{ route('legal.privacy') }}">Confidentialité</a>
     </footer>
 
     <button class="btn btn--primary back-to-top" type="button" data-back-to-top hidden aria-label="Retour en haut">

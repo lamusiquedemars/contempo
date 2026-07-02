@@ -28,24 +28,46 @@ class SeoTest extends TestCase
         ]);
 
         Page::query()->create([
-            'title' => 'Mentions légales',
-            'slug' => 'mentions-legales',
+            'title' => 'Page SEO',
+            'slug' => 'page-seo',
             'type' => Page::TYPE_TEXT,
-            'content' => '<p>Informations légales.</p>',
-            'seo_title' => 'Mentions SEO',
+            'content' => '<p>Informations SEO.</p>',
+            'seo_title' => 'Page SEO',
             'seo_description' => 'Une description SEO claire.',
             'is_published' => true,
             'published_at' => now(),
         ]);
 
-        $this->get('/mentions-legales')
+        $this->get('/page-seo')
             ->assertOk()
-            ->assertSee('<title>Mentions SEO</title>', false)
+            ->assertSee('<title>Page SEO</title>', false)
             ->assertSee('<meta name="description" content="Une description SEO claire.">', false)
-            ->assertSee('<link rel="canonical" href="'.url('/mentions-legales').'">', false)
-            ->assertSee('<meta property="og:title" content="Mentions SEO">', false)
+            ->assertSee('<link rel="canonical" href="'.url('/page-seo').'">', false)
+            ->assertSee('<meta property="og:title" content="Page SEO">', false)
             ->assertSee('<meta property="og:image" content="'.url('/demo/theme-system.svg').'">', false)
             ->assertSee('<meta name="robots" content="noindex, nofollow">', false);
+    }
+
+    public function test_static_legal_pages_output_core_seo_tags(): void
+    {
+        SiteSetting::query()->create([
+            'site_name' => 'Contempo luthiers',
+            'default_seo_title' => 'Contempo default',
+            'default_seo_description' => 'Description par défaut.',
+            'default_og_image_path' => '/media/atelier-hero.jpg',
+        ]);
+
+        $this->get('/mentions-legales')
+            ->assertOk()
+            ->assertSee('<title>Mentions légales - Contempo luthiers</title>', false)
+            ->assertSee('<link rel="canonical" href="'.url('/mentions-legales').'">', false)
+            ->assertSee('<meta property="og:title" content="Mentions légales - Contempo luthiers">', false);
+
+        $this->get('/confidentialite')
+            ->assertOk()
+            ->assertSee('<title>Confidentialité - Contempo luthiers</title>', false)
+            ->assertSee('<link rel="canonical" href="'.url('/confidentialite').'">', false)
+            ->assertSee('<meta property="og:title" content="Confidentialité - Contempo luthiers">', false);
     }
 
     public function test_robots_blocks_indexing_by_default(): void

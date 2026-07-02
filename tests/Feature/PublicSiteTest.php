@@ -259,21 +259,41 @@ class PublicSiteTest extends TestCase
         SiteSetting::current();
 
         Page::query()->create([
-            'title' => 'Mentions légales',
-            'slug' => 'mentions-legales',
+            'title' => 'Page texte',
+            'slug' => 'page-texte',
             'type' => Page::TYPE_TEXT,
-            'hero_title' => 'Mentions légales',
+            'hero_title' => 'Page texte',
             'content' => '<p>Éditeur du site: Maracuja CMS.</p>',
             'is_published' => true,
             'published_at' => now(),
         ]);
 
-        $this->get('/mentions-legales')
+        $this->get('/page-texte')
             ->assertOk()
             ->assertSee('Fil d Ariane')
-            ->assertSee('Mentions légales')
+            ->assertSee('Page texte')
             ->assertSee('Éditeur du site: Maracuja CMS')
             ->assertSee('Retour à l&#039;accueil', false);
+    }
+
+    public function test_static_legal_pages_are_available_without_page_records(): void
+    {
+        SiteSetting::current();
+
+        $this->assertDatabaseMissing('pages', ['slug' => 'mentions-legales']);
+        $this->assertDatabaseMissing('pages', ['slug' => 'confidentialite']);
+
+        $this->get('/mentions-legales')
+            ->assertOk()
+            ->assertSee('Éditeur du site')
+            ->assertSee('Giovanni Corazzol')
+            ->assertSee('Ligne Web Services');
+
+        $this->get('/confidentialite')
+            ->assertOk()
+            ->assertSee('Responsable du traitement')
+            ->assertSee('Contempo luthiers')
+            ->assertSee('atelier@contempoluthiers.fr');
     }
 
     public function test_contact_page_uses_page_registry_metadata(): void
