@@ -10,12 +10,14 @@ use BackedEnum;
 use UnitEnum;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -102,11 +104,26 @@ class PageResource extends Resource
                     ->label('Sous-titre hero')
                     ->columnSpanFull()
                     ->helperText('Sous-titre affiché sous le titre hero.'),
-                Select::make('hero_image_path')
-                    ->label('Image hero')
+                Select::make('existing_hero_image_path')
+                    ->label('Choisir une image hero existante')
                     ->options(fn (): array => MediaFiles::publicOptions('media'))
                     ->searchable()
-                    ->helperText('Choisir une image déjà présente dans public/media.'),
+                    ->live()
+                    ->dehydrated(false)
+                    ->afterStateUpdated(fn (Set $set, ?string $state): mixed => filled($state) ? $set('hero_image_path', $state) : null)
+                    ->helperText('Liste les fichiers déjà présents dans public/media.'),
+                FileUpload::make('hero_image_path')
+                    ->label('Téléverser une image hero')
+                    ->disk('site_public')
+                    ->directory('media')
+                    ->visibility('public')
+                    ->fetchFileInformation(false)
+                    ->preventFilePathTampering(true, fn (string $file): bool => MediaFiles::isPublicAllowed($file, 'media'))
+                    ->image()
+                    ->imagePreviewHeight('220')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'])
+                    ->mutateDehydratedStateUsing(fn (mixed $state): mixed => MediaFiles::normalizePublicPath($state))
+                    ->helperText('Déposer une nouvelle image dans public/media, ou choisir une image existante ci-dessus.'),
                 RichEditor::make('content')
                     ->label('Texte principal')
                     ->visible(fn (?Page $record): bool => (bool) $record?->isText())

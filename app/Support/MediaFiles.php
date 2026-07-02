@@ -61,6 +61,37 @@ class MediaFiles
             && self::isImagePath($path);
     }
 
+    public static function isPublicAllowed(string $path, string $directory): bool
+    {
+        $path = ltrim($path, '/');
+        $directory = trim($directory, '/');
+
+        return Str::startsWith($path, $directory.'/')
+            && is_file(public_path($path))
+            && self::isImagePath($path);
+    }
+
+    public static function normalizePublicPath(mixed $state): mixed
+    {
+        if (is_array($state)) {
+            return collect($state)
+                ->map(fn (mixed $path): mixed => self::normalizePublicPath($path))
+                ->filter()
+                ->values()
+                ->all();
+        }
+
+        if (blank($state) || ! is_string($state)) {
+            return $state;
+        }
+
+        if (Str::startsWith($state, ['http://', 'https://', '/'])) {
+            return $state;
+        }
+
+        return '/'.ltrim($state, '/');
+    }
+
     public static function url(?string $path): ?string
     {
         if (blank($path)) {
@@ -69,6 +100,10 @@ class MediaFiles
 
         if (Str::startsWith($path, ['http://', 'https://', '/'])) {
             return $path;
+        }
+
+        if (Str::startsWith($path, 'media/')) {
+            return '/'.$path;
         }
 
         return Storage::disk('public')->url($path);
@@ -108,6 +143,10 @@ class MediaFiles
     {
         if (Str::startsWith($path, '/')) {
             return public_path(ltrim($path, '/'));
+        }
+
+        if (Str::startsWith($path, 'media/')) {
+            return public_path($path);
         }
 
         return Storage::disk('public')->path($path);
