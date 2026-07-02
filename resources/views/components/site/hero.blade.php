@@ -1,5 +1,5 @@
 @props([
-'eyebrow' => 'Maracuja CMS',
+'eyebrow' => 'Contempo luthiers',
 'title',
 'subtitle' => null,
 'ctaUrl' => null,
