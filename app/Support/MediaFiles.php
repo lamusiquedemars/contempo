@@ -92,6 +92,17 @@ class MediaFiles
         return '/'.ltrim($state, '/');
     }
 
+    public static function normalizeSinglePublicPath(mixed $state): ?string
+    {
+        $path = self::normalizePublicPath($state);
+
+        if (is_array($path)) {
+            $path = $path[0] ?? null;
+        }
+
+        return is_string($path) && filled($path) ? $path : null;
+    }
+
     public static function url(?string $path): ?string
     {
         if (blank($path)) {
