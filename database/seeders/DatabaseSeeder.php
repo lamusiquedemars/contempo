@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Modules\News\Models\NewsPost;
-use App\Modules\Notices\Models\SiteNotice;
 use App\Modules\Pages\Models\Page;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use Illuminate\Database\Seeder;
@@ -123,7 +122,5 @@ class DatabaseSeeder extends Seeder
 
         Page::query()->whereIn('slug', ['actualites', 'blog'])->delete();
         NewsPost::query()->delete();
-        SiteNotice::query()->delete();
-
     }
 }
