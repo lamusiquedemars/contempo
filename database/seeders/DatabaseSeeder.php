@@ -3,9 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Modules\ContentSlots\Models\ContentSlot;
-use App\Modules\Gallery\Models\Gallery;
-use App\Modules\Gallery\Models\GalleryImage;
 use App\Modules\News\Models\NewsPost;
 use App\Modules\Notices\Models\SiteNotice;
 use App\Modules\Pages\Models\Page;
@@ -40,28 +37,6 @@ class DatabaseSeeder extends Seeder
             'contact_form_send_confirmation_email' => false,
             'social_links' => [],
         ]);
-
-        collect([
-            [
-                'key' => 'gallery.title',
-                'label' => 'Titre galerie',
-                'group' => 'Galerie',
-                'type' => 'text',
-                'value' => 'L atelier en images',
-                'help_text' => 'Titre de secours de la galerie.',
-            ],
-            [
-                'key' => 'gallery.intro',
-                'label' => 'Introduction galerie',
-                'group' => 'Galerie',
-                'type' => 'textarea',
-                'value' => 'Atelier, archets, instruments et gestes de lutherie.',
-                'help_text' => 'Introduction de secours de la galerie.',
-            ],
-        ])->each(fn (array $slot) => ContentSlot::query()->updateOrCreate(
-            ['key' => $slot['key']],
-            $slot + ['is_locked' => true],
-        ));
 
         $pages = [
             [
@@ -150,33 +125,5 @@ class DatabaseSeeder extends Seeder
         NewsPost::query()->delete();
         SiteNotice::query()->delete();
 
-        $gallery = Gallery::query()->updateOrCreate(['slug' => 'home'], [
-            'title' => 'L atelier en images',
-            'intro' => 'Quelques repères visuels issus du site WordPress actuel.',
-            'position' => 1,
-            'is_published' => true,
-        ]);
-
-        collect([
-            ['title' => 'Atelier', 'path' => '/media/atelier-hero.jpg', 'alt' => 'Atelier Contempo luthiers à Lyon', 'position' => 1],
-            ['title' => 'Archets', 'path' => '/media/archets.jpg', 'alt' => 'Archets présentés à l atelier', 'position' => 2],
-            ['title' => 'Entretien', 'path' => '/media/entretien.jpg', 'alt' => 'Travail d entretien en atelier de lutherie', 'position' => 3],
-            ['title' => 'Instrument', 'path' => '/media/instrument.jpg', 'alt' => 'Instrument à cordes frottées', 'position' => 4],
-            ['title' => 'Giovanni', 'path' => '/media/giovanni.jpg', 'alt' => 'Giovanni dans l atelier Contempo luthiers', 'position' => 5],
-            ['title' => 'Atelier général', 'path' => '/media/atelier-general.jpg', 'alt' => 'Vue générale de l atelier Contempo luthiers', 'position' => 6],
-            ['title' => 'Rue de la République', 'path' => '/media/location.jpg', 'alt' => 'Accès à l atelier Contempo luthiers à Lyon', 'position' => 7],
-        ])->each(fn (array $image) => GalleryImage::query()->updateOrCreate([
-            'title' => $image['title'],
-        ], [
-            'gallery_id' => $gallery->id,
-            'caption' => null,
-            'alt_text' => $image['alt'],
-            'credit' => 'Contempo luthiers',
-            'image_path' => $image['path'],
-            'width' => 1536,
-            'height' => 1024,
-            'position' => $image['position'],
-            'is_published' => true,
-        ]));
     }
 }
