@@ -19,6 +19,9 @@
     --color-brand-soft: #dbe8e3;
     --color-link: var(--color-brand-strong);
     --hero-overlay: linear-gradient(180deg, rgb(15 17 16 / 58%), rgb(15 17 16 / 34%));
+    --contempo-hero-page-min-height: clamp(420px, 56vh, 640px);
+    --contempo-hero-home-min-height: clamp(560px, 78vh, 760px);
+    --contempo-hero-image-position: center;
     --font-heading: Georgia, 'Times New Roman', serif;
 }
 
@@ -27,7 +30,10 @@
 }
 
 .theme-contempo .site-header {
+    position: relative;
     background: #ffffff;
+    box-shadow: 0 0 0 100vmax #ffffff;
+    clip-path: inset(0 -100vmax);
 }
 
 .theme-contempo .site-brand img {
@@ -41,9 +47,22 @@
 }
 
 .theme-contempo .hero--image {
-    background-position: center;
+    background-position: var(--contempo-hero-image-position);
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.theme-contempo .hero--image .hero__inner {
+    min-height: var(--contempo-hero-page-min-height);
+    align-content: center;
+}
+
+.theme-contempo .hero--home .hero__inner {
+    min-height: var(--contempo-hero-home-min-height);
+}
+
+.theme-contempo .hero--home .hero__subtitle {
+    color: var(--color-bg);
 }
 
 .theme-contempo .hero--image::before {
@@ -52,10 +71,16 @@
 
 .theme-contempo .btn--primary {
     background: var(--color-brand);
+    color: var(--color-brand-soft);
 }
 
 .theme-contempo .btn--primary:hover {
     background: var(--color-brand-strong);
+    color: #ffffff;
+}
+
+.theme-contempo .cta > .btn {
+    justify-self: center;
 }
 
 .theme-contempo .card,
