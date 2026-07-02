@@ -134,11 +134,11 @@ class DatabaseSeeder extends Seeder
         ];
 
         $heroImages = [
-            'accueil' => '/media/atelier-hero.jpg',
-            'atelier' => '/media/giovanni.jpg',
-            'instruments' => '/media/instrument.jpg',
-            'services' => '/media/entretien-detail.jpg',
-            'contact' => '/media/location.jpg',
+            'accueil' => 'media/atelier-hero.jpg',
+            'atelier' => 'media/giovanni.jpg',
+            'instruments' => 'media/instrument.jpg',
+            'services' => 'media/entretien-detail.jpg',
+            'contact' => 'media/location.jpg',
         ];
 
         foreach ($pages as $page) {

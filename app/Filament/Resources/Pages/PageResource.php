@@ -11,7 +11,6 @@ use UnitEnum;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -105,18 +104,16 @@ class PageResource extends Resource
                     ->label('Sous-titre hero')
                     ->columnSpanFull()
                     ->helperText('Sous-titre affiché sous le titre hero.'),
-                Hidden::make('hero_image_path')
-                    ->dehydrated(),
                 Select::make('existing_hero_image_path')
                     ->label('Choisir une image hero existante')
                     ->options(fn (): array => MediaFiles::publicOptions('media'))
-                    ->default(fn (?Page $record): ?string => $record?->hero_image_path)
+                    ->default(fn (?Page $record): ?string => MediaFiles::publicDiskPath($record?->hero_image_path))
                     ->searchable()
                     ->live()
                     ->dehydrated(false)
                     ->afterStateUpdated(fn (Set $set, ?string $state): mixed => filled($state) ? $set('hero_image_path', $state) : null)
                     ->helperText('Liste les fichiers déjà présents dans public/media.'),
-                FileUpload::make('uploaded_hero_image_path')
+                FileUpload::make('hero_image_path')
                     ->label('Téléverser une image hero')
                     ->disk('site_public')
                     ->directory('media')
@@ -126,9 +123,6 @@ class PageResource extends Resource
                     ->image()
                     ->imagePreviewHeight('220')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'])
-                    ->live()
-                    ->dehydrated(false)
-                    ->afterStateUpdated(fn (Set $set, mixed $state): mixed => filled($state) ? $set('hero_image_path', MediaFiles::normalizeSinglePublicPath($state)) : null)
                     ->helperText('Déposer une nouvelle image dans public/media, ou choisir une image existante ci-dessus.'),
                 RichEditor::make('content')
                     ->label('Texte principal')

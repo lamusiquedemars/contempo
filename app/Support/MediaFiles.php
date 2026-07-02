@@ -40,7 +40,7 @@ class MediaFiles
             ->filter(fn (string $path): bool => is_file($path) && self::isImagePath($path))
             ->sort()
             ->mapWithKeys(function (string $path) use ($directory): array {
-                $publicPath = '/'.$directory.'/'.basename($path);
+                $publicPath = $directory.'/'.basename($path);
                 $dimensions = self::dimensions($publicPath);
                 $label = basename($path);
 
@@ -92,15 +92,13 @@ class MediaFiles
         return '/'.ltrim($state, '/');
     }
 
-    public static function normalizeSinglePublicPath(mixed $state): ?string
+    public static function publicDiskPath(?string $path): ?string
     {
-        $path = self::normalizePublicPath($state);
-
-        if (is_array($path)) {
-            $path = $path[0] ?? null;
+        if (blank($path)) {
+            return null;
         }
 
-        return is_string($path) && filled($path) ? $path : null;
+        return ltrim($path, '/');
     }
 
     public static function url(?string $path): ?string
