@@ -74,6 +74,7 @@
         @endif
         @if (\App\Support\Modules::enabled('pages'))
             <a href="{{ route('pages.show', 'mentions-legales') }}">Mentions légales</a>
+            <a href="{{ route('pages.show', 'confidentialite') }}">Confidentialité</a>
         @endif
     </footer>
 

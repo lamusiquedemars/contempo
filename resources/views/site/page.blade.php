@@ -21,7 +21,7 @@
             <p class="lead">{{ $page->excerpt }}</p>
         @endif
         @if ($page->content)
-            {!! strip_tags($page->content, '<p><br><strong><b><em><i><u><ul><ol><li><a><sup><sub>') !!}
+            {!! strip_tags($page->content, '<h2><h3><p><br><strong><b><em><i><u><ul><ol><li><a><sup><sub>') !!}
         @endif
 
         <x-site.back-link :href="route('home')" label="Retour à l'accueil" />
