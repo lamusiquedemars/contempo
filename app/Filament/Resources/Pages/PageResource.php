@@ -10,14 +10,12 @@ use BackedEnum;
 use UnitEnum;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -104,23 +102,11 @@ class PageResource extends Resource
                     ->label('Sous-titre hero')
                     ->columnSpanFull()
                     ->helperText('Sous-titre affiché sous le titre hero.'),
-                Select::make('existing_hero_image_path')
-                    ->label('Choisir une image hero existante')
-                    ->options(fn (): array => MediaFiles::options('pages'))
-                    ->searchable()
-                    ->live()
-                    ->dehydrated(false)
-                    ->afterStateUpdated(fn (Set $set, ?string $state): mixed => filled($state) ? $set('hero_image_path', $state) : null)
-                    ->helperText('Liste les fichiers déjà présents dans storage/app/public/pages.'),
-                FileUpload::make('hero_image_path')
+                Select::make('hero_image_path')
                     ->label('Image hero')
-                    ->disk('public')
-                    ->directory('pages')
-                    ->visibility('public')
-                    ->fetchFileInformation(false)
-                    ->preventFilePathTampering(true, fn (string $file): bool => MediaFiles::isAllowed($file, 'pages'))
-                    ->image()
-                    ->helperText('Image stockée publiquement dans storage/app/public/pages. Nécessite le lien public/storage.'),
+                    ->options(fn (): array => MediaFiles::publicOptions('media'))
+                    ->searchable()
+                    ->helperText('Choisir une image déjà présente dans public/media.'),
                 RichEditor::make('content')
                     ->label('Texte principal')
                     ->visible(fn (?Page $record): bool => (bool) $record?->isText())
@@ -165,7 +151,7 @@ class PageResource extends Resource
                 TextColumn::make('hero_title')
                     ->searchable(),
                 ImageColumn::make('hero_image_path')
-                    ->disk('public'),
+                    ->getStateUsing(fn (Page $record): ?string => MediaFiles::url($record->hero_image_path)),
                 TextColumn::make('seo_title')
                     ->searchable(),
                 IconColumn::make('is_published')

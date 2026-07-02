@@ -26,6 +26,33 @@ class MediaFiles
             ->all();
     }
 
+    /** @return array<string, string> */
+    public static function publicOptions(string $directory = 'media'): array
+    {
+        $directory = trim($directory, '/');
+        $root = public_path($directory);
+
+        if (! is_dir($root)) {
+            return [];
+        }
+
+        return collect(glob($root.'/*') ?: [])
+            ->filter(fn (string $path): bool => is_file($path) && self::isImagePath($path))
+            ->sort()
+            ->mapWithKeys(function (string $path) use ($directory): array {
+                $publicPath = '/'.$directory.'/'.basename($path);
+                $dimensions = self::dimensions($publicPath);
+                $label = basename($path);
+
+                if ($dimensions) {
+                    $label .= " ({$dimensions['width']} x {$dimensions['height']})";
+                }
+
+                return [$publicPath => $label];
+            })
+            ->all();
+    }
+
     public static function isAllowed(string $path, string $directory): bool
     {
         return self::isStoragePath($path)
