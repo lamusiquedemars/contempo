@@ -32,7 +32,7 @@ return [
     'modules' => [
         'site_settings' => env('MARACUJA_MODULE_SITE_SETTINGS', true),
         'notices' => env('MARACUJA_MODULE_NOTICES', true),
-        'content_slots' => env('MARACUJA_MODULE_CONTENT_SLOTS', true),
+        'content_slots' => env('MARACUJA_MODULE_CONTENT_SLOTS', false),
         'pages' => env('MARACUJA_MODULE_PAGES', true),
         'news' => env('MARACUJA_MODULE_NEWS', true),
         'articles' => env('MARACUJA_MODULE_ARTICLES', true),
@@ -69,7 +69,7 @@ return [
         'signature' => [
             'site_settings' => true,
             'notices' => true,
-            'content_slots' => true,
+            'content_slots' => false,
             'pages' => true,
             'news' => true,
             'articles' => true,
@@ -84,7 +84,7 @@ return [
         'univers' => [
             'site_settings' => true,
             'notices' => true,
-            'content_slots' => true,
+            'content_slots' => false,
             'pages' => true,
             'news' => true,
             'articles' => true,
