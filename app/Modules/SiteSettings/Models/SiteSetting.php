@@ -3,6 +3,7 @@
 namespace App\Modules\SiteSettings\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class SiteSetting extends Model
 {
@@ -23,6 +24,15 @@ class SiteSetting extends Model
         'contact_form_show_subject',
         'contact_form_send_admin_email',
         'contact_form_send_confirmation_email',
+        'audience_cron_enabled',
+        'audience_cron_token',
+        'audience_send_limit',
+        'audience_send_domain_limit',
+        'audience_send_max_seconds',
+        'audience_send_max_attempts',
+        'audience_excluded_domains',
+        'audience_cron_last_ran_at',
+        'audience_cron_last_result',
     ];
 
     protected function casts(): array
@@ -34,7 +44,19 @@ class SiteSetting extends Model
             'contact_form_show_subject' => 'boolean',
             'contact_form_send_admin_email' => 'boolean',
             'contact_form_send_confirmation_email' => 'boolean',
+            'audience_cron_enabled' => 'boolean',
+            'audience_cron_last_ran_at' => 'datetime',
+            'audience_cron_last_result' => 'array',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (SiteSetting $setting): void {
+            if (! $setting->audience_cron_token) {
+                $setting->audience_cron_token = Str::random(48);
+            }
+        });
     }
 
     public function getContactFormShowNameAttribute(?bool $value): bool
@@ -76,6 +98,27 @@ class SiteSetting extends Model
             'contact_form_show_subject' => true,
             'contact_form_send_admin_email' => true,
             'contact_form_send_confirmation_email' => false,
+            'audience_cron_enabled' => true,
+            'audience_cron_token' => Str::random(48),
+            'audience_send_limit' => 25,
+            'audience_send_domain_limit' => 3,
+            'audience_send_max_seconds' => 180,
+            'audience_send_max_attempts' => 3,
+            'audience_excluded_domains' => 'hotmail.fr,hotmail.com,outlook.fr,outlook.com,live.fr,live.com,msn.com,free.fr,yahoo.fr,mailo.fr,mailo.com,edrmartin.fr',
         ]);
+    }
+
+    public function audienceExcludedDomains(): array
+    {
+        return collect(explode(',', (string) $this->audience_excluded_domains))
+            ->map(fn (string $domain): string => strtolower(trim($domain)))
+            ->filter()
+            ->values()
+            ->all();
+    }
+
+    public function audienceCronUrl(): string
+    {
+        return url('/maracuja/cron/audience/'.$this->audience_cron_token);
     }
 }

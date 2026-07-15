@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AudienceUnsubscribeController;
+use App\Http\Controllers\AudienceCronController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalPageController;
@@ -16,6 +17,7 @@ Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/', HomeController::class)->name('home');
 
 Route::get('/audience/desinscription/{token}', AudienceUnsubscribeController::class)->name('audience.unsubscribe');
+Route::get('/maracuja/cron/audience/{token}', AudienceCronController::class)->name('maracuja.cron.audience');
 
 Route::get('/mentions-legales', [LegalPageController::class, 'legal'])->name('legal.mentions');
 Route::get('/confidentialite', [LegalPageController::class, 'privacy'])->name('legal.privacy');

@@ -6,6 +6,8 @@
 
 @section('content')
     <x-site.hero
+        class="hero--contact"
+        eyebrow="Venir à l'atelier"
         :title="$page?->hero_title ?? $page?->title ?? 'Contact'"
         :subtitle="$page?->hero_subtitle ?? $page?->excerpt ?? 'Un formulaire simple pour envoyer un message.'"
         :image="\App\Support\MediaFiles::url($page?->hero_image_path) ?? '/media/location.jpg'"

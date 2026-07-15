@@ -14,7 +14,7 @@
 
 <x-site.section
     title="Le luthier"
-    intro="Un parcours formé à Crémone, nourri par l'atelier, la restauration et l'accompagnement quotidien des musiciens."
+    intro="Un parcours de formation à Crémone, consolidé en atelier, nourri par l'accompagnement quotidien des musiciens."
     heading-variant="accent">
     <div class="prose">
         <p>Je suis né à Aoste le 9 février 1970. Après le Liceo Scientifico d'Aoste et un début d'études d'ingénierie au Politecnico de Milan, j'ai interrompu mon parcours pour m'inscrire en 1994 à la Scuola statale di Liuteria « Antonio Stradivari » à Crémone, où j'ai obtenu mon diplôme de luthier en 1998 dans la classe du maître Stefano Conia.</p>

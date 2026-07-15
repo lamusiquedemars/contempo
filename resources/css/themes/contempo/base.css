@@ -52,6 +52,10 @@
     background-size: cover;
 }
 
+.theme-contempo .hero--contact {
+    background-position: center 34%;
+}
+
 .theme-contempo .hero--image .hero__inner {
     min-height: var(--contempo-hero-page-min-height);
     align-content: center;

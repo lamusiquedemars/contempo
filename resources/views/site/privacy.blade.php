@@ -23,7 +23,7 @@
         <h2>2. Données collectées</h2>
         <p>
             Le site peut collecter les données transmises via le formulaire de contact : nom,
-            adresse e-mail, téléphone, sujet et contenu du message. Le module relation client peut
+            adresse e-mail, téléphone, sujet et contenu du message. Le site peut
             aussi conserver des informations de suivi utiles à la relation avec l'atelier.
         </p>
 
@@ -44,7 +44,7 @@
 
         <h2>5. Messages d information et désinscription</h2>
         <p>
-            Les messages envoyés depuis le module relation client sont destinés aux contacts concernés
+            Les messages envoyés depuis le site sont destinés aux contacts concernés
             par l'activité de l'atelier. Chaque message ciblé comporte un lien permettant de ne plus
             recevoir ces communications. Les contacts désinscrits ne sont plus inclus dans les envois.
         </p>
