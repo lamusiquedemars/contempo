@@ -72,24 +72,6 @@ php artisan view:cache
 
 Si `composer` n'est pas disponible sur l'hebergement, uploader le dossier `vendor` prepare localement.
 
-## Cron LWS
-
-Utiliser un appel PHP, pas cURL/wget, pour eviter les timeouts HTTP.
-
-Cadence prudente apres deblocage SMTP:
-
-```bash
-php /htdocs/cms.contempoluthiers.fr/artisan audience:send-pending --limit=5 --domain-limit=1 --max-seconds=180
-```
-
-Frequence conseillee au redemarrage:
-
-```txt
-toutes les 15 minutes
-```
-
-Ne pas relancer tant que LWS signale un blocage SMTP.
-
 ## Points email
 
 Avant reprise:

@@ -14,23 +14,10 @@ class SendPendingSegmentMessages
     /**
      * @return array{sent: int, failed: int, skipped: int, processed: int}
      */
-    public static function run(
-        int $limit = 16,
-        int $maxSeconds = 180,
-        int $maxAttempts = 3,
-        ?SegmentMessage $message = null,
-        int $domainLimitPerRun = PHP_INT_MAX,
-        array $excludedDomains = [],
-    ): array {
+    public static function run(int $limit = 16, int $maxSeconds = 180, int $maxAttempts = 3, ?SegmentMessage $message = null): array
+    {
         $limit = max(1, $limit);
         $maxAttempts = max(1, $maxAttempts);
-        $domainLimitPerRun = max(1, $domainLimitPerRun);
-        $excludedDomains = collect($excludedDomains)
-            ->map(fn (mixed $domain): string => strtolower(trim((string) $domain)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
         $startedAt = microtime(true);
 
         $stats = [
@@ -40,29 +27,14 @@ class SendPendingSegmentMessages
             'processed' => 0,
         ];
 
-        $skippedExcluded = self::skipExcludedDeliveries($excludedDomains, $message);
-        $stats['skipped'] += $skippedExcluded;
-        $processedDomains = [];
-
         while ($stats['processed'] < $limit && (microtime(true) - $startedAt) < $maxSeconds) {
-            $domainsAtLimit = collect($processedDomains)
-                ->filter(fn (int $count): bool => $count >= $domainLimitPerRun)
-                ->keys()
-                ->all();
-
-            $delivery = self::claimNextDelivery($maxAttempts, $message, $domainsAtLimit);
+            $delivery = self::claimNextDelivery($maxAttempts, $message);
 
             if (! $delivery) {
                 break;
             }
 
             $result = self::sendDelivery($delivery);
-            $domain = self::emailDomain($delivery->email);
-
-            if ($domain !== '') {
-                $processedDomains[$domain] = ($processedDomains[$domain] ?? 0) + 1;
-            }
-
             $stats[$result]++;
             $stats['processed']++;
         }
@@ -82,24 +54,23 @@ class SendPendingSegmentMessages
         );
     }
 
-    private static function claimNextDelivery(
-        int $maxAttempts,
-        ?SegmentMessage $message = null,
-        array $excludedDomains = [],
-    ): ?SegmentMessageDelivery
+    private static function claimNextDelivery(int $maxAttempts, ?SegmentMessage $message = null): ?SegmentMessageDelivery
     {
         $query = SegmentMessageDelivery::query()
             ->whereIn('status', [
                 SegmentMessageDelivery::STATUS_PENDING,
                 SegmentMessageDelivery::STATUS_FAILED,
             ])
+            ->whereHas('segmentMessage', function ($query): void {
+                $query
+                    ->whereNull('scheduled_at')
+                    ->orWhere('scheduled_at', '<=', now());
+            })
             ->where('attempts', '<', $maxAttempts);
 
         if ($message) {
             $query->where('segment_message_id', $message->id);
         }
-
-        self::excludeDomains($query, $excludedDomains);
 
         $delivery = $query->orderBy('id')->first();
 
@@ -113,13 +84,16 @@ class SendPendingSegmentMessages
                 SegmentMessageDelivery::STATUS_PENDING,
                 SegmentMessageDelivery::STATUS_FAILED,
             ])
+            ->whereHas('segmentMessage', function ($query): void {
+                $query
+                    ->whereNull('scheduled_at')
+                    ->orWhere('scheduled_at', '<=', now());
+            })
             ->where('attempts', '<', $maxAttempts);
 
         if ($message) {
             $claimQuery->where('segment_message_id', $message->id);
         }
-
-        self::excludeDomains($claimQuery, $excludedDomains);
 
         $claimed = $claimQuery->update([
                 'status' => SegmentMessageDelivery::STATUS_SENDING,
@@ -133,47 +107,6 @@ class SendPendingSegmentMessages
         }
 
         return $delivery->refresh();
-    }
-
-    private static function skipExcludedDeliveries(array $excludedDomains, ?SegmentMessage $message): int
-    {
-        if ($excludedDomains === []) {
-            return 0;
-        }
-
-        $query = SegmentMessageDelivery::query()
-            ->whereIn('status', [
-                SegmentMessageDelivery::STATUS_PENDING,
-                SegmentMessageDelivery::STATUS_FAILED,
-            ]);
-
-        if ($message) {
-            $query->where('segment_message_id', $message->id);
-        }
-
-        $query->where(function ($query) use ($excludedDomains): void {
-            foreach ($excludedDomains as $domain) {
-                $query->orWhereRaw('LOWER(email) LIKE ?', ['%@'.$domain]);
-            }
-        });
-
-        return $query->update([
-            'status' => SegmentMessageDelivery::STATUS_SKIPPED,
-            'error_message' => 'Domaine exclu des envois ciblés.',
-            'updated_at' => now(),
-        ]);
-    }
-
-    private static function excludeDomains($query, array $domains): void
-    {
-        foreach ($domains as $domain) {
-            $query->whereRaw('LOWER(email) NOT LIKE ?', ['%@'.$domain]);
-        }
-    }
-
-    private static function emailDomain(string $email): string
-    {
-        return strtolower((string) str($email)->afterLast('@'));
     }
 
     private static function sendDelivery(SegmentMessageDelivery $delivery): string
@@ -245,7 +178,9 @@ class SendPendingSegmentMessages
 
                 if ($remaining) {
                     $message->forceFill([
-                        'status' => SegmentMessage::STATUS_SENDING,
+                        'status' => $message->scheduled_at?->isFuture()
+                            ? SegmentMessage::STATUS_QUEUED
+                            : SegmentMessage::STATUS_SENDING,
                         'recipients_count' => $sentCount,
                     ])->save();
 
