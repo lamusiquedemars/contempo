@@ -10,13 +10,19 @@ Sous-domaine conseille:
 cms.contempoluthiers.fr
 ```
 
-Le document root du sous-domaine doit pointer vers le dossier `public` de Laravel:
+Quand l'offre le permet, le document root du sous-domaine pointe vers le
+dossier `public` de Laravel:
 
 ```txt
 /htdocs/cms.contempoluthiers.fr/public
 ```
 
-Si LWS ne permet pas de pointer directement vers `public`, installer le projet hors du dossier public web et faire pointer le sous-domaine vers son sous-dossier `public`.
+Sur l'offre LWS actuelle, la racine du sous-domaine est imposée. Le projet est
+donc uploadé dans `/htdocs/cms.contempoluthiers.fr`. Le `.htaccess` et le
+`index.php` versionnés à la racine adaptent le routage pour Laravel. Le
+`.htaccess` bloque aussi l'accès web à `.env`, `vendor`, `config` et aux autres
+fichiers internes. Ne pas remplacer ces fichiers par des copies manuelles non
+suivies dans Git.
 
 ## Variables serveur
 
@@ -63,12 +69,14 @@ Sur le serveur, executer ou verifier:
 ```bash
 composer install --no-dev --optimize-autoloader
 php artisan migrate --force
-php artisan storage:link
 php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
+
+Le dossier `public/storage` doit exister et être accessible en écriture. Le
+stockage public Maracuja est direct : ne pas exécuter `php artisan storage:link`.
 
 Si `composer` n'est pas disponible sur l'hebergement, uploader le dossier `vendor` prepare localement.
 

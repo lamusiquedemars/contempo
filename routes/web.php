@@ -7,12 +7,19 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PublicStorageController;
 use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
+use App\Support\Modules;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/robots.txt', RobotsController::class)->name('robots');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+
+// Fallback for hosts such as LWS that expose the project root instead of public/.
+Route::get('/storage/{path}', PublicStorageController::class)
+    ->where('path', '.*')
+    ->name('public-storage');
 
 Route::get('/', HomeController::class)->name('home');
 
@@ -22,12 +29,12 @@ Route::post('/webhooks/brevo/audience/{secret}', BrevoAudienceWebhookController:
 Route::get('/mentions-legales', [LegalPageController::class, 'legal'])->name('legal.mentions');
 Route::get('/confidentialite', [LegalPageController::class, 'privacy'])->name('legal.privacy');
 
-if (\App\Support\Modules::enabled('news')) {
+if (Modules::enabled('news')) {
     Route::get('/actualites', [NewsController::class, 'index'])->name('news.index');
     Route::get('/actualites/{slug}', [NewsController::class, 'show'])->name('news.show');
 }
 
-if (\App\Support\Modules::enabled('contact_form')) {
+if (Modules::enabled('contact_form')) {
     Route::get('/contact', [ContactController::class, 'create'])->name('contact');
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 }
