@@ -5,11 +5,12 @@ namespace App\Modules\Audience\Filament\Resources\SegmentMessages;
 use App\Modules\Audience\Actions\DispatchSegmentMessage;
 use App\Modules\Audience\Actions\SendPendingSegmentMessages;
 use App\Modules\Audience\Filament\Resources\SegmentMessages\Pages\ManageSegmentMessages;
+use App\Modules\Audience\Mail\SegmentMessageMail;
+use App\Modules\Audience\Models\AudienceContact;
 use App\Modules\Audience\Models\SegmentMessage;
 use App\Support\Modules;
 use BackedEnum;
 use Carbon\CarbonImmutable;
-use UnitEnum;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -28,6 +29,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema as SchemaFacade;
+use UnitEnum;
 
 class SegmentMessageResource extends Resource
 {
@@ -78,7 +80,7 @@ class SegmentMessageResource extends Resource
                 DateTimePicker::make('scheduled_at')
                     ->label('Date d’envoi souhaitée')
                     ->seconds(false)
-                    ->helperText('Optionnel. Si renseigné, Maracuja attendra cette date avant d’envoyer.'),
+                    ->helperText('Optionnel. Pour une campagne Brevo, la date est transmise immédiatement à Brevo.'),
                 RichEditor::make('body')
                     ->label('Message')
                     ->required()
@@ -92,6 +94,7 @@ class SegmentMessageResource extends Resource
                         SegmentMessage::STATUS_SYNCING_TO_BREVO => 'Synchronisation Brevo',
                         SegmentMessage::STATUS_SYNC_FAILED => 'Erreur synchronisation',
                         SegmentMessage::STATUS_CREATED_IN_BREVO => 'Créé dans Brevo',
+                        SegmentMessage::STATUS_SCHEDULED_IN_BREVO => 'Planifié dans Brevo',
                         SegmentMessage::STATUS_SENDING => 'En cours',
                         SegmentMessage::STATUS_SENT_TO_PROVIDER => 'Envoyé au prestataire',
                         SegmentMessage::STATUS_SENT => 'Terminé',
@@ -178,12 +181,12 @@ class SegmentMessageResource extends Resource
                             ->required(),
                     ])
                     ->action(function (SegmentMessage $record, array $data): void {
-                        $contact = new \App\Modules\Audience\Models\AudienceContact([
+                        $contact = new AudienceContact([
                             'email' => $data['email'],
                             'accepts_email' => true,
                         ]);
 
-                        Mail::to($data['email'])->send(new \App\Modules\Audience\Mail\SegmentMessageMail($record, $contact));
+                        Mail::to($data['email'])->send(new SegmentMessageMail($record, $contact));
 
                         Notification::make()
                             ->title('Email de test envoyé')
@@ -208,6 +211,7 @@ class SegmentMessageResource extends Resource
                         SegmentMessage::STATUS_SENT_TO_PROVIDER,
                         SegmentMessage::STATUS_SENT,
                         SegmentMessage::STATUS_COMPLETED,
+                        SegmentMessage::STATUS_SCHEDULED_IN_BREVO,
                         SegmentMessage::STATUS_CANCELLED,
                         SegmentMessage::STATUS_ARCHIVED,
                     ], true))
@@ -263,7 +267,7 @@ class SegmentMessageResource extends Resource
                     ->label('Rapport')
                     ->icon(Heroicon::OutlinedListBullet)
                     ->modalWidth(Width::SevenExtraLarge)
-                    ->modalHeading(fn (SegmentMessage $record): string => 'Rapport - ' . $record->subject)
+                    ->modalHeading(fn (SegmentMessage $record): string => 'Rapport - '.$record->subject)
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel('Fermer')
                     ->modalContent(fn (SegmentMessage $record) => view('filament.audience.segment-message-deliveries', [
@@ -318,7 +322,7 @@ class SegmentMessageResource extends Resource
     private static function sendNotificationBody(array $stats): string
     {
         if ($stats['scheduled']) {
-            return "{$stats['queued']} destinataire(s) éligible(s). Maracuja enverra à la date choisie.";
+            return "{$stats['queued']} destinataire(s) éligible(s). Brevo enverra à la date choisie.";
         }
 
         if ($stats['processed'] === 1 && $stats['sent'] > 0) {
@@ -337,6 +341,7 @@ class SegmentMessageResource extends Resource
             SegmentMessage::STATUS_SYNCING_TO_BREVO => 'Synchronisation Brevo',
             SegmentMessage::STATUS_SYNC_FAILED => 'Erreur synchronisation',
             SegmentMessage::STATUS_CREATED_IN_BREVO => 'Créé dans Brevo',
+            SegmentMessage::STATUS_SCHEDULED_IN_BREVO => 'Planifié dans Brevo',
             SegmentMessage::STATUS_SENDING => 'En cours',
             SegmentMessage::STATUS_SENT_TO_PROVIDER => 'Envoyé au prestataire',
             SegmentMessage::STATUS_CANCELLED => 'Annulé',
@@ -351,6 +356,7 @@ class SegmentMessageResource extends Resource
         return match ($state) {
             SegmentMessage::STATUS_SENT => 'success',
             SegmentMessage::STATUS_COMPLETED, SegmentMessage::STATUS_CREATED_IN_BREVO => 'success',
+            SegmentMessage::STATUS_SCHEDULED_IN_BREVO => 'info',
             SegmentMessage::STATUS_QUEUED,
             SegmentMessage::STATUS_SENDING,
             SegmentMessage::STATUS_SYNCING_TO_BREVO,

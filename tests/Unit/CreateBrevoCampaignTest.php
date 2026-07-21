@@ -69,7 +69,7 @@ class CreateBrevoCampaignTest extends TestCase
         Http::assertSent(function ($request) use ($message): bool {
             return $request->method() === 'POST'
                 && $request->url() === 'https://api.brevo.com/v3/emailCampaigns'
-                && $request['name'] === 'Maracuja #' . $message->id . ' - Fermeture estivale'
+                && $request['name'] === 'Maracuja #'.$message->id.' - Fermeture estivale'
                 && $request['subject'] === 'Fermeture estivale'
                 && $request['sender'] === [
                     'name' => 'Maracuja Digital',
@@ -77,6 +77,7 @@ class CreateBrevoCampaignTest extends TestCase
                 ]
                 && $request['replyTo'] === 'reply@maracujadigital.fr'
                 && $request['recipients'] === ['listIds' => [34]]
+                && ! isset($request['scheduledAt'])
                 && ! isset($request['tag'])
                 && $request['htmlContent'] === '<p>Bonjour, l’atelier ferme cet été.</p>';
         });

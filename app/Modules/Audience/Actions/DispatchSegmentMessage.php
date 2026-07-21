@@ -18,7 +18,9 @@ class DispatchSegmentMessage
         ])->save();
 
         if ($scheduledAt?->isFuture()) {
-            return self::scheduleForLater($message);
+            return $message->usesBrevo()
+                ? self::scheduleWithBrevo($message, $scheduledAt)
+                : self::scheduleForLater($message);
         }
 
         return $message->usesBrevo()
@@ -31,9 +33,7 @@ class DispatchSegmentMessage
      */
     private static function scheduleForLater(SegmentMessage $message): array
     {
-        $queued = $message->usesBrevo()
-            ? self::queueBrevoMessage($message)
-            : QueueSegmentMessage::run($message);
+        $queued = QueueSegmentMessage::run($message);
 
         return [
             'scheduled' => true,
@@ -42,6 +42,26 @@ class DispatchSegmentMessage
             'failed' => 0,
             'skipped' => 0,
             'processed' => 0,
+        ];
+    }
+
+    /**
+     * @return array{scheduled: bool, queued: int, sent: int, failed: int, skipped: int, processed: int}
+     */
+    private static function scheduleWithBrevo(SegmentMessage $message, CarbonInterface $scheduledAt): array
+    {
+        app(BrevoAudienceService::class)->createCampaign(
+            message: $message,
+            scheduledAt: $scheduledAt,
+        );
+
+        return [
+            'scheduled' => true,
+            'queued' => $message->refresh()->recipients_count,
+            'sent' => 0,
+            'failed' => 0,
+            'skipped' => 0,
+            'processed' => 1,
         ];
     }
 
@@ -85,29 +105,5 @@ class DispatchSegmentMessage
             'skipped' => 0,
             'processed' => 1,
         ];
-    }
-
-    private static function queueBrevoMessage(SegmentMessage $message): int
-    {
-        $eligibleCount = $message->segment
-            ->contacts()
-            ->where('accepts_email', true)
-            ->whereNull('unsubscribed_at')
-            ->whereNull('hard_bounced_at')
-            ->whereNull('email_blacklisted_at')
-            ->count();
-
-        if ($eligibleCount === 0) {
-            return 0;
-        }
-
-        $message->forceFill([
-            'status' => SegmentMessage::STATUS_QUEUED,
-            'recipients_count' => $eligibleCount,
-            'sent_at' => null,
-            'brevo_error' => null,
-        ])->save();
-
-        return $eligibleCount;
     }
 }

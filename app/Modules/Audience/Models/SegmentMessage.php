@@ -11,25 +11,40 @@ use Illuminate\Support\Str;
 class SegmentMessage extends Model
 {
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_READY = 'ready';
+
     public const STATUS_QUEUED = 'queued';
+
     public const STATUS_SYNCING_TO_BREVO = 'syncing_to_brevo';
+
     public const STATUS_SYNC_FAILED = 'sync_failed';
+
     public const STATUS_CREATED_IN_BREVO = 'created_in_brevo';
+
+    public const STATUS_SCHEDULED_IN_BREVO = 'scheduled_in_brevo';
+
     public const STATUS_SENDING = 'sending';
+
     public const STATUS_SENT_TO_PROVIDER = 'sent_to_provider';
+
     public const STATUS_SENT = 'sent';
+
     public const STATUS_COMPLETED = 'completed';
+
     public const STATUS_CANCELLED = 'cancelled';
+
     public const STATUS_ARCHIVED = 'archived';
 
     public const PROVIDER_SMTP_LWS = 'smtp_lws';
+
     public const PROVIDER_BREVO = 'brevo';
 
     public const BREVO_STATUSES = [
         self::STATUS_SYNCING_TO_BREVO,
         self::STATUS_SYNC_FAILED,
         self::STATUS_CREATED_IN_BREVO,
+        self::STATUS_SCHEDULED_IN_BREVO,
         self::STATUS_SENT_TO_PROVIDER,
         self::STATUS_COMPLETED,
     ];
@@ -134,11 +149,11 @@ class SegmentMessage extends Model
                 $publicUrl = $this->publicImageUrl($matches[3]);
 
                 if ($path && $mailMessage && method_exists($mailMessage, 'embed')) {
-                    return '<img' . $matches[1] . 'src="' . e($mailMessage->embed($path)) . '"' . $matches[4] . '>';
+                    return '<img'.$matches[1].'src="'.e($mailMessage->embed($path)).'"'.$matches[4].'>';
                 }
 
                 if ($publicUrl) {
-                    return '<img' . $matches[1] . 'src="' . e($publicUrl) . '"' . $matches[4] . '>';
+                    return '<img'.$matches[1].'src="'.e($publicUrl).'"'.$matches[4].'>';
                 }
 
                 return $matches[0];

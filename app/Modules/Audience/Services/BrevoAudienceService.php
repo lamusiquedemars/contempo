@@ -3,11 +3,12 @@
 namespace App\Modules\Audience\Services;
 
 use App\Modules\Audience\Exceptions\BrevoAudienceException;
-use App\Modules\Audience\Models\AudienceContact;
 use App\Modules\Audience\Models\AudienceBrevoSetting;
+use App\Modules\Audience\Models\AudienceContact;
 use App\Modules\Audience\Models\AudienceSegment;
 use App\Modules\Audience\Models\SegmentMessage;
 use App\Modules\Audience\Models\SegmentMessageDelivery;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
@@ -19,6 +20,7 @@ use RuntimeException;
 class BrevoAudienceService
 {
     private const BASE_URL = 'https://api.brevo.com/v3';
+
     private const DEFAULT_FOLDER_NAME = 'Maracuja';
 
     /**
@@ -40,12 +42,12 @@ class BrevoAudienceService
                 'accept' => 'application/json',
             ])
                 ->timeout(10)
-                ->get(self::BASE_URL . '/account');
+                ->get(self::BASE_URL.'/account');
         } catch (ConnectionException $exception) {
             return [
                 'ok' => false,
                 'status' => AudienceBrevoSetting::TEST_STATUS_FAILED,
-                'message' => 'Connexion Brevo impossible: ' . $exception->getMessage(),
+                'message' => 'Connexion Brevo impossible: '.$exception->getMessage(),
             ];
         }
 
@@ -60,7 +62,7 @@ class BrevoAudienceService
         return [
             'ok' => false,
             'status' => AudienceBrevoSetting::TEST_STATUS_FAILED,
-            'message' => 'Brevo a refuse la connexion (' . $response->status() . ').',
+            'message' => 'Brevo a refuse la connexion ('.$response->status().').',
         ];
     }
 
@@ -149,7 +151,7 @@ class BrevoAudienceService
         }
 
         $response = $this->client($setting)
-            ->post(self::BASE_URL . '/contacts/lists', [
+            ->post(self::BASE_URL.'/contacts/lists', [
                 'name' => $listName,
                 'folderId' => $folderId,
             ])
@@ -168,11 +170,14 @@ class BrevoAudienceService
 
     public function segmentListName(AudienceSegment $segment): string
     {
-        return 'Maracuja - ' . $segment->name;
+        return 'Maracuja - '.$segment->name;
     }
 
-    public function createCampaign(SegmentMessage $message, ?AudienceBrevoSetting $setting = null): int
-    {
+    public function createCampaign(
+        SegmentMessage $message,
+        ?AudienceBrevoSetting $setting = null,
+        ?CarbonInterface $scheduledAt = null,
+    ): int {
         $setting ??= AudienceBrevoSetting::current();
 
         if (! $message->usesBrevo()) {
@@ -228,8 +233,12 @@ class BrevoAudienceService
                 $payload['replyTo'] = $setting->reply_to_email;
             }
 
+            if ($scheduledAt?->isFuture()) {
+                $payload['scheduledAt'] = $scheduledAt->toIso8601String();
+            }
+
             $response = $this->client($setting)
-                ->post(self::BASE_URL . '/emailCampaigns', $payload)
+                ->post(self::BASE_URL.'/emailCampaigns', $payload)
                 ->throw();
 
             $campaignId = (int) $response->json('id');
@@ -239,12 +248,16 @@ class BrevoAudienceService
             }
 
             $message->forceFill([
-                'status' => SegmentMessage::STATUS_CREATED_IN_BREVO,
+                'status' => $scheduledAt?->isFuture()
+                    ? SegmentMessage::STATUS_SCHEDULED_IN_BREVO
+                    : SegmentMessage::STATUS_CREATED_IN_BREVO,
                 'brevo_campaign_id' => $campaignId,
-                'brevo_status' => 'draft',
+                'brevo_status' => $scheduledAt?->isFuture() ? 'scheduled' : 'draft',
                 'brevo_created_at' => now(),
                 'brevo_last_sync_at' => now(),
                 'brevo_error' => null,
+                'recipients_count' => $syncStats['synced'],
+                'scheduled_at' => $scheduledAt,
                 'content_snapshot_html' => $snapshotHtml,
                 'subject_snapshot' => $message->subject,
                 'sender_snapshot' => $sender + [
@@ -268,7 +281,7 @@ class BrevoAudienceService
 
     public function campaignName(SegmentMessage $message): string
     {
-        return 'Maracuja #' . $message->id . ' - ' . $message->subject;
+        return 'Maracuja #'.$message->id.' - '.$message->subject;
     }
 
     public function sendCampaign(SegmentMessage $message, ?AudienceBrevoSetting $setting = null): void
@@ -294,7 +307,7 @@ class BrevoAudienceService
 
         try {
             $this->client($setting)
-                ->post(self::BASE_URL . '/emailCampaigns/' . $message->brevo_campaign_id . '/sendNow')
+                ->post(self::BASE_URL.'/emailCampaigns/'.$message->brevo_campaign_id.'/sendNow')
                 ->throw();
 
             $this->markCampaignSentToProvider($message);
@@ -361,7 +374,7 @@ class BrevoAudienceService
         }
 
         $response = $this->client($setting)
-            ->post(self::BASE_URL . '/contacts/folders', [
+            ->post(self::BASE_URL.'/contacts/folders', [
                 'name' => self::DEFAULT_FOLDER_NAME,
             ])
             ->throw();
@@ -380,7 +393,7 @@ class BrevoAudienceService
     private function findFolderIdByName(string $name, AudienceBrevoSetting $setting): ?int
     {
         $folders = $this->client($setting)
-            ->get(self::BASE_URL . '/contacts/folders', [
+            ->get(self::BASE_URL.'/contacts/folders', [
                 'limit' => 50,
                 'offset' => 0,
             ])
@@ -393,7 +406,7 @@ class BrevoAudienceService
     private function findListIdByName(string $name, AudienceBrevoSetting $setting): ?int
     {
         $lists = $this->client($setting)
-            ->get(self::BASE_URL . '/contacts/lists', [
+            ->get(self::BASE_URL.'/contacts/lists', [
                 'limit' => 50,
                 'offset' => 0,
             ])
@@ -440,7 +453,7 @@ class BrevoAudienceService
         ];
 
         $createResponse = $this->client($setting)
-            ->post(self::BASE_URL . '/contacts', $payload);
+            ->post(self::BASE_URL.'/contacts', $payload);
 
         if ($createResponse->successful()) {
             return;
@@ -451,7 +464,7 @@ class BrevoAudienceService
         }
 
         $this->client($setting)
-            ->put(self::BASE_URL . '/contacts/' . rawurlencode($contact->email), [
+            ->put(self::BASE_URL.'/contacts/'.rawurlencode($contact->email), [
                 'attributes' => $payload['attributes'],
                 'listIds' => [$listId],
             ])
@@ -482,11 +495,11 @@ class BrevoAudienceService
         $technicalMessage = $message;
 
         if ($exception instanceof RequestException && $exception->response !== null) {
-            $technicalMessage = trim($message . "\n" . $exception->response->body());
+            $technicalMessage = trim($message."\n".$exception->response->body());
             $brevoMessage = (string) $exception->response->json('message', '');
 
             if ($brevoMessage !== '') {
-                $technicalMessage .= "\n" . $brevoMessage;
+                $technicalMessage .= "\n".$brevoMessage;
             }
         }
 
