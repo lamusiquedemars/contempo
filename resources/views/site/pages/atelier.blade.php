@@ -40,7 +40,7 @@
             L'atelier devient l'un des plus actifs de la région, avec une continuité de production et de maîtrise jusqu'à la fin des années 1970.
         </x-site.card>
         <x-site.card title="Dominique Camard" kicker="1983">
-            L'atelier déménage au 32 rue de la République et se consacre davantage à la vente, la location et la restauration.
+            L'atelier se consacre davantage à la vente, la location et la restauration.
         </x-site.card>
         <x-site.card title="Frédéric Tranin" kicker="2012">
             Après près de vingt ans de collaboration, il perpétue l'esprit d'exigence et de proximité avec les musiciens.
@@ -54,7 +54,7 @@
 <x-site.section>
     <x-site.cta
         title="Nous rejoindre"
-        text="L'atelier vous accueille au 32 rue de la République, 69002 Lyon. Un message permet de préparer votre visite dans de bonnes conditions."
+        text="L'atelier vous accueille au 9 quai Arloing, 69009 Lyon. Un message permet de préparer votre visite dans de bonnes conditions."
         :href="$contactUrl"
         label="Contacter l'atelier"
         variant="brand"

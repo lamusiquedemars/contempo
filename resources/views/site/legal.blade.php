@@ -17,7 +17,7 @@
         <p>
             <strong>Éditeur :</strong> Contempo luthiers<br>
             <strong>Responsable de publication :</strong> Giovanni Corazzol<br>
-            <strong>Adresse de l'atelier :</strong> 32 rue de la République, 69002 Lyon<br>
+            <strong>Adresse de l'atelier :</strong> 9 quai Arloing, 69009 Lyon<br>
             <strong>E-mail :</strong> <a href="mailto:atelier@contempoluthiers.fr">atelier@contempoluthiers.fr</a>
         </p>
 
