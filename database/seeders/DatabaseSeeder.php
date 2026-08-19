@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'favicon_path' => null,
             'contact_email' => 'atelier@contempoluthiers.fr',
             'phone' => '04 78 42 40 65',
-            'address' => '32 rue de la République, 69002 Lyon',
+            'address' => '9 quai Arloing, 69009 Lyon',
             'contact_form_send_admin_email' => true,
             'contact_form_send_confirmation_email' => false,
             'social_links' => [],
@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
                 'hero_title' => 'Contact',
                 'hero_subtitle' => 'Nous écrire, nous rejoindre et préparer votre visite à l atelier.',
                 'seo_title' => 'Contact - Contempo luthiers',
-                'seo_description' => 'Contacter Contempo luthiers, 32 rue de la République, 69002 Lyon.',
+                'seo_description' => 'Contacter Contempo luthiers, 9 quai Arloing, 69009 Lyon.',
             ],
         ];
 

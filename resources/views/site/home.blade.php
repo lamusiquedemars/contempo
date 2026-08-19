@@ -55,7 +55,7 @@
                 atelier@contempoluthiers.fr
             </x-site.card>
             <x-site.card title="Nous retrouver" kicker="Atelier">
-                32 rue de la République, 69002 Lyon
+                9 quai Arloing, 69009 Lyon
             </x-site.card>
         </div>
     </x-site.grid>

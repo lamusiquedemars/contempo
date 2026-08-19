@@ -30,11 +30,13 @@
                 instagram.com/contempo_luthiers
             </x-site.card>
             <x-site.card title="Nous rejoindre" kicker="Atelier">
-                32 rue de la République<br>
-                69002 Lyon
+                9 quai Arloing<br>
+                69009 Lyon
             </x-site.card>
             <x-site.card title="Comment venir" kicker="Accès">
-                Métro Cordeliers, bus et tram à proximité. Parkings Cordeliers ou République.
+                Métro D : station Valmy, à 8 min à pied.<br>
+                Bus : arrêt Pont Kœnig rive droite (lignes C14, 2, 19, 31 et 45).<br>
+                En voiture : parking Pont Mouton à proximité.
             </x-site.card>
         </x-site.grid>
 
