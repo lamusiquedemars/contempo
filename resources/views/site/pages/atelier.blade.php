@@ -20,7 +20,7 @@
         <p>Je suis né à Aoste le 9 février 1970. Après le Liceo Scientifico d'Aoste et un début d'études d'ingénierie au Politecnico de Milan, j'ai interrompu mon parcours pour m'inscrire en 1994 à la Scuola statale di Liuteria « Antonio Stradivari » à Crémone, où j'ai obtenu mon diplôme de luthier en 1998 dans la classe du maître Stefano Conia.</p>
         <p>Après l'école, j'ai consolidé mon expérience en fréquentant différents ateliers et en vendant mes premiers instruments réalisés à la maison. L'expérience dans le laboratoire d'Alessandro Voltini a été déterminante : j'y ai approfondi la construction d'instruments neufs, les techniques de restauration, la mise au point acoustique et la finition des vernis.</p>
         <p>En 2007, je me suis installé à Syracuse. Pendant ces années, je me suis consacré principalement aux réparations, aux restaurations et à la maintenance des instruments, en particulier des contrebasses et des archets. Cette longue expérience m'a permis de perfectionner mon savoir-faire et d'accompagner de nombreux musiciens dans leur pratique.</p>
-        <p>Aujourd'hui, j'ai repris l'atelier Tranin pour fonder Contempo Lutherie, avec l'objectif de proposer des instruments de lutherie contemporaine, alliant tradition et exigence moderne.</p>
+        <p>En 2024, j'ai repris l'atelier Tranin pour fonder Contempo Lutherie, avec l'objectif de proposer des instruments de lutherie contemporaine, alliant tradition et exigence moderne.</p>
     </div>
 </x-site.section>
 
@@ -45,7 +45,7 @@
         <x-site.card title="Frédéric Tranin" kicker="2012">
             Après près de vingt ans de collaboration, il perpétue l'esprit d'exigence et de proximité avec les musiciens.
         </x-site.card>
-        <x-site.card title="Contempo" kicker="Aujourd'hui">
+        <x-site.card title="Contempo" kicker="2024">
             La maison affirme une orientation résolument contemporaine, artisanale, exigeante et ouverte.
         </x-site.card>
     </x-site.grid>

@@ -17,6 +17,12 @@ return new class extends Migration
             DB::table('pages')
                 ->where('slug', 'contact')
                 ->update(['seo_description' => 'Contacter Contempo luthiers, 9 quai Arloing, 69009 Lyon.']);
+
+            DB::table('pages')
+                ->where('slug', 'atelier')
+                ->update([
+                    'hero_subtitle' => 'Formé à Crémone, Giovanni Corazzol reprend l atelier en 2024 pour y faire vivre une lutherie contemporaine ancrée dans l histoire lyonnaise.',
+                ]);
         }
     }
 

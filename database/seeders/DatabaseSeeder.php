@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
                 'type' => Page::TYPE_SYSTEM,
                 'excerpt' => 'Le luthier, le lieu et l histoire lyonnaise de l atelier.',
                 'hero_title' => 'Le luthier',
-                'hero_subtitle' => 'Un parcours formé à Crémone, aujourd hui au service d une lutherie contemporaine ancrée dans l histoire lyonnaise.',
+                'hero_subtitle' => 'Formé à Crémone, Giovanni Corazzol reprend l atelier en 2024 pour y faire vivre une lutherie contemporaine ancrée dans l histoire lyonnaise.',
                 'seo_title' => 'L atelier - Contempo luthiers',
                 'seo_description' => 'Découvrez le luthier de Contempo Luthiers et l histoire de l atelier lyonnais depuis 1876.',
             ],
