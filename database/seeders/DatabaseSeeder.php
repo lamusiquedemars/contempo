@@ -13,13 +13,17 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::query()->updateOrCreate([
-            'email' => 'admin@contempoluthiers.test',
-        ], [
-            'name' => 'Contempo Admin',
-            'password' => Hash::make('password'),
-            'is_admin' => true,
-        ]);
+        // The demo account is strictly for local and test installations.
+        // Never create a known-password account when a production database is seeded.
+        if (app()->environment(['local', 'testing'])) {
+            User::query()->updateOrCreate([
+                'email' => 'admin@contempoluthiers.test',
+            ], [
+                'name' => 'Contempo Admin',
+                'password' => Hash::make('password'),
+                'is_admin' => true,
+            ]);
+        }
 
         SiteSetting::query()->updateOrCreate(['id' => 1], [
             'site_name' => 'Contempo luthiers',

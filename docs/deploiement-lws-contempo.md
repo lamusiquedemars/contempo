@@ -75,6 +75,10 @@ php artisan route:cache
 php artisan view:cache
 ```
 
+Ne jamais exécuter `php artisan migrate --seed` ou `php artisan db:seed` sur la
+base de production : le seeder contient uniquement des données de démarrage
+locales/test et le compte démo est désactivé en environnement production.
+
 Le dossier `public/storage` doit exister et être accessible en écriture. Le
 stockage public Maracuja est direct : ne pas exécuter `php artisan storage:link`.
 

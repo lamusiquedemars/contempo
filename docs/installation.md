@@ -20,6 +20,10 @@ Admin:
 - email démo: `admin@maracuja.test`
 - mot de passe démo: `password`
 
+Ces identifiants sont réservés aux installations locales et aux tests. Ne pas
+exécuter `php artisan db:seed` ou `php artisan migrate --seed` en production.
+Le seeder ne crée pas ce compte lorsque `APP_ENV=production`.
+
 ## Configuration client minimale
 
 Dans `.env`:
@@ -96,6 +100,11 @@ Avant mise en ligne publique:
 ```bash
 php artisan maracuja:doctor --production
 ```
+
+En production, appliquer uniquement les migrations validées avec
+`php artisan migrate --force`. Ne jamais utiliser `--seed` : la base de
+production doit être sauvegardée et alimentée séparément, sans données de
+développement.
 
 Verifier ensuite:
 
