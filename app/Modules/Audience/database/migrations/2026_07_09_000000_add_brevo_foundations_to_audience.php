@@ -121,7 +121,11 @@ return new class extends Migration
             Schema::create('audience_brevo_events', function (Blueprint $table): void {
                 $table->id();
                 $table->foreignId('segment_message_id')->nullable()->constrained('segment_messages')->nullOnDelete();
-                $table->foreignId('segment_message_delivery_id')->nullable()->constrained('segment_message_deliveries')->nullOnDelete();
+                $table->unsignedBigInteger('segment_message_delivery_id')->nullable();
+                $table->foreign('segment_message_delivery_id', 'aud_brevo_evt_delivery_fk')
+                    ->references('id')
+                    ->on('segment_message_deliveries')
+                    ->nullOnDelete();
                 $table->foreignId('audience_contact_id')->nullable()->constrained('audience_contacts')->nullOnDelete();
                 $table->unsignedBigInteger('brevo_campaign_id')->nullable()->index();
                 $table->string('email')->nullable()->index();
