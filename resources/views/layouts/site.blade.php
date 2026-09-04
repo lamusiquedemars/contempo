@@ -59,7 +59,6 @@
             @if (\App\Support\Modules::enabled('contact_form'))
                 <a href="{{ route('contact') }}">Contact</a>
             @endif
-            <a href="/admin">Admin</a>
         </nav>
     </header>
 
