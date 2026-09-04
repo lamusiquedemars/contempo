@@ -69,6 +69,10 @@
     color: var(--color-bg);
 }
 
+.theme-contempo .hero--image .eyebrow {
+    color: #ffffff;
+}
+
 .theme-contempo .hero--image::before {
     background: var(--hero-overlay);
 }
