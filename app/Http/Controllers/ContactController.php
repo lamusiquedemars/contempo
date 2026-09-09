@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Modules\ContactForm\Data\ContactMessage;
 use App\Modules\ContactForm\Mail\ContactMessageConfirmation;
 use App\Modules\ContactForm\Mail\ContactMessageReceived;
+use App\Modules\CremonaBridge\Actions\QueueContactMessageForCremona;
 use App\Modules\Inquiries\Actions\StoreInquiry;
 use App\Modules\Pages\Models\Page;
 use App\Modules\SiteSettings\Models\SiteSetting;
@@ -56,11 +57,15 @@ class ContactController extends Controller
 
         $message = ContactMessage::fromArray($data);
 
-        if (Modules::enabled('inquiries') && class_exists(StoreInquiry::class)) {
+        $connectedToCremona = $this->usesCremonaBridge();
+
+        if ($connectedToCremona) {
+            QueueContactMessageForCremona::run($message);
+        } elseif (Modules::enabled('inquiries') && class_exists(StoreInquiry::class)) {
             StoreInquiry::run($message);
         }
 
-        if ($settings->contact_form_send_admin_email && $settings->contact_email) {
+        if (! $connectedToCremona && $settings->contact_form_send_admin_email && $settings->contact_email) {
             Mail::to($settings->contact_email)->send(new ContactMessageReceived($message));
         }
 
@@ -70,8 +75,16 @@ class ContactController extends Controller
 
         return redirect()
             ->route('contact')
-            ->with('status', Modules::enabled('inquiries')
+            ->with('status', (Modules::enabled('inquiries') || $connectedToCremona)
                 ? 'Votre message a bien été enregistré. Nous répondrons dans les meilleurs délais.'
                 : 'Votre message a bien été envoyé.');
+    }
+
+    private function usesCremonaBridge(): bool
+    {
+        return (bool) config('maracuja.cremona.enabled')
+            && filled(config('maracuja.cremona.endpoint'))
+            && filled(config('maracuja.cremona.token'))
+            && filled(config('maracuja.cremona.site_reference'));
     }
 }

@@ -4,15 +4,15 @@ namespace Tests\Feature;
 
 use App\Modules\ContactForm\Mail\ContactMessageConfirmation;
 use App\Modules\ContactForm\Mail\ContactMessageReceived;
-use App\Modules\Inquiries\Models\Inquiry;
 use App\Modules\ContentSlots\Models\ContentSlot;
-use App\Modules\Gallery\Models\Gallery;
-use App\Modules\Gallery\Models\GalleryImage;
+use App\Modules\CremonaBridge\Models\CremonaDelivery;
+use App\Modules\Inquiries\Models\Inquiry;
 use App\Modules\News\Models\NewsPost;
 use App\Modules\Notices\Models\SiteNotice;
 use App\Modules\Pages\Models\Page;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -364,6 +364,20 @@ class PublicSiteTest extends TestCase
         $this->assertDatabaseCount(Inquiry::class, 0);
 
         Mail::assertSent(ContactMessageReceived::class);
+    }
+
+    public function test_contact_form_uses_cremona_without_creating_a_local_inquiry_or_admin_email(): void
+    {
+        config(['maracuja.cremona' => ['enabled' => true, 'endpoint' => 'https://cremona.test/api/v1/incoming-requests', 'token' => 'test-token', 'site_reference' => 'contempo-luthiers']]);
+        Http::fake(['https://cremona.test/*' => Http::response(['data' => ['id' => 'request-1']], 201)]);
+        Mail::fake();
+        SiteSetting::query()->create(['site_name' => 'Contempo', 'contact_email' => 'atelier@contempo.test']);
+
+        $this->post('/contact', ['name' => 'Ivo', 'email' => 'ivo@example.test', 'subject' => 'Révision', 'message' => 'Bonjour.'])->assertRedirect('/contact');
+
+        $this->assertDatabaseCount(Inquiry::class, 0);
+        $this->assertDatabaseHas(CremonaDelivery::class, ['status' => 'delivered', 'remote_request_id' => 'request-1']);
+        Mail::assertNothingSent();
     }
 
     public function test_contact_form_rejects_invalid_email_without_top_level_domain(): void

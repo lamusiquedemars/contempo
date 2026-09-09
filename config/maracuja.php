@@ -11,6 +11,13 @@ return [
         'indexable' => env('MARACUJA_INDEXABLE', false),
     ],
 
+    'cremona' => [
+        'enabled' => env('MARACUJA_CREMONA_ENABLED', false),
+        'endpoint' => env('MARACUJA_CREMONA_ENDPOINT'),
+        'token' => env('MARACUJA_CREMONA_TOKEN'),
+        'site_reference' => env('MARACUJA_CREMONA_SITE_REFERENCE'),
+    ],
+
     'gallery' => [
         'slug' => env('MARACUJA_GALLERY_SLUG', 'home'),
         'layout' => env('MARACUJA_GALLERY_LAYOUT', 'grid'),

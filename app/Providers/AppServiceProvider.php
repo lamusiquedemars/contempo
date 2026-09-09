@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $moduleMigrationPaths = [
             app_path('Modules/Inquiries/database/migrations'),
             app_path('Modules/Audience/database/migrations'),
+            app_path('Modules/CremonaBridge/database/migrations'),
         ];
 
         foreach ($moduleMigrationPaths as $path) {
