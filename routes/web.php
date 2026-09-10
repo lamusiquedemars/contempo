@@ -10,6 +10,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PublicStorageController;
 use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
+use App\Modules\InstrumentProjection\Http\Controllers\InstrumentProjectionController;
 use App\Support\Modules;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/audience/desinscription/{token}', AudienceUnsubscribeController::class)->name('audience.unsubscribe');
 Route::post('/webhooks/brevo/audience/{secret}', BrevoAudienceWebhookController::class)->name('webhooks.brevo.audience');
+Route::post('/api/internal/cremona/instruments', [InstrumentProjectionController::class, 'store'])->withoutMiddleware(['web']);
 
 Route::get('/mentions-legales', [LegalPageController::class, 'legal'])->name('legal.mentions');
 Route::get('/confidentialite', [LegalPageController::class, 'privacy'])->name('legal.privacy');
