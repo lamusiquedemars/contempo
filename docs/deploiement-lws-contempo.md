@@ -17,8 +17,9 @@ dossier `public` de Laravel:
 /htdocs/cms.contempoluthiers.fr/public
 ```
 
-Sur l'offre LWS actuelle, la racine du sous-domaine est imposée. Le projet est
-donc uploadé dans `/htdocs/cms.contempoluthiers.fr`. Le `.htaccess` et le
+Sur l'offre LWS actuelle, la racine réellement exposée et contenant `artisan`
+est `~/htdocs` (et non `~/htdocs/cms.contempoluthiers.fr`). Le projet est donc
+uploadé à cette racine. Le `.htaccess` et le
 `index.php` versionnés à la racine adaptent le routage pour Laravel. Le
 `.htaccess` bloque aussi l'accès web à `.env`, `vendor`, `config` et aux autres
 fichiers internes. Ne pas remplacer ces fichiers par des copies manuelles non
