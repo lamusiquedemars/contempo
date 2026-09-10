@@ -1,0 +1,1 @@
+<x-layouts.app><x-slot:title>{{ $instrument->name }}</x-slot:title><h1>{{ $instrument->name }}</h1><p>{{ $instrument->maker }}</p><p>{{ $instrument->description }}</p><p>{{ $instrument->price_label ?: 'Sur demande' }}</p></x-layouts.app>

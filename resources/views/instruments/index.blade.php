@@ -1,0 +1,1 @@
+<x-layouts.app><x-slot:title>Instruments</x-slot:title><h1>Instruments</h1><ul>@foreach($instruments as $instrument)<li><a href="{{ route('instruments.show', $instrument->slug) }}">{{ $instrument->name }}</a> — {{ $instrument->price_label ?: 'Sur demande' }}</li>@endforeach</ul></x-layouts.app>
