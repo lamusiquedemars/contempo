@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PublishedInstrument extends Model
 {
-    protected $fillable = ['cremona_id', 'reference', 'name', 'family', 'maker', 'description', 'sale_amount', 'rental_amount', 'availability', 'published_at'];
+    protected $fillable = ['cremona_id', 'reference', 'slug', 'name', 'family', 'maker', 'description', 'price_label', 'sale_amount', 'rental_amount', 'availability', 'published_at'];
 
     protected function casts(): array
     {
