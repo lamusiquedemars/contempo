@@ -10,6 +10,6 @@ class PublishedInstrument extends Model
 
     protected function casts(): array
     {
-        return ['sale_amount' => 'decimal:2', 'rental_amount' => 'decimal:2', 'published_at' => 'immutable_datetime'];
+        return ['sale_amount' => 'decimal:2', 'rental_amount' => 'decimal:2', 'published_at' => 'immutable_datetime', 'attributes' => 'array', 'media' => 'array'];
     }
 }
