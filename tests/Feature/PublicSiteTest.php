@@ -89,6 +89,7 @@ class PublicSiteTest extends TestCase
             'maker' => 'Atelier Contempo',
             'price_label' => 'Sur demande',
             'availability' => 'available',
+            'media' => [['url' => 'https://cremona.test/storage/instruments/violon.jpg', 'caption' => 'Table du violon']],
             'published_at' => now(),
         ]);
 
@@ -97,7 +98,8 @@ class PublicSiteTest extends TestCase
             ->assertSee('Entre tradition, création et étude')
             ->assertSee('Instruments contemporains')
             ->assertSee('Instruments actuellement disponibles')
-            ->assertSee('Violon d’essai');
+            ->assertSee('Violon d’essai')
+            ->assertSee('https://cremona.test/storage/instruments/violon.jpg');
     }
 
     public function test_services_page_ignores_old_starter_offer_slots(): void

@@ -35,9 +35,16 @@
     heading-variant="accent">
     <x-site.grid columns="3">
         @forelse ($instruments as $instrument)
+            @php
+                $photo = collect($instrument->media)
+                    ->pluck('url')
+                    ->filter()
+                    ->first();
+            @endphp
             <x-site.card
                 :title="$instrument->name"
                 :kicker="$instrument->family ?: 'Instrument'"
+                :image="$photo"
                 :url="route('instruments.show', $instrument->slug)">
                 {{ collect([$instrument->maker, $instrument->price_label ?: 'Sur demande'])->filter()->implode(' · ') }}
             </x-site.card>
