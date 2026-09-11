@@ -29,6 +29,24 @@
     </x-site.grid>
 </x-site.section>
 
+<x-site.section
+    title="Instruments actuellement disponibles"
+    intro="Une sélection mise à jour depuis l’atelier. Chaque instrument peut être essayé sur rendez-vous."
+    heading-variant="accent">
+    <x-site.grid columns="3">
+        @forelse ($instruments as $instrument)
+            <x-site.card
+                :title="$instrument->name"
+                :kicker="$instrument->family ?: 'Instrument'"
+                :url="route('instruments.show', $instrument->slug)">
+                {{ collect([$instrument->maker, $instrument->price_label ?: 'Sur demande'])->filter()->implode(' · ') }}
+            </x-site.card>
+        @empty
+            <p>Aucun instrument n’est actuellement présenté.</p>
+        @endforelse
+    </x-site.grid>
+</x-site.section>
+
 <x-site.section variant="surface">
     <x-site.cta
         title="Essayer dans de bonnes conditions"

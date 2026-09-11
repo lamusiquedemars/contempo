@@ -7,6 +7,7 @@ use App\Modules\ContactForm\Mail\ContactMessageReceived;
 use App\Modules\ContentSlots\Models\ContentSlot;
 use App\Modules\CremonaBridge\Models\CremonaDelivery;
 use App\Modules\Inquiries\Models\Inquiry;
+use App\Modules\InstrumentProjection\Models\PublishedInstrument;
 use App\Modules\News\Models\NewsPost;
 use App\Modules\Notices\Models\SiteNotice;
 use App\Modules\Pages\Models\Page;
@@ -65,6 +66,38 @@ class PublicSiteTest extends TestCase
             ->assertSee('C&#039;est un plaisir de me mettre au service de vos instruments', false)
             ->assertSee('Vente')
             ->assertSee('Restauration');
+    }
+
+    public function test_instruments_page_keeps_the_contempo_editorial_page_and_adds_published_instruments(): void
+    {
+        SiteSetting::current();
+
+        Page::query()->create([
+            'title' => 'Instruments',
+            'slug' => 'instruments',
+            'template' => 'instruments',
+            'hero_title' => 'Entre tradition, création et étude',
+            'hero_subtitle' => 'Une sélection pensée pour chaque musicien.',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+        PublishedInstrument::query()->create([
+            'cremona_id' => 42,
+            'slug' => 'violon-essai',
+            'name' => 'Violon d’essai',
+            'family' => 'Violon',
+            'maker' => 'Atelier Contempo',
+            'price_label' => 'Sur demande',
+            'availability' => 'available',
+            'published_at' => now(),
+        ]);
+
+        $this->get('/instruments')
+            ->assertOk()
+            ->assertSee('Entre tradition, création et étude')
+            ->assertSee('Instruments contemporains')
+            ->assertSee('Instruments actuellement disponibles')
+            ->assertSee('Violon d’essai');
     }
 
     public function test_services_page_ignores_old_starter_offer_slots(): void
