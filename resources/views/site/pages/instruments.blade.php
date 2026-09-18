@@ -41,13 +41,28 @@
                     ->filter()
                     ->first();
             @endphp
-            <x-site.card
-                :title="$instrument->name"
-                :kicker="$instrument->family ?: 'Instrument'"
-                :image="$photo"
-                :url="route('instruments.show', $instrument->slug)">
-                {{ collect([$instrument->maker, $instrument->price_label ?: 'Sur demande'])->filter()->implode(' · ') }}
-            </x-site.card>
+            <article class="instrument-card">
+                <a class="instrument-card__link" href="{{ route('instruments.show', $instrument->slug) }}" aria-label="Voir {{ $instrument->name }}">
+                    <div class="instrument-card__media">
+                        @if ($photo)
+                            <img src="{{ $photo }}" alt="{{ $instrument->name }}" loading="lazy">
+                        @else
+                            <span class="instrument-card__placeholder">Photo à venir</span>
+                        @endif
+                    </div>
+                    <div class="instrument-card__content">
+                        <p class="instrument-card__family">{{ $instrument->family ?: 'Instrument' }}</p>
+                        <h3>{{ $instrument->name }}</h3>
+                        @if ($instrument->maker)
+                            <p class="instrument-card__maker">{{ $instrument->maker }}</p>
+                        @endif
+                        <div class="instrument-card__footer">
+                            <strong class="instrument-card__price">{{ $instrument->displayPrice() }}</strong>
+                            <span class="instrument-card__action" aria-hidden="true">Voir l’instrument <span>→</span></span>
+                        </div>
+                    </div>
+                </a>
+            </article>
         @empty
             <p>Aucun instrument n’est actuellement présenté.</p>
         @endforelse

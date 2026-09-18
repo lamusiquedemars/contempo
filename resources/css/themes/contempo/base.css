@@ -96,3 +96,241 @@
 .theme-contempo .quote {
     border-color: var(--color-line);
 }
+
+/* Catalogue d'instruments */
+.theme-contempo .instrument-card {
+    height: 100%;
+}
+
+.theme-contempo .instrument-card__link {
+    display: grid;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.theme-contempo .instrument-card__link:hover,
+.theme-contempo .instrument-card__link:focus-visible {
+    border-color: var(--color-brand);
+    box-shadow: var(--shadow-soft);
+    color: var(--color-text);
+    transform: translateY(-3px);
+}
+
+.theme-contempo .instrument-card__link:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-brand), transparent 55%);
+    outline-offset: 3px;
+}
+
+.theme-contempo .instrument-card__media {
+    display: grid;
+    aspect-ratio: 4 / 3;
+    place-items: center;
+    overflow: hidden;
+    background: linear-gradient(145deg, #e6eeeb, #cfded8);
+}
+
+.theme-contempo .instrument-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.theme-contempo .instrument-card__placeholder {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+}
+
+.theme-contempo .instrument-card__content {
+    display: grid;
+    align-content: start;
+    gap: var(--space-xs);
+    padding: var(--space-lg);
+}
+
+.theme-contempo .instrument-card__family {
+    color: var(--color-brand);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.theme-contempo .instrument-card h3 {
+    font-size: 1.5rem;
+    line-height: 1.1;
+}
+
+.theme-contempo .instrument-card__maker {
+    color: var(--color-muted);
+}
+
+.theme-contempo .instrument-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-line);
+}
+
+.theme-contempo .instrument-card__price,
+.theme-contempo .instrument-detail__price {
+    color: var(--color-brand-strong);
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+}
+
+.theme-contempo .instrument-card__action {
+    color: var(--color-brand-strong);
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.theme-contempo .instrument-card__action span {
+    display: inline-block;
+    transition: transform 160ms ease;
+}
+
+.theme-contempo .instrument-card__link:hover .instrument-card__action span {
+    transform: translateX(4px);
+}
+
+.theme-contempo .instrument-detail__hero {
+    background: linear-gradient(135deg, #f0f5f2, var(--color-surface-muted));
+    border-bottom: 1px solid var(--color-line);
+}
+
+.theme-contempo .instrument-detail__hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.7fr);
+    align-items: center;
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    padding-block: clamp(var(--space-xl), 5vw, var(--space-3xl));
+}
+
+.theme-contempo .instrument-detail__intro {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-md);
+}
+
+.theme-contempo .instrument-detail__name {
+    max-width: 15ch;
+    font-size: clamp(2.2rem, 4.8vw, 3.65rem);
+    line-height: 1.02;
+}
+
+.theme-contempo .instrument-detail__maker {
+    color: var(--color-muted);
+    font-size: 1.15rem;
+}
+
+.theme-contempo .instrument-detail__price {
+    margin-top: var(--space-xs);
+    font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+}
+
+.theme-contempo .instrument-detail__description {
+    max-width: 58ch;
+    color: var(--color-text);
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    line-height: 1.65;
+}
+
+.theme-contempo .instrument-detail__hero-media {
+    display: grid;
+    aspect-ratio: 3 / 4;
+    max-height: 520px;
+    place-items: center;
+    overflow: hidden;
+    margin: 0;
+    border: 1px solid color-mix(in srgb, var(--color-brand), transparent 75%);
+    border-radius: var(--radius-md);
+    background: #d9e5e0;
+}
+
+.theme-contempo .instrument-detail__hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.theme-contempo .instrument-detail__characteristics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--color-line);
+}
+
+.theme-contempo .instrument-detail__characteristics > div {
+    display: grid;
+    gap: var(--space-2xs);
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--color-line);
+}
+
+.theme-contempo .instrument-detail__characteristics dt {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.theme-contempo .instrument-detail__characteristics dd {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.theme-contempo .instrument-detail__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-md);
+}
+
+.theme-contempo .instrument-detail__gallery a {
+    display: grid;
+    gap: var(--space-xs);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.theme-contempo .instrument-detail__gallery a:focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 3px;
+}
+
+.theme-contempo .instrument-detail__gallery img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-muted);
+    object-fit: contain;
+    transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.theme-contempo .instrument-detail__gallery a:hover img {
+    border-color: var(--color-brand);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 700px) {
+    .theme-contempo .instrument-detail__hero-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .theme-contempo .instrument-detail__hero-media {
+        width: min(100%, 320px);
+        max-height: 430px;
+    }
+
+    .theme-contempo .instrument-detail__characteristics {
+        grid-template-columns: 1fr;
+    }
+}

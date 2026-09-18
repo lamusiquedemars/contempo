@@ -12,4 +12,19 @@ class PublishedInstrument extends Model
     {
         return ['sale_amount' => 'decimal:2', 'rental_amount' => 'decimal:2', 'published_at' => 'immutable_datetime', 'attributes' => 'array', 'media' => 'array'];
     }
+
+    public function displayPrice(): string
+    {
+        $label = trim((string) $this->price_label);
+
+        if ($label !== '') {
+            return preg_match('/^\\d[\\d\\s.,]*$/u', $label) ? $label.' €' : $label;
+        }
+
+        if ($this->sale_amount !== null) {
+            return number_format((float) $this->sale_amount, 0, ',', "\u{202f}").' €';
+        }
+
+        return 'Sur demande';
+    }
 }

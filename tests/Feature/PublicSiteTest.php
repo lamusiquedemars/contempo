@@ -99,7 +99,25 @@ class PublicSiteTest extends TestCase
             ->assertSee('Instruments contemporains')
             ->assertSee('Instruments actuellement disponibles')
             ->assertSee('Violon d’essai')
+            ->assertSee('Voir l’instrument')
+            ->assertSee('href="'.route('instruments.show', 'violon-essai').'"', false)
             ->assertSee('https://cremona.test/storage/instruments/violon.jpg');
+
+        $this->get('/instruments/violon-essai')
+            ->assertOk()
+            ->assertSee('Violon d’essai')
+            ->assertSee('Atelier Contempo')
+            ->assertSee('Sur demande')
+            ->assertSee('Photos de l’instrument')
+            ->assertSee('data-lightbox', false)
+            ->assertSee('https://cremona.test/storage/instruments/violon.jpg');
+    }
+
+    public function test_published_instrument_formats_a_numeric_public_price_in_euros(): void
+    {
+        $instrument = new PublishedInstrument(['price_label' => '2400']);
+
+        $this->assertSame('2400 €', $instrument->displayPrice());
     }
 
     public function test_services_page_ignores_old_starter_offer_slots(): void

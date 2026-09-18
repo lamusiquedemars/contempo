@@ -1,6 +1,5 @@
 @extends('layouts.site', ['seoTitle' => $instrument->name, 'seoDescription' => $instrument->description])
 @section('content')
-<x-site.hero :eyebrow="$instrument->family" :title="$instrument->name" :subtitle="$instrument->maker" />
 @php
     $characteristics = collect($instrument->attributes)
         ->map(function ($attribute, $key) {
@@ -22,32 +21,61 @@
         })
         ->filter();
     $photos = collect($instrument->media)->filter(fn ($media) => filled($media['url'] ?? null));
+    $heroPhoto = $photos->first();
 @endphp
 
-<x-site.section :title="$instrument->price_label ?: 'Sur demande'">
-    <div class="prose">
-        <p>{{ $instrument->description }}</p>
-        @if ($characteristics->isNotEmpty())
-            <dl>
-                @foreach ($characteristics as $characteristic)
-                    <dt>{{ $characteristic['label'] }}</dt>
-                    <dd>{{ $characteristic['value'] }}</dd>
-                @endforeach
-            </dl>
+<section class="instrument-detail__hero">
+    <div class="container instrument-detail__hero-inner">
+        <div class="instrument-detail__intro">
+            <p class="eyebrow">{{ $instrument->family ?: 'Instrument' }}</p>
+            <h1 class="instrument-detail__name">{{ $instrument->name }}</h1>
+            @if ($instrument->maker)
+                <p class="instrument-detail__maker">{{ $instrument->maker }}</p>
+            @endif
+            <p class="instrument-detail__price">{{ $instrument->displayPrice() }}</p>
+            @if ($instrument->description)
+                <p class="instrument-detail__description">{{ $instrument->description }}</p>
+            @endif
+            <a class="btn btn--primary" href="{{ route('contact') }}">Demander un essai</a>
+        </div>
+        @if ($heroPhoto)
+            <figure class="instrument-detail__hero-media">
+                <img src="{{ $heroPhoto['url'] }}" alt="{{ $heroPhoto['caption'] ?? $instrument->name }}">
+            </figure>
         @endif
     </div>
-    <a class="btn btn--primary" href="{{ route('contact') }}">Demander un essai</a>
-</x-site.section>
+</section>
+
+@if ($characteristics->isNotEmpty())
+    <x-site.section title="Caractéristiques" variant="muted">
+        <dl class="instrument-detail__characteristics">
+            @foreach ($characteristics as $characteristic)
+                <div>
+                    <dt>{{ $characteristic['label'] }}</dt>
+                    <dd>{{ $characteristic['value'] }}</dd>
+                </div>
+            @endforeach
+        </dl>
+    </x-site.section>
+@endif
 
 @if ($photos->isNotEmpty())
-    <x-site.section title="Photos de l’instrument">
-        <x-site.grid columns="2">
+    <x-site.section title="Photos de l’instrument" intro="Cliquez sur une image pour l’agrandir et zoomer.">
+        <div class="instrument-detail__gallery" data-lightbox>
             @foreach ($photos as $photo)
-                <x-site.card :title="$photo['caption'] ?? $instrument->name" :image="$photo['url']">
-                    {{ $photo['caption'] ?? 'Vue de l’instrument' }}
-                </x-site.card>
+                <a
+                    href="{{ $photo['url'] }}"
+                    data-pswp-width="{{ $photo['width'] ?? 1200 }}"
+                    data-pswp-height="{{ $photo['height'] ?? 1800 }}"
+                    aria-label="Agrandir {{ $photo['caption'] ?? $instrument->name }}"
+                >
+                    <img src="{{ $photo['url'] }}" alt="{{ $photo['caption'] ?? $instrument->name }}" loading="lazy">
+                    @if ($photo['caption'] ?? null)
+                        <span>{{ $photo['caption'] }}</span>
+                    @endif
+                </a>
             @endforeach
-        </x-site.grid>
+        </div>
     </x-site.section>
 @endif
 @endsection
