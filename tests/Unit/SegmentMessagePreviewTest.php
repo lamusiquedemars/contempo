@@ -73,9 +73,9 @@ class SegmentMessagePreviewTest extends TestCase
             'segmentMessage' => $message,
         ])->render();
 
-        $this->assertStringContainsString('<table>', $html);
-        $this->assertStringContainsString('<td>Violon enfant</td>', $html);
-        $this->assertStringContainsString('<p>Chères clientes, chers clients,</p>', $html);
+        $this->assertStringContainsString('<table', $html);
+        $this->assertStringContainsString('>Violon enfant</td>', $html);
+        $this->assertStringContainsString('>Chères clientes, chers clients,</p>', $html);
     }
 
     public function test_preview_reassembles_stacked_editor_table_cells(): void
@@ -92,10 +92,28 @@ class SegmentMessagePreviewTest extends TestCase
             'segmentMessage' => $message,
         ])->render();
 
-        $this->assertStringContainsString('<th>Instrument</th>', $html);
-        $this->assertStringContainsString('<th>Location mensuelle</th>', $html);
-        $this->assertStringContainsString('<td>Violon enfant</td>', $html);
-        $this->assertStringContainsString('<td>15 €</td>', $html);
-        $this->assertStringContainsString('<p>Les tarifs seront appliqués en novembre.</p>', $html);
+        $this->assertStringContainsString('>Instrument</th>', $html);
+        $this->assertStringContainsString('>Location mensuelle</th>', $html);
+        $this->assertStringContainsString('>Violon enfant</td>', $html);
+        $this->assertStringContainsString('>15 €</td>', $html);
+        $this->assertStringContainsString('>Les tarifs seront appliqués en novembre.</p>', $html);
+    }
+
+    public function test_preview_adds_inline_styles_to_html_tables_and_paragraphs(): void
+    {
+        $segment = AudienceSegment::query()->create(['name' => 'Clients']);
+
+        $message = SegmentMessage::query()->create([
+            'audience_segment_id' => $segment->id,
+            'subject' => 'Nouveaux tarifs',
+            'body' => '<p>Bonjour</p><table><tbody><tr><th>Instrument</th><th>Tarif</th></tr><tr><td>Violon</td><td>15 €</td></tr></tbody></table>',
+        ]);
+
+        $html = view('filament.audience.segment-message-preview', [
+            'segmentMessage' => $message,
+        ])->render();
+
+        $this->assertStringContainsString('display:table-cell;', $html);
+        $this->assertStringContainsString('margin:0 0 16px;', $html);
     }
 }

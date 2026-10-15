@@ -171,15 +171,53 @@ class SegmentMessage extends Model
         // Convert only those plain-text bodies so the preview, SMTP emails and
         // Brevo campaigns all receive the same HTML.
         if (preg_match('/<\s*\/?\s*[a-z][^>]*>/i', $body)) {
-            return $body;
+            return $this->styleForEmail($body);
         }
 
         $body = $this->normalizeStackedMarkdownTables($body);
 
-        return (string) Str::markdown($body, [
+        $html = (string) Str::markdown($body, [
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
         ]);
+
+        return $this->styleForEmail($html);
+    }
+
+    private function styleForEmail(string $html): string
+    {
+        $styles = [
+            'table' => 'width:100%; border-collapse:collapse; margin:0 0 16px; display:table;',
+            'tbody' => 'display:table-row-group;',
+            'tr' => 'display:table-row;',
+            'th' => 'display:table-cell; text-align:left; vertical-align:top; padding:8px 12px; border-bottom:1px solid #d1d5db; font-weight:700;',
+            'td' => 'display:table-cell; text-align:left; vertical-align:top; padding:8px 12px; border-bottom:1px solid #e5e7eb;',
+            'p' => 'margin:0 0 16px;',
+            'img' => 'max-width:100%; height:auto;',
+        ];
+
+        return preg_replace_callback(
+            '/<(table|tbody|tr|th|td|p|img)\b([^>]*)>/i',
+            function (array $matches) use ($styles): string {
+                $tag = strtolower($matches[1]);
+                $attributes = $matches[2];
+                $style = $styles[$tag];
+
+                if (preg_match("/\\sstyle=([\"'])(.*?)\\1/i", $attributes)) {
+                    $attributes = preg_replace_callback(
+                        "/\\sstyle=([\"'])(.*?)\\1/i",
+                        fn (array $styleMatches): string => ' style='.$styleMatches[1].trim($styleMatches[2]).' '.$style.$styleMatches[1],
+                        $attributes,
+                        1,
+                    ) ?? $attributes;
+                } else {
+                    $attributes .= ' style="'.$style.'"';
+                }
+
+                return '<'.$tag.$attributes.'>';
+            },
+            $html,
+        ) ?? $html;
     }
 
     private function normalizeStackedMarkdownTables(string $body): string
