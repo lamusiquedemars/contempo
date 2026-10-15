@@ -3,11 +3,7 @@
         $body = $segmentMessage->bodyForEmail($message ?? null);
     @endphp
 
-    @if (str_contains($body, '<'))
-        {!! $body !!}
-    @else
-        {!! nl2br(e($body)) !!}
-    @endif
+    {!! $body !!}
 
     <hr style="border: 0; border-top: 1px solid #ddd; margin: 28px 0 16px;">
 

@@ -58,4 +58,23 @@ class SegmentMessagePreviewTest extends TestCase
         $this->assertStringContainsString(url('/storage/campaigns/summer.jpg'), $html);
         $this->assertSame(['campaigns/summer.jpg'], Storage::disk('public')->allFiles());
     }
+
+    public function test_preview_converts_markdown_tables_and_paragraphs_to_html(): void
+    {
+        $segment = AudienceSegment::query()->create(['name' => 'Clients']);
+
+        $message = SegmentMessage::query()->create([
+            'audience_segment_id' => $segment->id,
+            'subject' => 'Nouveaux tarifs',
+            'body' => "Chères clientes, chers clients,\n\nLes tarifs évoluent :\n\n| Instrument | Location mensuelle |\n| - | - |\n| Violon enfant | 15 € |",
+        ]);
+
+        $html = view('filament.audience.segment-message-preview', [
+            'segmentMessage' => $message,
+        ])->render();
+
+        $this->assertStringContainsString('<table>', $html);
+        $this->assertStringContainsString('<td>Violon enfant</td>', $html);
+        $this->assertStringContainsString('<p>Chères clientes, chers clients,</p>', $html);
+    }
 }

@@ -140,7 +140,7 @@ class SegmentMessage extends Model
 
     public function bodyForEmail(?object $mailMessage = null): string
     {
-        $body = (string) $this->body;
+        $body = $this->bodyAsHtml();
 
         return preg_replace_callback(
             '/<img\b([^>]*?)\bsrc=(["\'])(.*?)\2([^>]*)>/i',
@@ -160,6 +160,24 @@ class SegmentMessage extends Model
             },
             $body,
         ) ?? $body;
+    }
+
+    private function bodyAsHtml(): string
+    {
+        $body = (string) $this->body;
+
+        // Messages created in the rich editor are stored as HTML. Some existing
+        // messages, however, were saved as Markdown (notably those with tables).
+        // Convert only those plain-text bodies so the preview, SMTP emails and
+        // Brevo campaigns all receive the same HTML.
+        if (preg_match('/<\s*\/?\s*[a-z][^>]*>/i', $body)) {
+            return $body;
+        }
+
+        return (string) Str::markdown($body, [
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
     }
 
     public function deliveryReport(): array
