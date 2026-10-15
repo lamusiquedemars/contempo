@@ -174,10 +174,50 @@ class SegmentMessage extends Model
             return $body;
         }
 
+        $body = $this->normalizeStackedMarkdownTables($body);
+
         return (string) Str::markdown($body, [
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
         ]);
+    }
+
+    private function normalizeStackedMarkdownTables(string $body): string
+    {
+        // Some previously saved editor tables are represented as a succession
+        // of one-cell Markdown tables. A two-column table such as
+        // "Instrument / Tarif" is therefore stored as alternating cells rather
+        // than as a single Markdown table. Reassemble consecutive cells before
+        // converting Markdown to HTML.
+        return preg_replace_callback(
+            '/(?:\|\h*\|\R\|\h*-\h*\|\R{2}[^\r\n]+(?:\R{2}|$)){2,}/u',
+            function (array $matches): string {
+                preg_match_all(
+                    '/\|\h*\|\R\|\h*-\h*\|\R{2}([^\r\n]+)/u',
+                    $matches[0],
+                    $cells,
+                );
+
+                $values = array_map('trim', $cells[1] ?? []);
+
+                if (count($values) < 4 || count($values) % 2 !== 0) {
+                    return $matches[0];
+                }
+
+                $rows = array_chunk($values, 2);
+                $markdown = [
+                    '| '.implode(' | ', $rows[0]).' |',
+                    '| --- | --- |',
+                ];
+
+                foreach (array_slice($rows, 1) as $row) {
+                    $markdown[] = '| '.implode(' | ', $row).' |';
+                }
+
+                return implode("\n", $markdown)."\n\n";
+            },
+            $body,
+        ) ?? $body;
     }
 
     public function deliveryReport(): array

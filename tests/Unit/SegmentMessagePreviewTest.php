@@ -77,4 +77,25 @@ class SegmentMessagePreviewTest extends TestCase
         $this->assertStringContainsString('<td>Violon enfant</td>', $html);
         $this->assertStringContainsString('<p>Chères clientes, chers clients,</p>', $html);
     }
+
+    public function test_preview_reassembles_stacked_editor_table_cells(): void
+    {
+        $segment = AudienceSegment::query()->create(['name' => 'Clients']);
+
+        $message = SegmentMessage::query()->create([
+            'audience_segment_id' => $segment->id,
+            'subject' => 'Nouveaux tarifs',
+            'body' => "|   |\n| - |\n\nInstrument\n\n|   |\n| - |\n\nLocation mensuelle\n\n|   |\n| - |\n\nViolon enfant\n\n|   |\n| - |\n\n15 €\n\nLes tarifs seront appliqués en novembre.",
+        ]);
+
+        $html = view('filament.audience.segment-message-preview', [
+            'segmentMessage' => $message,
+        ])->render();
+
+        $this->assertStringContainsString('<th>Instrument</th>', $html);
+        $this->assertStringContainsString('<th>Location mensuelle</th>', $html);
+        $this->assertStringContainsString('<td>Violon enfant</td>', $html);
+        $this->assertStringContainsString('<td>15 €</td>', $html);
+        $this->assertStringContainsString('<p>Les tarifs seront appliqués en novembre.</p>', $html);
+    }
 }
