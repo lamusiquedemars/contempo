@@ -52,7 +52,7 @@
                     <tr><td>Mercredi</td><td>9h30 - 12h30 / 14h - 19h</td></tr>
                     <tr><td>Jeudi</td><td>9h30 - 12h30</td></tr>
                     <tr><td>Vendredi</td><td>14h - 19h</td></tr>
-                    <tr><td>Samedi</td><td>9h30 - 12h30 / 14h - 19h</td></tr>
+                    <tr><td>Samedi</td><td>9h30 - 12h30 / 14h - 18h</td></tr>
                     <tr><td>Dimanche</td><td>Fermé</td></tr>
                 </tbody>
             </table>
