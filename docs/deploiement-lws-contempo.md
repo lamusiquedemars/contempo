@@ -1,25 +1,13 @@
 # Deploiement LWS - Contempo Luthiers
 
-Objectif: installer Maracuja CMS sur un sous-domaine sans toucher au site public existant.
+Objectif : déployer Maracuja CMS sur le site public Contempo Luthiers.
 
-## Sous-domaine
+## Cible de production
 
-Sous-domaine conseille:
-
-```txt
-cms.contempoluthiers.fr
-```
-
-Quand l'offre le permet, le document root du sous-domaine pointe vers le
-dossier `public` de Laravel:
-
-```txt
-/htdocs/cms.contempoluthiers.fr/public
-```
+L’URL publique est `https://contempoluthiers.fr`.
 
 Sur l'offre LWS actuelle, la racine réellement exposée et contenant `artisan`
-est `~/htdocs` (et non `~/htdocs/cms.contempoluthiers.fr`). Le projet est donc
-uploadé à cette racine. Le `.htaccess` et le
+est `~/htdocs`. Le projet est donc uploadé à cette racine. Le `.htaccess` et le
 `index.php` versionnés à la racine adaptent le routage pour Laravel. Le
 `.htaccess` bloque aussi l'accès web à `.env`, `vendor`, `config` et aux autres
 fichiers internes. Ne pas remplacer ces fichiers par des copies manuelles non
@@ -32,8 +20,8 @@ Sur le serveur, le fichier `.env` doit contenir notamment:
 ```env
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://cms.contempoluthiers.fr
-MARACUJA_INDEXABLE=false
+APP_URL=https://contempoluthiers.fr
+MARACUJA_INDEXABLE=true
 
 MAIL_MAILER=smtp
 MAIL_SCHEME=smtps

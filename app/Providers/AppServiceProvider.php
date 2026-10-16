@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Modules\Media\Models\MediaAsset;
+use App\Modules\Media\Policies\MediaAssetPolicy;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
             app_path('Modules/Audience/database/migrations'),
             app_path('Modules/CremonaBridge/database/migrations'),
             app_path('Modules/InstrumentProjection/database/migrations'),
+            app_path('Modules/Media/database/migrations'),
         ];
 
         foreach ($moduleMigrationPaths as $path) {
@@ -37,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
                 $this->loadMigrationsFrom($path);
             }
         }
+
+        Gate::policy(MediaAsset::class, MediaAssetPolicy::class);
 
         Gate::before(function (User $user, string $ability, mixed ...$arguments): ?bool {
             if ($user->isAdministrator()) {
