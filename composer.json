@@ -2,8 +2,8 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "lamusiquedemars/contempo",
     "type": "project",
-    "description": "Contempo Luthiers website built on the Maracuja CMS base.",
-    "keywords": ["laravel", "filament", "cms", "contempo", "lutherie"],
+    "description": "Contempo Luthiers website built on Maracuja Site Core.",
+    "keywords": ["laravel", "filament", "contempo", "lutherie", "maracuja"],
     "license": "MIT",
     "repositories": [
         {
