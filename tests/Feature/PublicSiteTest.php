@@ -68,6 +68,26 @@ class PublicSiteTest extends TestCase
             ->assertSee('Restauration');
     }
 
+    public function test_atelier_page_renders_the_corrected_hero_subtitle(): void
+    {
+        SiteSetting::current();
+
+        Page::query()->create([
+            'title' => 'Atelier',
+            'slug' => 'atelier',
+            'template' => 'atelier',
+            'hero_title' => 'Le luthier',
+            'hero_subtitle' => 'Formé à Crémone, Giovanni Corazzol reprend l’atelier en 2024 pour y faire vivre une lutherie contemporaine ancrée dans l’histoire lyonnaise.',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        $this->get('/atelier')
+            ->assertOk()
+            ->assertSee('reprend l’atelier')
+            ->assertSee('dans l’histoire lyonnaise');
+    }
+
     public function test_instruments_page_keeps_the_contempo_editorial_page_and_adds_published_instruments(): void
     {
         SiteSetting::current();
