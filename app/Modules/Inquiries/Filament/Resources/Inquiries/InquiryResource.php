@@ -3,13 +3,13 @@
 namespace App\Modules\Inquiries\Filament\Resources\Inquiries;
 
 use App\Modules\Audience\Actions\CreateContactFromInquiry;
+use App\Modules\Audience\Models\AudienceContact;
 use App\Modules\Inquiries\Enums\InquiryStatus;
 use App\Modules\Inquiries\Filament\Resources\Inquiries\Pages\ManageInquiries;
 use App\Modules\Inquiries\Models\Inquiry;
 use App\Modules\Inquiries\Support\InquiryReplyLink;
 use App\Support\Modules;
 use BackedEnum;
-use UnitEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -28,7 +28,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema as SchemaFacade;
+use UnitEnum;
 
 class InquiryResource extends Resource
 {
@@ -257,7 +259,8 @@ class InquiryResource extends Resource
 
     private static function canCreateAudienceContact(): bool
     {
-        return Modules::enabled('audience')
+        return Gate::allows('create', AudienceContact::class)
+            && Modules::enabled('audience')
             && class_exists(CreateContactFromInquiry::class)
             && SchemaFacade::hasTable('audience_contacts');
     }

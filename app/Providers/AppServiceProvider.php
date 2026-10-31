@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Modules\Audience\Models\AudienceBrevoSetting;
 use App\Modules\Media\Models\MediaAsset;
 use App\Modules\Media\Policies\MediaAssetPolicy;
 use App\Modules\SiteSettings\Models\SiteSetting;
+use App\Support\ContentPermissions;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
@@ -43,23 +45,24 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(MediaAsset::class, MediaAssetPolicy::class);
 
-        Gate::before(function (User $user, string $ability, mixed ...$arguments): ?bool {
+        Gate::before(function (User $user, string $ability, array $arguments): ?bool {
             if ($user->isAdministrator()) {
                 return true;
-            }
-
-            if (in_array($ability, ['viewAny', 'view'], true)) {
-                return null;
-            }
-
-            if (! $user->canEditContent()) {
-                return false;
             }
 
             $subject = $arguments[0] ?? null;
             $subjectClass = is_object($subject) ? $subject::class : $subject;
 
-            return $subjectClass === SiteSetting::class ? false : null;
+            if (in_array($subjectClass, [User::class, SiteSetting::class, AudienceBrevoSetting::class], true)
+                || ! ContentPermissions::allows($user, $subjectClass)) {
+                return false;
+            }
+
+            if (! $user->canEditContent() && ! in_array($ability, ['viewAny', 'view'], true)) {
+                return false;
+            }
+
+            return $subjectClass && Gate::getPolicyFor($subjectClass) ? null : true;
         });
     }
 

@@ -12,13 +12,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'is_admin'])]
+#[Fillable(['name', 'email', 'password', 'role', 'is_admin', 'content_permissions', 'is_active'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
     public const ROLE_ADMIN = 'admin';
+
+    public const ROLE_MANAGER = 'manager';
+
     public const ROLE_EDITOR = 'editor';
+
     public const ROLE_VIEWER = 'viewer';
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
@@ -33,6 +38,8 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'is_active' => 'boolean',
+            'content_permissions' => 'array',
         ];
     }
 
@@ -43,11 +50,21 @@ class User extends Authenticatable implements FilamentUser
 
     public function canEditContent(): bool
     {
-        return in_array($this->role, [self::ROLE_ADMIN, self::ROLE_EDITOR], true);
+        return $this->isAdministrator() || in_array($this->role, [self::ROLE_MANAGER, self::ROLE_EDITOR], true);
+    }
+
+    public function canAccessContent(string $permission): bool
+    {
+        return $this->isAdministrator() || $this->content_permissions === null
+            || in_array($permission, $this->content_permissions, true);
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return in_array($this->role, [self::ROLE_ADMIN, self::ROLE_EDITOR, self::ROLE_VIEWER], true);
+        if ($this->is_active === false) {
+            return false;
+        }
+
+        return $this->isAdministrator() || in_array($this->role, [self::ROLE_MANAGER, self::ROLE_EDITOR, self::ROLE_VIEWER], true);
     }
 }

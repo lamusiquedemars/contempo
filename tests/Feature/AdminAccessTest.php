@@ -17,16 +17,16 @@ class AdminAccessTest extends TestCase
 
     public function test_admin_user_can_access_panel(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->create(['is_admin' => true, 'role' => User::ROLE_ADMIN]);
 
         $this->actingAs($admin)
             ->get('/admin')
             ->assertOk();
     }
 
-    public function test_non_admin_user_cannot_access_panel(): void
+    public function test_disabled_user_cannot_access_panel(): void
     {
-        $user = User::factory()->create(['is_admin' => false]);
+        $user = User::factory()->create(['is_admin' => false, 'role' => User::ROLE_VIEWER, 'is_active' => false]);
 
         $this->actingAs($user)
             ->get('/admin')

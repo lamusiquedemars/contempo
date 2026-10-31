@@ -5,12 +5,15 @@ namespace App\Modules\Audience\Filament\Resources\AudienceContacts\Pages;
 use App\Modules\Audience\Actions\ImportAudienceContactsFromCsv;
 use App\Modules\Audience\Actions\ImportContactsFromInquiries;
 use App\Modules\Audience\Filament\Resources\AudienceContacts\AudienceContactResource;
+use App\Modules\Audience\Models\AudienceContact;
+use App\Modules\Inquiries\Models\Inquiry;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRecords;
+use Illuminate\Support\Facades\Gate;
 
 class ManageAudienceContacts extends ManageRecords
 {
@@ -41,7 +44,7 @@ class ManageAudienceContacts extends ManageRecords
                     $body = "Créés: {$result['created']} | Mis à jour: {$result['updated']} | Ignorés: {$result['skipped']} | Segments créés: {$result['segments']}";
 
                     if ($result['errors'] !== []) {
-                        $body .= "\n" . implode("\n", $result['errors']);
+                        $body .= "\n".implode("\n", $result['errors']);
                     }
 
                     Notification::make()
@@ -51,6 +54,7 @@ class ManageAudienceContacts extends ManageRecords
                         ->send();
                 }),
             Action::make('importFromInquiries')
+                ->authorize(fn (): bool => Gate::allows('viewAny', Inquiry::class) && Gate::allows('create', AudienceContact::class))
                 ->label('Importer depuis Demandes')
                 ->action(function (): void {
                     $result = ImportContactsFromInquiries::run();
