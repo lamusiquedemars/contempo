@@ -297,7 +297,7 @@ class CreateBrevoCampaignTest extends TestCase
     {
         Http::fake();
 
-        config(['app.url' => 'http://maracuja-cms.local']);
+        config(['app.url' => 'http://contempoluthiers.local']);
 
         AudienceBrevoSetting::query()->create([
             'is_enabled' => true,
