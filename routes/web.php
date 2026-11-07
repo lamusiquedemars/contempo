@@ -3,6 +3,7 @@
 use App\Http\Controllers\AudienceUnsubscribeController;
 use App\Http\Controllers\BrevoAudienceWebhookController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CremonaPortalController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\NewsController;
@@ -14,6 +15,10 @@ use App\Modules\InstrumentProjection\Http\Controllers\InstrumentProjectionContro
 use App\Modules\InstrumentProjection\Http\Controllers\PublicInstrumentController;
 use App\Support\Modules;
 use Illuminate\Support\Facades\Route;
+
+Route::middleware('auth')->get('/admin/gestion/{item}', CremonaPortalController::class)
+    ->whereIn('item', ['instruments', 'rentals', 'workshop_orders'])
+    ->name('cremona-portal');
 
 Route::get('/robots.txt', RobotsController::class)->name('robots');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');

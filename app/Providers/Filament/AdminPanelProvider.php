@@ -2,14 +2,18 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\CremonaSsoLogin;
 use App\Filament\Widgets\AdminOverview;
 use App\Filament\Widgets\AdminWelcome;
 use App\Modules\SiteSettings\Models\SiteSetting;
+use App\Support\CremonaPortal;
 use App\Support\Modules;
+use Filament\Auth\Pages\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -32,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(config('cremona-portal.enabled') ? CremonaSsoLogin::class : Login::class)
             ->profile()
             ->brandName(fn (): string => Schema::hasTable('site_settings')
                 ? SiteSetting::query()->value('site_name') ?: config('maracuja.product_name', 'Maracuja CMS')
@@ -53,6 +57,11 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 AdminWelcome::class,
                 AdminOverview::class,
+            ])
+            ->navigationItems([
+                NavigationItem::make('Instruments')->group('Gestion de l’activité')->icon('heroicon-o-musical-note')->sort(10)->url(fn (): string => route('cremona-portal', ['item' => 'instruments']))->visible(fn (): bool => CremonaPortal::has('instruments')),
+                NavigationItem::make('Locations')->group('Gestion de l’activité')->icon('heroicon-o-key')->sort(20)->url(fn (): string => route('cremona-portal', ['item' => 'rentals']))->visible(fn (): bool => CremonaPortal::has('rentals')),
+                NavigationItem::make('Dossiers atelier')->group('Gestion de l’activité')->icon('heroicon-o-wrench-screwdriver')->sort(30)->url(fn (): string => route('cremona-portal', ['item' => 'workshop_orders']))->visible(fn (): bool => CremonaPortal::has('workshop_orders')),
             ])
             ->middleware([
                 EncryptCookies::class,
