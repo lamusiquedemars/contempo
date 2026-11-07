@@ -16,6 +16,10 @@ use App\Modules\InstrumentProjection\Http\Controllers\PublicInstrumentController
 use App\Support\Modules;
 use Illuminate\Support\Facades\Route;
 
+// The framework authentication middleware expects a route named `login`.
+// Filament owns the actual screen under /admin/login.
+Route::redirect('/login', '/admin/login')->name('login');
+
 Route::middleware('auth')->get('/admin/gestion/{item}', CremonaPortalController::class)
     ->whereIn('item', ['instruments', 'rentals', 'workshop_orders'])
     ->name('cremona-portal');
