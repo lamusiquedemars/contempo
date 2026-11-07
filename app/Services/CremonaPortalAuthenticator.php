@@ -17,7 +17,7 @@ final class CremonaPortalAuthenticator
         $timestamp = time();
 
         if (! config('cremona-portal.enabled') || blank($clientId) || blank($secret)) {
-            return ['navigation' => []];
+            return null;
         }
 
         $response = Http::acceptJson()->timeout(10)->post(config('cremona-portal.issuer').'/api/v1/site-portal/authenticate', [
