@@ -6,14 +6,12 @@ use App\Filament\Auth\CremonaSsoLogin;
 use App\Filament\Widgets\AdminOverview;
 use App\Filament\Widgets\AdminWelcome;
 use App\Modules\SiteSettings\Models\SiteSetting;
-use App\Support\CremonaPortal;
 use App\Support\Modules;
 use Filament\Auth\Pages\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -27,6 +25,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Maracuja\SiteCore\ProfessionalWorkspace\Filament\ProfessionalWorkspacePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -53,13 +52,15 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->plugin(
+                (new ProfessionalWorkspacePlugin)
+                    ->entryRoute('cremona-portal')
+                    ->defaultLabel('Pilotage de l’activité'),
+            )
             ->widgets([
                 AccountWidget::class,
                 AdminWelcome::class,
                 AdminOverview::class,
-            ])
-            ->navigationItems([
-                NavigationItem::make('Pilotage de l’activité')->icon('heroicon-o-briefcase')->sort(-1)->url(fn (): string => route('cremona-portal', ['item' => 'workspace']))->visible(fn (): bool => CremonaPortal::has('workspace')),
             ])
             ->middleware([
                 EncryptCookies::class,
