@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/login', '/admin/login')->name('login');
 
 Route::middleware('auth')->get('/admin/gestion/{item}', CremonaPortalController::class)
-    ->whereIn('item', ['instruments', 'rentals', 'workshop_orders'])
+    ->whereIn('item', ['instruments', 'rentals', 'workshop_orders', 'invoices'])
     ->name('cremona-portal');
 
 Route::get('/robots.txt', RobotsController::class)->name('robots');
