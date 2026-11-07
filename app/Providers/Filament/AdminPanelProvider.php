@@ -59,10 +59,7 @@ class AdminPanelProvider extends PanelProvider
                 AdminOverview::class,
             ])
             ->navigationItems([
-                NavigationItem::make('Instruments')->group('Gestion de l’activité')->icon('heroicon-o-musical-note')->sort(10)->url(fn (): string => route('cremona-portal', ['item' => 'instruments']))->visible(fn (): bool => CremonaPortal::has('instruments')),
-                NavigationItem::make('Locations')->group('Gestion de l’activité')->icon('heroicon-o-key')->sort(20)->url(fn (): string => route('cremona-portal', ['item' => 'rentals']))->visible(fn (): bool => CremonaPortal::has('rentals')),
-                NavigationItem::make('Dossiers atelier')->group('Gestion de l’activité')->icon('heroicon-o-wrench-screwdriver')->sort(30)->url(fn (): string => route('cremona-portal', ['item' => 'workshop_orders']))->visible(fn (): bool => CremonaPortal::has('workshop_orders')),
-                NavigationItem::make('Facturation')->group('Gestion de l’activité')->icon('heroicon-o-document-currency-euro')->sort(40)->url(fn (): string => route('cremona-portal', ['item' => 'invoices']))->visible(fn (): bool => CremonaPortal::has('invoices')),
+                NavigationItem::make('Pilotage de l’activité')->icon('heroicon-o-briefcase')->sort(-1)->url(fn (): string => route('cremona-portal', ['item' => 'workspace']))->visible(fn (): bool => CremonaPortal::has('workspace')),
             ])
             ->middleware([
                 EncryptCookies::class,
