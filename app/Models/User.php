@@ -17,6 +17,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements FilamentUser
 {
     public const ROLE_ADMIN = 'admin';
+    public const ROLE_MANAGER = 'manager';
     public const ROLE_EDITOR = 'editor';
     public const ROLE_VIEWER = 'viewer';
     /** @use HasFactory<UserFactory> */
@@ -43,11 +44,11 @@ class User extends Authenticatable implements FilamentUser
 
     public function canEditContent(): bool
     {
-        return in_array($this->role, [self::ROLE_ADMIN, self::ROLE_EDITOR], true);
+        return in_array($this->role, [self::ROLE_ADMIN, self::ROLE_MANAGER, self::ROLE_EDITOR], true);
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->is_admin || in_array($this->role, [self::ROLE_ADMIN, self::ROLE_EDITOR, self::ROLE_VIEWER], true);
+        return $this->is_admin || in_array($this->role, [self::ROLE_ADMIN, self::ROLE_MANAGER, self::ROLE_EDITOR, self::ROLE_VIEWER], true);
     }
 }

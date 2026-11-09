@@ -24,6 +24,14 @@ class AdminAccessTest extends TestCase
             ->assertOk();
     }
 
+    public function test_manager_user_can_access_panel_and_edit_content(): void
+    {
+        $manager = User::factory()->create(['role' => User::ROLE_MANAGER]);
+
+        $this->assertTrue($manager->canAccessPanel(app(\Filament\Panel::class)));
+        $this->assertTrue($manager->canEditContent());
+    }
+
     public function test_non_admin_user_cannot_access_panel(): void
     {
         $user = User::factory()->create(['is_admin' => false]);
