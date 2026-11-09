@@ -32,6 +32,15 @@ class AdminAccessTest extends TestCase
         $this->assertTrue($manager->canEditContent());
     }
 
+    public function test_viewer_cannot_access_sections_with_write_actions(): void
+    {
+        $viewer = User::factory()->create(['role' => User::ROLE_VIEWER]);
+
+        $this->assertTrue($viewer->canAccessContent('pages'));
+        $this->assertFalse($viewer->canAccessContent('inquiries'));
+        $this->assertFalse($viewer->canAccessContent('audience'));
+    }
+
     public function test_non_admin_user_cannot_access_panel(): void
     {
         $user = User::factory()->create(['is_admin' => false]);
