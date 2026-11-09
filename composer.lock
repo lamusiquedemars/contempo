@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5209db7ba613d16d4b10910286a39b2",
+    "content-hash": "3e9c95203e941f7737cd1af95cf534fb",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2244,16 +2244,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v13.38.0",
+            "version": "v13.43.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "c42f9abd4a3d2f9a3cd6be109255ddce8092ceb8"
+                "reference": "72aa7e151062e218704d8660f407e6070040d8bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/c42f9abd4a3d2f9a3cd6be109255ddce8092ceb8",
-                "reference": "c42f9abd4a3d2f9a3cd6be109255ddce8092ceb8",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/72aa7e151062e218704d8660f407e6070040d8bc",
+                "reference": "72aa7e151062e218704d8660f407e6070040d8bc",
                 "shasum": ""
             },
             "require": {
@@ -2279,7 +2279,7 @@
                 "league/commonmark": "^2.8.1",
                 "league/flysystem": "^3.25.1",
                 "league/flysystem-local": "^3.25.1",
-                "league/uri": "^7.5.1",
+                "league/uri": "^7.6",
                 "monolog/monolog": "^3.10",
                 "nesbot/carbon": "^3.8.4",
                 "nunomaduro/termwind": "^2.0",
@@ -2308,6 +2308,7 @@
                 "voku/portable-ascii": "^2.0.2"
             },
             "conflict": {
+                "laravel/horizon": "<5.47.0",
                 "tightenco/collect": "<5.5.33"
             },
             "provide": {
@@ -2356,11 +2357,12 @@
                 "spatie/once": "*"
             },
             "require-dev": {
-                "ably/ably-php": "^1.0",
+                "ably/pubsub-server": "^1.0|^2.0",
                 "aws/aws-sdk-php": "^3.322.9",
                 "ext-gmp": "*",
                 "fakerphp/faker": "^1.24",
                 "intervention/image": "^4.2",
+                "jasonmccreary/double": "^1.1",
                 "laravel/pint": "^1.18",
                 "league/flysystem-aws-s3-v3": "^3.25.1",
                 "league/flysystem-ftp": "^3.25.1",
@@ -2372,7 +2374,7 @@
                 "orchestra/testbench-core": "^11.6.0",
                 "pda/pheanstalk": "^7.0.0 || ^8.0.0",
                 "php-http/discovery": "^1.15",
-                "phpstan/phpstan": "2.3.1",
+                "phpstan/phpstan": "2.3.5",
                 "phpunit/phpunit": "^11.5.50 || ^12.5.8 || ^13.0.3",
                 "predis/predis": "^2.3 || ^3.0",
                 "rector/rector": "2.6.3",
@@ -2385,7 +2387,7 @@
                 "web-token/jwt-library": "^4.1"
             },
             "suggest": {
-                "ably/ably-php": "Required to use the Ably broadcast driver (^1.0).",
+                "ably/pubsub-server": "Required to use the Ably broadcast driver (^1.0|^2.0).",
                 "aws/aws-sdk-php": "Required to use the SQS queue driver, DynamoDb failed job storage, and SES mail driver (^3.322.9).",
                 "brianium/paratest": "Required to run tests in parallel (^7.0 || ^8.0).",
                 "ext-apcu": "Required to use the APC cache driver.",
@@ -2471,7 +2473,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-10-20T10:45:58+00:00"
+            "time": "2026-11-17T14:58:33+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -3471,6 +3473,83 @@
                 }
             ],
             "time": "2026-10-21T01:43:35+00:00"
+        },
+        {
+            "name": "maracuja-digital/site-core-audience",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../maracuja-site-core/packages/audience",
+                "reference": "21efed3917cfb6ff4b3c584cf2dc67492f9ad2d6"
+            },
+            "require": {
+                "filament/filament": "^4.0",
+                "illuminate/database": "^13.0",
+                "illuminate/mail": "^13.0",
+                "illuminate/support": "^13.0",
+                "maracuja-digital/site-core-media": "dev-main",
+                "php": "^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Maracuja\\SiteCore\\Audience\\Providers\\AudienceServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maracuja\\SiteCore\\Audience\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Consentement marketing, contacts, segments et campagnes de Maracuja Site Core.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "maracuja-digital/site-core-brevo",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../maracuja-site-core/packages/brevo",
+                "reference": "7c6a67c021c345ef178a1f7bafcd6a722f16cb8d"
+            },
+            "require": {
+                "filament/filament": "^4.0",
+                "illuminate/database": "^13.0",
+                "illuminate/http": "^13.0",
+                "illuminate/support": "^13.0",
+                "maracuja-digital/site-core-audience": "dev-main",
+                "nesbot/carbon": "^3.0",
+                "php": "^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Maracuja\\SiteCore\\Brevo\\Providers\\BrevoServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maracuja\\SiteCore\\Brevo\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Adaptateur Brevo optionnel pour Maracuja Site Core Audience.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "maracuja-digital/site-core-contact",
@@ -10973,6 +11052,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "maracuja-digital/site-core-audience": 20,
+        "maracuja-digital/site-core-brevo": 20,
         "maracuja-digital/site-core-contact": 20,
         "maracuja-digital/site-core-events": 20,
         "maracuja-digital/site-core-foundation": 20,
