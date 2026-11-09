@@ -38,7 +38,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function isAdministrator(): bool
     {
-        return $this->role === self::ROLE_ADMIN;
+        return $this->is_admin || $this->role === self::ROLE_ADMIN;
     }
 
     public function canEditContent(): bool
@@ -48,6 +48,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return in_array($this->role, [self::ROLE_ADMIN, self::ROLE_EDITOR, self::ROLE_VIEWER], true);
+        return $this->is_admin || in_array($this->role, [self::ROLE_ADMIN, self::ROLE_EDITOR, self::ROLE_VIEWER], true);
     }
 }

@@ -78,6 +78,7 @@ return [
         'contact_form' => env('MARACUJA_MODULE_CONTACT_FORM', true),
         'inquiries' => env('MARACUJA_MODULE_INQUIRIES', true),
         'audience' => env('MARACUJA_MODULE_AUDIENCE', false),
+        'brevo' => env('MARACUJA_MODULE_BREVO', true),
         'campaigns' => env('MARACUJA_MODULE_CAMPAIGNS', false),
     ],
 
@@ -100,6 +101,7 @@ return [
             'contact_form' => true,
             'inquiries' => false,
             'audience' => false,
+            'brevo' => false,
             'campaigns' => false,
         ],
         'signature' => [
@@ -115,6 +117,7 @@ return [
             'contact_form' => true,
             'inquiries' => true,
             'audience' => false,
+            'brevo' => false,
             'campaigns' => false,
         ],
         'univers' => [
@@ -130,6 +133,7 @@ return [
             'contact_form' => true,
             'inquiries' => true,
             'audience' => true,
+            'brevo' => true,
             'campaigns' => false,
         ],
     ],

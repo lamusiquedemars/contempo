@@ -1,0 +1,8 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../app/Modules/**/*';
+@source '../../../../resources/views/filament/**/*';
+@source '../../../../vendor/maracuja-digital/site-core-audience/resources/views/**/*';
+@source '../../../../vendor/maracuja-digital/site-core-brevo/resources/views/**/*';
+@source '../../../../vendor/maracuja-digital/site-core-media/resources/views/**/*';

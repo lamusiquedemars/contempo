@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eaa70be413acf0e9a954270d8f40e664",
+    "content-hash": "a07f32f5584b533d81a1696509c635af",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -3242,6 +3242,121 @@
                 }
             ],
             "time": "2026-04-30T23:56:43+00:00"
+        },
+        {
+            "name": "maracuja-digital/site-core-audience",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../maracuja-site-core/packages/audience",
+                "reference": "e15adc6a7954a6e014228232389e603514754cb4"
+            },
+            "require": {
+                "filament/filament": "^4.0",
+                "illuminate/database": "^13.0",
+                "illuminate/mail": "^13.0",
+                "illuminate/support": "^13.0",
+                "maracuja-digital/site-core-media": "dev-main",
+                "php": "^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Maracuja\\SiteCore\\Audience\\Providers\\AudienceServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maracuja\\SiteCore\\Audience\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Consentement marketing, contacts, segments et campagnes de Maracuja Site Core.",
+            "transport-options": {
+                "symlink": false,
+                "relative": true
+            }
+        },
+        {
+            "name": "maracuja-digital/site-core-brevo",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../maracuja-site-core/packages/brevo",
+                "reference": "08d6ca86d278b31a8a64fce502bc279e372a3735"
+            },
+            "require": {
+                "filament/filament": "^4.0",
+                "illuminate/database": "^13.0",
+                "illuminate/http": "^13.0",
+                "illuminate/support": "^13.0",
+                "maracuja-digital/site-core-audience": "dev-main",
+                "nesbot/carbon": "^3.0",
+                "php": "^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Maracuja\\SiteCore\\Brevo\\Providers\\BrevoServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maracuja\\SiteCore\\Brevo\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Adaptateur Brevo optionnel pour Maracuja Site Core Audience.",
+            "transport-options": {
+                "symlink": false,
+                "relative": true
+            }
+        },
+        {
+            "name": "maracuja-digital/site-core-media",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../maracuja-site-core/packages/media",
+                "reference": "e48c67a798d228974de215fa950e0e94dfc7bf93"
+            },
+            "require": {
+                "filament/filament": "^4.0",
+                "illuminate/database": "^13.0",
+                "illuminate/http": "^13.0",
+                "illuminate/process": "^13.0",
+                "illuminate/support": "^13.0",
+                "php": "^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Maracuja\\SiteCore\\Media\\Providers\\MediaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maracuja\\SiteCore\\Media\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Médiathèque et contrats de stockage pour Maracuja Site Core.",
+            "transport-options": {
+                "symlink": false,
+                "relative": true
+            }
         },
         {
             "name": "monolog/monolog",
@@ -10317,7 +10432,11 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "maracuja-digital/site-core-audience": 20,
+        "maracuja-digital/site-core-brevo": 20,
+        "maracuja-digital/site-core-media": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

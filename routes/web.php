@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\AudienceUnsubscribeController;
-use App\Http\Controllers\BrevoAudienceWebhookController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalPageController;
@@ -25,8 +23,6 @@ Route::get('/storage/{path}', PublicStorageController::class)
 
 Route::get('/', HomeController::class)->name('home');
 
-Route::get('/audience/desinscription/{token}', AudienceUnsubscribeController::class)->name('audience.unsubscribe');
-Route::post('/webhooks/brevo/audience/{secret}', BrevoAudienceWebhookController::class)->name('webhooks.brevo.audience');
 Route::post('/api/internal/cremona/instruments', [InstrumentProjectionController::class, 'store'])->withoutMiddleware(['web']);
 Route::get('/instruments', [PublicInstrumentController::class, 'index'])->name('instruments.index');
 Route::get('/instruments/{slug}', [PublicInstrumentController::class, 'show'])->name('instruments.show');

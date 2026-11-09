@@ -5,11 +5,23 @@
     "description": "Contempo Luthiers website built on the Maracuja CMS base.",
     "keywords": ["laravel", "filament", "cms", "contempo", "lutherie"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../maracuja-site-core/packages/*",
+            "options": {
+                "symlink": false
+            }
+        }
+    ],
     "require": {
         "php": "^8.4.1",
         "filament/filament": "^4.0",
         "laravel/framework": "^13.8",
-        "laravel/tinker": "^3.0"
+        "laravel/tinker": "^3.0",
+        "maracuja-digital/site-core-audience": "dev-main",
+        "maracuja-digital/site-core-brevo": "dev-main",
+        "maracuja-digital/site-core-media": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

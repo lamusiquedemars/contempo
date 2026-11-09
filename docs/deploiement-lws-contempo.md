@@ -56,13 +56,41 @@ Ne pas uploader:
 Sur le serveur, executer ou verifier:
 
 ```bash
-composer install --no-dev --optimize-autoloader
-php artisan migrate --force
 php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
+
+### Dépendances Composer locales
+
+Contempo utilise des packages locaux de `maracuja-site-core` pour Audience,
+Brevo et Media. Ils sont résolus et copiés dans `vendor/` **en local** : la
+racine `../maracuja-site-core` n'existe pas sur LWS.
+
+Avant l'upload, exécuter localement les commandes Composer et transmettre les
+dossiers préparés `vendor/maracuja-digital/site-core-audience`,
+`vendor/maracuja-digital/site-core-brevo` et
+`vendor/maracuja-digital/site-core-media`, ainsi que
+`public/js/maracuja-site-core/`.
+
+Ne pas lancer `composer install` ou `composer update` sur LWS pour une version
+qui modifie ces packages : le serveur ne pourrait pas résoudre le dépôt local.
+
+### Migrations de production
+
+Toujours consulter `php artisan migrate:status` avant une livraison. Ne jamais
+exécuter une migration globale si une migration plus ancienne est en attente et
+ne fait pas partie de la livraison validée.
+
+Pour la transition Audience/Brevo, exécuter uniquement :
+
+```bash
+php artisan migrate --force --path=database/migrations/2026_11_09_000000_align_audience_schema_with_site_core.php
+```
+
+Cette migration est additive : elle conserve les contacts, campagnes,
+événements et réglages Brevo existants, y compris la clé API chiffrée.
 
 Ne jamais exécuter `php artisan migrate --seed` ou `php artisan db:seed` sur la
 base de production : le seeder contient uniquement des données de démarrage
