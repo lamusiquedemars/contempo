@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class AdminAccessTest extends TestCase
@@ -22,6 +23,18 @@ class AdminAccessTest extends TestCase
         $this->actingAs($admin)
             ->get('/admin')
             ->assertOk();
+    }
+
+    public function test_connected_site_dashboard_links_to_its_cremona_workspace(): void
+    {
+        config()->set('maracuja.cremona.issuer', 'https://cremona.example.test');
+        config()->set('maracuja.cremona.organization_slug', 'contempo-luthiers');
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        Livewire::actingAs($admin)
+            ->test(\App\Filament\Widgets\AdminWelcome::class)
+            ->assertSee('Gestion commerciale')
+            ->assertSee('https://cremona.example.test/dashboard/contempo-luthiers');
     }
 
     public function test_manager_user_can_access_panel_and_edit_content(): void

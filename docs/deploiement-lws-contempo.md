@@ -22,6 +22,8 @@ APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://contempoluthiers.fr
 MARACUJA_INDEXABLE=true
+MARACUJA_CREMONA_ISSUER=https://cremona.maracujadigital.fr
+MARACUJA_CREMONA_ORGANIZATION_SLUG=contempo-luthiers
 
 MAIL_MAILER=smtp
 MAIL_SCHEME=smtps
@@ -32,6 +34,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 ```
 
 `MARACUJA_INDEXABLE=false` evite que le sous-domaine CMS concurrence le site public existant.
+Le lien « Gestion commerciale » ouvre directement l’organisation Contempo dans Cremona. Ces deux variables configurent sa destination indépendamment du bridge des formulaires.
 
 ## Avant upload
 

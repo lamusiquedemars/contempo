@@ -17,6 +17,8 @@ return [
         'token' => env('MARACUJA_CREMONA_TOKEN'),
         'site_reference' => env('MARACUJA_CREMONA_SITE_REFERENCE'),
         'projection_token' => env('MARACUJA_CREMONA_PROJECTION_TOKEN'),
+        'issuer' => env('MARACUJA_CREMONA_ISSUER', 'https://cremona.maracujadigital.fr'),
+        'organization_slug' => env('MARACUJA_CREMONA_ORGANIZATION_SLUG', 'contempo-luthiers'),
     ],
 
     'gallery' => [

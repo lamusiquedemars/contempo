@@ -41,11 +41,29 @@ class AdminWelcome extends Widget
     private function primaryActions(): array
     {
         return array_values(array_filter([
+            $this->cremonaAction(),
             $this->moduleAction('pages', PageResource::class, 'Mettre à jour une page', 'Titres, textes principaux et SEO.'),
             $this->moduleAction('content_slots', ContentSlotResource::class, 'Modifier un texte court', 'Accroches, phrases de section et micro-contenus.'),
             $this->moduleAction('inquiries', InquiryResource::class, 'Traiter les demandes', 'Messages entrants, réponses et suivi client.', 'inquiries'),
             $this->moduleAction('site_settings', SiteSettingResource::class, 'Régler les informations du site', 'Nom, contact, réseaux, SEO et visuels par défaut.'),
         ]));
+    }
+
+    private function cremonaAction(): ?array
+    {
+        $issuer = rtrim((string) config('maracuja.cremona.issuer'), '/');
+        $organizationSlug = trim((string) config('maracuja.cremona.organization_slug'), '/');
+
+        if (blank($issuer) || blank($organizationSlug)) {
+            return null;
+        }
+
+        return [
+            'label' => 'Gestion commerciale',
+            'description' => 'Ouvrir l’espace Cremona de Contempo.',
+            'url' => $issuer.'/dashboard/'.rawurlencode($organizationSlug),
+            'external' => true,
+        ];
     }
 
     private function secondaryActions(): array
