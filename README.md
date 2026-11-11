@@ -51,7 +51,12 @@ La base distante, le SMTP et les mots de passe restent dans le `.env` du serveur
 
 ## Déploiement
 
-Les fichiers FTP/FileZilla ne doivent pas être versionnés. Ils sont ignorés par Git via `ftp.*.xml`.
+Les anciennes informations de transfert ne sont pas une source opérationnelle.
+Voir le
+[registre des documents retirés/en quarantaine](../maracuja-control/docs/documents-a-retirer.md)
+et la
+[politique de déploiement multi-sites](../maracuja-control/docs/deploiement-multi-sites.md).
+Ne lance pas d'upload ou de commande de production depuis un ancien guide.
 
 Avant livraison ou upload :
 

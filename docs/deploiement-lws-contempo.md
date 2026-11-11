@@ -1,5 +1,12 @@
 # Deploiement LWS - Contempo Luthiers
 
+> **QUARANTAINE — ne pas exécuter ce guide.** Le flux d'upload et les
+> commandes serveur n'ont pas été validés selon la politique commune ; les
+> remarques d'exploitation datées ne prouvent pas l'état actuel du site.
+> N'utilise pas ses accès, destinations ou commandes de production. Voir le
+> [registre des documents retirés/en quarantaine](../../maracuja-control/docs/documents-a-retirer.md)
+> et la [politique commune](../../maracuja-control/docs/deploiement-multi-sites.md).
+
 Objectif : déployer Maracuja CMS sur le site public Contempo Luthiers.
 
 ## Cible de production
