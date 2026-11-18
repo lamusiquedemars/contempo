@@ -20,6 +20,7 @@ class MediaAuditService
     {
         $this->roots = $roots ?? [
             'public' => public_path('storage'),
+            'legacy_web' => public_path('media'),
             'legacy_public' => storage_path('app/public'),
             'private' => storage_path('app/private'),
         ];
@@ -141,7 +142,7 @@ class MediaAuditService
                 $anomalies[] = $this->anomaly('public_path_forbidden', $scope.':'.$relativePath, 'Média public hors de media/images ou media/documents.');
             }
 
-            if ($scope === 'legacy_public') {
+            if (in_array($scope, ['legacy_public', 'legacy_web'], true)) {
                 $anomalies[] = $this->anomaly('legacy_public_file', $scope.':'.$relativePath, 'Fichier présent dans storage/app/public.');
             }
 

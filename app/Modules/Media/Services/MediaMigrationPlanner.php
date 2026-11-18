@@ -3,7 +3,12 @@
 namespace App\Modules\Media\Services;
 
 use App\Modules\Gallery\Models\GalleryImage;
+use App\Modules\Articles\Models\Article;
+use App\Modules\Events\Models\Event;
 use App\Modules\Media\Models\MediaAsset;
+use App\Modules\News\Models\NewsPost;
+use App\Modules\Pages\Models\Page;
+use App\Modules\SiteSettings\Models\SiteSetting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -17,6 +22,7 @@ class MediaMigrationPlanner
     {
         $this->roots = $roots ?? [
             'public' => public_path('storage'),
+            'legacy_web' => public_path('media'),
             'legacy_public' => storage_path('app/public'),
             'private' => storage_path('app/private'),
         ];
@@ -25,7 +31,14 @@ class MediaMigrationPlanner
     public function plan(): array
     {
         $audit = app(MediaAuditService::class)->audit();
-        $candidates = collect($audit['files'])->reject(fn (array $file): bool => (bool) $file['canonical']);
+        $supportedReferences = collect($audit['references'])
+            ->filter(fn (array $reference): bool => $this->referenceDefinition((string) ($reference['source'] ?? '')) !== null)
+            ->pluck('normalized_path')
+            ->filter()
+            ->flip();
+        $candidates = collect($audit['files'])
+            ->reject(fn (array $file): bool => (bool) $file['canonical'])
+            ->filter(fn (array $file): bool => $supportedReferences->has($this->referencePathForFile($file)));
         $eligible = $candidates
             ->filter(fn (array $file): bool => $this->isEligible($file))
             ->reject(fn (array $file): bool => $file['scope'] === 'private' && $this->isAllowedPrivatePath($file['relative_path']))
@@ -47,6 +60,7 @@ class MediaMigrationPlanner
                 'original_name' => basename($source['relative_path']),
                 'source' => $source['scope'].':'.$source['relative_path'],
                 'copies' => $copies->map(fn (array $file): string => $file['scope'].':'.$file['relative_path'])->values()->all(),
+                'preserve_sources' => true,
                 'destination' => sprintf('media/%s/%s/%s/%s.%s',
                     $type === 'image' ? 'images' : 'documents', now()->format('Y'), now()->format('m'),
                     Str::ulid(), $this->extensionForMime($source['mime_type'])),
@@ -447,7 +461,7 @@ class MediaMigrationPlanner
 
             $entry = collect($plan['entries'])->first(function (array $entry) use ($reference): bool {
                 return collect($entry['copies'] ?? [])
-                    ->contains(fn (string $copy): bool => explode(':', $copy, 2)[1] === $reference['normalized_path']);
+                    ->contains(fn (string $copy): bool => $this->referencePathForCopy($copy) === $reference['normalized_path']);
             });
 
             if (! $entry || blank($entry['media_asset_id'] ?? null)) {
@@ -497,16 +511,37 @@ class MediaMigrationPlanner
     /** @return array{model: class-string, id: int, source_column: string, target_column: string}|null */
     private function referenceDefinition(string $source): ?array
     {
-        if (preg_match('/^gallery_images#(\d+)\.image_path$/', $source, $matches) !== 1) {
+        $definitions = [
+            'gallery_images' => [GalleryImage::class, 'image_path', 'media_asset_id'],
+            'pages' => [Page::class, 'hero_image_path', 'hero_media_id'],
+            'news_posts' => [NewsPost::class, 'image_path', 'image_media_id'],
+            'articles' => [Article::class, 'image_path', 'image_media_id'],
+            'events' => [Event::class, 'image_path', 'image_media_id'],
+            'site_settings' => [SiteSetting::class, 'logo_path', 'logo_media_id'],
+        ];
+
+        if (preg_match('/^([a-z_]+)#(\d+)\.([a-z_]+)$/', $source, $matches) !== 1 || ! isset($definitions[$matches[1]])) {
             return null;
         }
 
-        return [
-            'model' => GalleryImage::class,
-            'id' => (int) $matches[1],
-            'source_column' => 'image_path',
-            'target_column' => 'media_asset_id',
-        ];
+        [$model, $sourceColumn, $targetColumn] = $definitions[$matches[1]];
+        if ($matches[3] !== $sourceColumn) {
+            return null;
+        }
+
+        return ['model' => $model, 'id' => (int) $matches[2], 'source_column' => $sourceColumn, 'target_column' => $targetColumn];
+    }
+
+    private function referencePathForFile(array $file): string
+    {
+        return $file['scope'] === 'legacy_web' ? 'media/'.$file['relative_path'] : $file['relative_path'];
+    }
+
+    private function referencePathForCopy(string $copy): string
+    {
+        [$scope, $path] = array_pad(explode(':', $copy, 2), 2, '');
+
+        return $scope === 'legacy_web' ? 'media/'.$path : $path;
     }
 
     private function sourcePath(string $source, array $roots): string
