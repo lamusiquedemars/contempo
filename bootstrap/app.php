@@ -1,6 +1,8 @@
 <?php
 
 use App\Console\Commands\MaracujaDoctorCommand;
+use App\Console\Commands\MaracujaMediaAuditCommand;
+use App\Console\Commands\MaracujaMediaMigrateCommand;
 use App\Console\Commands\RetryCremonaDeliveriesCommand;
 use App\Console\Commands\SendPendingAudienceMessagesCommand;
 use Illuminate\Foundation\Application;
@@ -15,6 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withCommands([
         MaracujaDoctorCommand::class,
+        MaracujaMediaAuditCommand::class,
+        MaracujaMediaMigrateCommand::class,
         SendPendingAudienceMessagesCommand::class,
         RetryCremonaDeliveriesCommand::class,
     ])
