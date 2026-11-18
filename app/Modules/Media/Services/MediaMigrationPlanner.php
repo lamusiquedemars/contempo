@@ -33,12 +33,14 @@ class MediaMigrationPlanner
         $audit = app(MediaAuditService::class)->audit();
         $supportedReferences = collect($audit['references'])
             ->filter(fn (array $reference): bool => $this->referenceDefinition((string) ($reference['source'] ?? '')) !== null)
+            ->values();
+        $supportedPaths = $supportedReferences
             ->pluck('normalized_path')
             ->filter()
             ->flip();
         $candidates = collect($audit['files'])
             ->reject(fn (array $file): bool => (bool) $file['canonical'])
-            ->filter(fn (array $file): bool => $supportedReferences->has($this->referencePathForFile($file)));
+            ->filter(fn (array $file): bool => $supportedPaths->has($this->referencePathForFile($file)));
         $eligible = $candidates
             ->filter(fn (array $file): bool => $this->isEligible($file))
             ->reject(fn (array $file): bool => $file['scope'] === 'private' && $this->isAllowedPrivatePath($file['relative_path']))
@@ -92,7 +94,7 @@ class MediaMigrationPlanner
             'roots' => $this->roots,
             'entries' => $entries->all(),
             'excluded' => $excluded->all(),
-            'references' => $audit['references'],
+            'references' => $supportedReferences->all(),
         ];
     }
 
