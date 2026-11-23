@@ -2,7 +2,6 @@
 
 namespace App\Modules\Media\Services;
 
-use App\Modules\Gallery\Models\GalleryImage;
 use App\Modules\Articles\Models\Article;
 use App\Modules\Events\Models\Event;
 use App\Modules\Media\Models\MediaAsset;
@@ -11,6 +10,7 @@ use App\Modules\Pages\Models\Page;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Maracuja\SiteCore\Gallery\Models\GalleryImage;
 use RuntimeException;
 
 class MediaMigrationPlanner

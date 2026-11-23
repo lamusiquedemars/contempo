@@ -4,12 +4,18 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Modules\Audience\Models\AudienceBrevoSetting;
-use App\Modules\Media\Models\MediaAsset;
 use App\Modules\Media\Policies\MediaAssetPolicy;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use App\Support\ContentPermissions;
+use App\Support\SiteFoundationAccessGate;
+use App\Support\SiteMediaAccessGate;
+use App\Support\SiteModuleAvailability;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Maracuja\SiteCore\Foundation\Contracts\FoundationAccessGate;
+use Maracuja\SiteCore\Foundation\Contracts\ModuleAvailability;
+use Maracuja\SiteCore\Media\Contracts\MediaAccessGate;
+use Maracuja\SiteCore\Media\Models\MediaAsset;
 use RuntimeException;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,7 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(FoundationAccessGate::class, SiteFoundationAccessGate::class);
+        $this->app->singleton(ModuleAvailability::class, SiteModuleAvailability::class);
+        $this->app->singleton(MediaAccessGate::class, SiteMediaAccessGate::class);
     }
 
     /**

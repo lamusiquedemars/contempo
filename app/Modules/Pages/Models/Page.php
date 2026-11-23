@@ -2,10 +2,10 @@
 
 namespace App\Modules\Pages\Models;
 
-use App\Modules\Gallery\Models\Gallery;
 use App\Support\Modules;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Maracuja\SiteCore\Gallery\Models\Gallery;
 
 class Page extends Model
 {

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Pages;
 
 use App\Filament\Resources\Pages\Pages\ManagePages;
-use App\Modules\Gallery\Models\Gallery;
 use App\Modules\Pages\Models\Page;
 use App\Support\MediaFiles;
 use App\Support\Modules;
@@ -25,6 +24,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Maracuja\SiteCore\Gallery\Models\Gallery;
 
 class PageResource extends Resource
 {
