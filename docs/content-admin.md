@@ -57,6 +57,16 @@ Son titre, son hero et son SEO peuvent être gérés dans `Pages`, mais le conte
 - `News`: actualités publiées entre une date de début et une date de fin optionnelle.
 - `Gallery`: images, textes courts, alt, credit, ordre et publication.
 
+### Galerie d'une page éditoriale
+
+Certaines pages éditoriales, comme `Instruments anciens`, peuvent afficher une galerie sans que celle-ci soit obligatoire. Pour l’alimenter :
+
+1. Dans **Médias > Galeries**, créez la galerie puis enregistrez-la comme publiée.
+2. Ouvrez-la pour ajouter les photos, leur ordre, leur texte alternatif, leur légende et leur crédit. Seules les photos publiées sont visibles sur le site.
+3. Dans **Contenus > Pages**, ouvrez la page concernée et sélectionnez cette galerie dans le champ **Galerie photo**.
+
+Tant qu’aucune galerie n’est associée, ou qu’elle ne contient aucune photo publiée, la section photo ne s’affiche pas. La structure de la page reste inchangée.
+
 ## Content Slots
 
 Les `Content Slots` remplacent les anciens blocs libres rattachés aux pages. Ils permettent de modifier une petite valeur sans toucher à la page elle-même.

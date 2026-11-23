@@ -76,6 +76,17 @@ class DatabaseSeeder extends Seeder
                 'seo_description' => 'Instruments contemporains, instruments anciens et instruments d étude chez Contempo Luthiers à Lyon.',
             ],
             [
+                'slug' => 'instruments-anciens',
+                'title' => 'Instruments anciens',
+                'template' => 'instruments-anciens',
+                'type' => Page::TYPE_SYSTEM,
+                'excerpt' => 'Une sélection d’instruments et d’archets anciens à découvrir sur rendez-vous.',
+                'hero_title' => 'Instruments et archets anciens',
+                'hero_subtitle' => 'Une sélection choisie avec attention, à essayer dans le cadre de l’atelier.',
+                'seo_title' => 'Instruments et archets anciens - Contempo Luthiers',
+                'seo_description' => 'Découvrez une sélection d’instruments et d’archets anciens chez Contempo Luthiers à Lyon.',
+            ],
+            [
                 'slug' => 'services',
                 'title' => 'Services',
                 'template' => 'services',
@@ -103,6 +114,7 @@ class DatabaseSeeder extends Seeder
             'accueil' => 'media/atelier-hero.jpg',
             'atelier' => 'media/giovanni.jpg',
             'instruments' => 'media/instrument.jpg',
+            'instruments-anciens' => 'media/atelier-hero.jpg',
             'services' => 'media/entretien-detail.jpg',
             'contact' => 'media/location.jpg',
         ];

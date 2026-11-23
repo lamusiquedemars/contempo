@@ -7,6 +7,8 @@ use App\Modules\ContactForm\Mail\ContactMessageReceived;
 use App\Modules\ContentSlots\Models\ContentSlot;
 use App\Modules\CremonaBridge\Models\CremonaDelivery;
 use App\Modules\Inquiries\Models\Inquiry;
+use App\Modules\Gallery\Models\Gallery;
+use App\Modules\Gallery\Models\GalleryImage;
 use App\Modules\InstrumentProjection\Models\PublishedInstrument;
 use App\Modules\News\Models\NewsPost;
 use App\Modules\Notices\Models\SiteNotice;
@@ -111,6 +113,80 @@ class PublicSiteTest extends TestCase
             ->assertSee('Photos de l’instrument')
             ->assertSee('data-lightbox', false)
             ->assertSee('https://cremona.test/storage/instruments/violon.jpg');
+    }
+
+    public function test_instruments_anciens_page_links_from_the_instruments_page_and_only_shows_published_gallery_photos(): void
+    {
+        SiteSetting::current();
+
+        $gallery = Gallery::query()->create([
+            'title' => 'Instruments anciens',
+            'slug' => 'instruments-anciens',
+            'is_published' => true,
+        ]);
+        GalleryImage::query()->create([
+            'gallery_id' => $gallery->id,
+            'title' => 'Violon ancien',
+            'image_path' => 'galleries/instruments-anciens/violon.jpg',
+            'is_published' => true,
+        ]);
+        GalleryImage::query()->create([
+            'gallery_id' => $gallery->id,
+            'title' => 'Archet non publié',
+            'image_path' => 'galleries/instruments-anciens/archet.jpg',
+            'is_published' => false,
+        ]);
+
+        Page::query()->create([
+            'title' => 'Instruments',
+            'slug' => 'instruments',
+            'template' => 'instruments',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+        Page::query()->create([
+            'title' => 'Instruments anciens',
+            'slug' => 'instruments-anciens',
+            'template' => 'instruments-anciens',
+            'gallery_id' => $gallery->id,
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        $this->get('/instruments')
+            ->assertOk()
+            ->assertSee('href="'.route('pages.show', 'instruments-anciens').'"', false);
+
+        $this->get('/instruments-anciens')
+            ->assertOk()
+            ->assertSee('Une sélection d&#039;instruments et d&#039;archets anciens', false)
+            ->assertSee('La sélection en images')
+            ->assertSee('Violon ancien')
+            ->assertSee('data-lightbox', false)
+            ->assertDontSee('Archet non publié');
+    }
+
+    public function test_instruments_anciens_page_hides_an_unpublished_or_empty_gallery(): void
+    {
+        SiteSetting::current();
+
+        $gallery = Gallery::query()->create([
+            'title' => 'Sélection à venir',
+            'slug' => 'selection-a-venir',
+            'is_published' => false,
+        ]);
+        Page::query()->create([
+            'title' => 'Instruments anciens',
+            'slug' => 'instruments-anciens',
+            'template' => 'instruments-anciens',
+            'gallery_id' => $gallery->id,
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        $this->get('/instruments-anciens')
+            ->assertOk()
+            ->assertDontSee('La sélection en images');
     }
 
     public function test_published_instrument_formats_a_numeric_public_price_in_euros(): void

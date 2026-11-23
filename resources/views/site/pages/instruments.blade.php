@@ -20,7 +20,7 @@
         <x-site.card title="Instruments contemporains" kicker="Auteurs" image="/media/instrument.jpg">
             Choisis pour la qualité du travail de mes confrères artisans, ces instruments offrent un toucher et une sonorité exceptionnels.
         </x-site.card>
-        <x-site.card title="Instruments anciens" kicker="Tradition" image="/media/atelier-hero.jpg">
+        <x-site.card title="Instruments anciens" kicker="Tradition" image="/media/atelier-hero.jpg" :url="route('pages.show', 'instruments-anciens')">
             Ces instruments respectent des prérequis de qualité précis et sont adaptés au niveau du musicien, pour une expérience authentique.
         </x-site.card>
         <x-site.card title="Instruments d'étude" kicker="Apprentissage" image="/media/entretien.jpg">

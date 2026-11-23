@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Pages;
 
 use App\Filament\Resources\Pages\Pages\ManagePages;
+use App\Modules\Gallery\Models\Gallery;
 use App\Modules\Pages\Models\Page;
 use App\Support\MediaFiles;
 use App\Support\Modules;
@@ -126,6 +127,16 @@ class PageResource extends Resource
                     ->imagePreviewHeight('220')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'])
                     ->helperText('Déposer une nouvelle image dans public/media, ou choisir une image existante ci-dessus.'),
+                Select::make('gallery_id')
+                    ->label('Galerie photo')
+                    ->options(fn (): array => Gallery::query()
+                        ->orderBy('title')
+                        ->pluck('title', 'id')
+                        ->all())
+                    ->searchable()
+                    ->nullable()
+                    ->visible(fn (): bool => Modules::enabled('gallery'))
+                    ->helperText('Optionnel. Créez et alimentez d’abord la galerie dans Médias > Galeries ; seules ses photos publiées seront visibles sur la page.'),
                 RichEditor::make('content')
                     ->label('Texte principal')
                     ->visible(fn (?Page $record): bool => (bool) $record?->isText())

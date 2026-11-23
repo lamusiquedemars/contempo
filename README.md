@@ -51,12 +51,9 @@ La base distante, le SMTP et les mots de passe restent dans le `.env` du serveur
 
 ## Déploiement
 
-Les anciennes informations de transfert ne sont pas une source opérationnelle.
-Voir le
-[registre des documents retirés/en quarantaine](../maracuja-control/docs/documents-a-retirer.md)
-et la
-[politique de déploiement multi-sites](../maracuja-control/docs/deploiement-multi-sites.md).
-Ne lance pas d'upload ou de commande de production depuis un ancien guide.
+La publication Contempo passe par le transfert FTP configuré pour le projet,
+vers la racine de production LWS. La procédure et les contrôles à appliquer
+sont décrits dans [le guide LWS](docs/deploiement-lws-contempo.md).
 
 Avant livraison ou upload :
 

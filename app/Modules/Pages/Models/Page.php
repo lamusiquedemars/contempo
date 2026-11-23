@@ -2,8 +2,10 @@
 
 namespace App\Modules\Pages\Models;
 
+use App\Modules\Gallery\Models\Gallery;
 use App\Support\Modules;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Page extends Model
 {
@@ -22,6 +24,7 @@ class Page extends Model
         'hero_title',
         'hero_subtitle',
         'hero_image_path',
+        'gallery_id',
         'content',
         'seo_title',
         'seo_description',
@@ -50,6 +53,16 @@ class Page extends Model
     public function isModule(): bool
     {
         return $this->type === self::TYPE_MODULE;
+    }
+
+    public function gallery(): BelongsTo
+    {
+        return $this->belongsTo(Gallery::class);
+    }
+
+    public function publicGallery(): BelongsTo
+    {
+        return $this->gallery()->where('is_published', true);
     }
 
     public function publicUrl(): ?string
