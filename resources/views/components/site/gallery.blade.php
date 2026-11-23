@@ -27,9 +27,7 @@
     >
         @php
             $renderItem = function ($image) use ($lightbox) {
-                $src = str_starts_with($image->image_path, 'http') || str_starts_with($image->image_path, '/')
-                    ? $image->image_path
-                    : asset('storage/' . $image->image_path);
+                $src = $image->resolved_image_url;
                 $caption = $image->caption ?: $image->title;
 
                 return compact('src', 'caption');
@@ -55,7 +53,7 @@
                                 rel="noreferrer"
                             >
                                 <x-site.image
-                                    :src="$image->image_path"
+                                    :src="$src"
                                     :alt="$image->alt"
                                     :width="$image->width"
                                     :height="$image->height"
@@ -63,7 +61,7 @@
                             </a>
                         @else
                             <x-site.image
-                                :src="$image->image_path"
+                                :src="$src"
                                 :alt="$image->alt"
                                 :width="$image->width"
                                 :height="$image->height"
