@@ -16,11 +16,6 @@ class PageController extends Controller
         $page = Page::query()
             ->where('slug', $slug)
             ->where('is_published', true)
-            ->with([
-                'publicGallery.images' => fn ($query) => $query
-                    ->where('is_published', true)
-                    ->orderBy('position'),
-            ])
             ->firstOrFail();
 
         abort_if($page->isModule(), 404);

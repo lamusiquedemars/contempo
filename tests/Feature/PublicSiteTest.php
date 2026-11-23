@@ -117,6 +117,8 @@ class PublicSiteTest extends TestCase
 
     public function test_instruments_anciens_page_links_from_the_instruments_page_and_only_shows_published_gallery_photos(): void
     {
+        config(['maracuja.modules.gallery' => true]);
+
         SiteSetting::current();
 
         $gallery = Gallery::query()->create([
@@ -144,18 +146,9 @@ class PublicSiteTest extends TestCase
             'is_published' => true,
             'published_at' => now(),
         ]);
-        Page::query()->create([
-            'title' => 'Instruments anciens',
-            'slug' => 'instruments-anciens',
-            'template' => 'instruments-anciens',
-            'gallery_id' => $gallery->id,
-            'is_published' => true,
-            'published_at' => now(),
-        ]);
-
         $this->get('/instruments')
             ->assertOk()
-            ->assertSee('href="'.route('pages.show', 'instruments-anciens').'"', false);
+            ->assertSee('href="'.route('instruments.anciens').'"', false);
 
         $this->get('/instruments-anciens')
             ->assertOk()
@@ -168,6 +161,8 @@ class PublicSiteTest extends TestCase
 
     public function test_instruments_anciens_page_hides_an_unpublished_or_empty_gallery(): void
     {
+        config(['maracuja.modules.gallery' => true]);
+
         SiteSetting::current();
 
         $gallery = Gallery::query()->create([
@@ -175,15 +170,6 @@ class PublicSiteTest extends TestCase
             'slug' => 'selection-a-venir',
             'is_published' => false,
         ]);
-        Page::query()->create([
-            'title' => 'Instruments anciens',
-            'slug' => 'instruments-anciens',
-            'template' => 'instruments-anciens',
-            'gallery_id' => $gallery->id,
-            'is_published' => true,
-            'published_at' => now(),
-        ]);
-
         $this->get('/instruments-anciens')
             ->assertOk()
             ->assertDontSee('La sélection en images');
