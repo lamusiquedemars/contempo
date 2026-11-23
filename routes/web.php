@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AudienceUnsubscribeController;
+use App\Http\Controllers\AncientInstrumentsController;
 use App\Http\Controllers\BrevoAudienceWebhookController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CremonaPortalController;
@@ -39,6 +40,7 @@ Route::post('/webhooks/brevo/audience/{secret}', BrevoAudienceWebhookController:
 Route::post('/api/internal/cremona/instruments', [InstrumentProjectionController::class, 'store'])->withoutMiddleware(['web']);
 Route::get('/instruments', [PublicInstrumentController::class, 'index'])->name('instruments.index');
 Route::get('/instruments/{slug}', [PublicInstrumentController::class, 'show'])->name('instruments.show');
+Route::get('/instruments-anciens', AncientInstrumentsController::class)->name('instruments.anciens');
 
 Route::get('/mentions-legales', [LegalPageController::class, 'legal'])->name('legal.mentions');
 Route::get('/confidentialite', [LegalPageController::class, 'privacy'])->name('legal.privacy');

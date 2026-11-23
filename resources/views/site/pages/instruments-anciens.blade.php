@@ -1,14 +1,14 @@
 @extends('layouts.site', [
-    'seoTitle' => $page->seo_title,
-    'seoDescription' => $page->seo_description,
+    'seoTitle' => 'Instruments et archets anciens - Contempo Luthiers',
+    'seoDescription' => 'Découvrez une sélection d’instruments et d’archets anciens chez Contempo Luthiers à Lyon.',
 ])
 
 @section('content')
 <x-site.hero
     eyebrow="Tradition"
-    :title="$page->hero_title ?? $page->title"
-    :subtitle="$page->hero_subtitle ?? $page->excerpt"
-    :image="\App\Support\MediaFiles::url($page->hero_image_path) ?? '/media/atelier-hero.jpg'"
+    title="Instruments et archets anciens"
+    subtitle="Une sélection choisie avec attention, à essayer dans le cadre de l’atelier."
+    image="/media/atelier-hero.jpg"
     :cta-url="$contactUrl"
     cta-label="Prendre rendez-vous" />
 
@@ -22,12 +22,12 @@
     </div>
 </x-site.section>
 
-@if ($page->publicGallery?->images->isNotEmpty())
+@if ($galleryImages->isNotEmpty())
     <x-site.section
         title="La sélection en images"
         intro="Photos de la sélection actuellement présentée à l'atelier."
         heading-variant="accent">
-        <x-site.lightbox-gallery :images="$page->publicGallery->images" />
+        <x-site.lightbox-gallery :images="$galleryImages" />
     </x-site.section>
 @endif
 

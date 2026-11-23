@@ -61,11 +61,10 @@ Son titre, son hero et son SEO peuvent être gérés dans `Pages`, mais le conte
 
 Certaines pages éditoriales, comme `Instruments anciens`, peuvent afficher une galerie sans que celle-ci soit obligatoire. Pour l’alimenter :
 
-1. Dans **Médias > Galeries**, créez la galerie puis enregistrez-la comme publiée.
+1. Dans **Médias > Galeries**, créez une galerie nommée **Instruments anciens** puis enregistrez-la comme publiée. Son slug automatique doit être `instruments-anciens`.
 2. Ouvrez-la pour ajouter les photos, leur ordre, leur texte alternatif, leur légende et leur crédit. Seules les photos publiées sont visibles sur le site.
-3. Dans **Contenus > Pages**, ouvrez la page concernée et sélectionnez cette galerie dans le champ **Galerie photo**.
 
-Tant qu’aucune galerie n’est associée, ou qu’elle ne contient aucune photo publiée, la section photo ne s’affiche pas. La structure de la page reste inchangée.
+Tant que cette galerie n’existe pas, n’est pas publiée ou ne contient aucune photo publiée, la section photo ne s’affiche pas. La structure de la page reste inchangée.
 
 ## Content Slots
 
