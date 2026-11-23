@@ -54,11 +54,6 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->plugin(
-                (new ProfessionalWorkspacePlugin)
-                    ->entryRoute('cremona-portal')
-                    ->defaultLabel('Pilotage de l’activité'),
-            )
             ->widgets([
                 AccountWidget::class,
                 AdminWelcome::class,
@@ -78,6 +73,14 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+
+        if (class_exists(ProfessionalWorkspacePlugin::class)) {
+            $panel->plugin(
+                (new ProfessionalWorkspacePlugin)
+                    ->entryRoute('cremona-portal')
+                    ->defaultLabel('Pilotage de l’activité'),
+            );
+        }
 
         if (Modules::enabled('inquiries') && is_dir(app_path('Modules/Inquiries/Filament/Resources'))) {
             $panel->discoverResources(
