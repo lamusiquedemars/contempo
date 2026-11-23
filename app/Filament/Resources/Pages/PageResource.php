@@ -24,7 +24,6 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Maracuja\SiteCore\Gallery\Models\Gallery;
 
 class PageResource extends Resource
 {
