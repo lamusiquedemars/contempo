@@ -3,13 +3,17 @@
 namespace App\Modules\Events\Models;
 
 use App\Modules\Venues\Models\Venue;
+use App\Support\MediaFiles;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use Maracuja\SiteCore\Media\Concerns\TracksMediaUsages;
+use Maracuja\SiteCore\Media\Models\MediaAsset;
 
 class Event extends Model
 {
+    use TracksMediaUsages;
     public const STATUS_SCHEDULED = 'scheduled';
     public const STATUS_CANCELLED = 'cancelled';
     public const STATUS_POSTPONED = 'postponed';
@@ -27,6 +31,7 @@ class Event extends Model
         'excerpt',
         'description',
         'image_path',
+        'image_media_id',
         'ticket_url',
         'external_url',
         'seo_title',
@@ -50,6 +55,16 @@ class Event extends Model
     public function venue(): BelongsTo
     {
         return $this->belongsTo(Venue::class);
+    }
+
+    public function imageMedia(): BelongsTo { return $this->belongsTo(MediaAsset::class, 'image_media_id'); }
+    public function imageUrl(): ?string { return $this->trackedMedia('imageMedia', $this->image_media_id)?->url() ?? MediaFiles::url($this->image_path); }
+    protected function mediaUsageReferences(): array
+    {
+        return [
+            ['media_asset_id' => $this->image_media_id, 'field' => 'image_media_id'],
+            ...$this->mediaUsageReferencesFromHtml($this->description, 'description'),
+        ];
     }
 
     public function scopeVisible(Builder $query): Builder
