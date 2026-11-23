@@ -25,6 +25,30 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // LWS livre ces deux paquets dans vendor/, mais son registre Composer
+        // historique ne les indexe pas toujours. Ce pont ne s'active que pour
+        // les classes réellement présentes et conserve le chargement Composer
+        // habituel partout ailleurs.
+        spl_autoload_register(static function (string $class): void {
+            foreach ([
+                'Maracuja\\SiteCore\\Foundation\\' => base_path('vendor/maracuja-digital/site-core-foundation/src/'),
+                'Maracuja\\SiteCore\\Gallery\\' => base_path('vendor/maracuja-digital/site-core-gallery/src/'),
+                'Maracuja\\SiteCore\\ProfessionalWorkspace\\' => base_path('vendor/maracuja-digital/site-core-professional-workspace/src/'),
+            ] as $prefix => $directory) {
+                if (! str_starts_with($class, $prefix)) {
+                    continue;
+                }
+
+                $file = $directory.str_replace('\\', '/', substr($class, strlen($prefix))).'.php';
+
+                if (is_file($file)) {
+                    require_once $file;
+                }
+
+                return;
+            }
+        });
+
         $this->app->singleton(FoundationAccessGate::class, SiteFoundationAccessGate::class);
         $this->app->singleton(ModuleAvailability::class, SiteModuleAvailability::class);
         $this->app->singleton(MediaAccessGate::class, SiteMediaAccessGate::class);
