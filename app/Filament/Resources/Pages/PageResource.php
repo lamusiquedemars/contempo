@@ -4,26 +4,24 @@ namespace App\Filament\Resources\Pages;
 
 use App\Filament\Resources\Pages\Pages\ManagePages;
 use App\Modules\Pages\Models\Page;
-use App\Support\MediaFiles;
 use App\Support\Modules;
 use BackedEnum;
 use UnitEnum;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Maracuja\SiteCore\Media\Filament\Forms\Components\MaracujaRichEditor;
+use Maracuja\SiteCore\Media\Filament\Forms\Components\MediaPicker;
 
 class PageResource extends Resource
 {
@@ -106,27 +104,12 @@ class PageResource extends Resource
                     ->label('Sous-titre hero')
                     ->columnSpanFull()
                     ->helperText('Sous-titre affiché sous le titre hero.'),
-                Select::make('existing_hero_image_path')
-                    ->label('Choisir une image hero existante')
-                    ->options(fn (): array => MediaFiles::publicOptions('media'))
-                    ->default(fn (?Page $record): ?string => MediaFiles::publicDiskPath($record?->hero_image_path))
-                    ->searchable()
-                    ->live()
-                    ->dehydrated(false)
-                    ->afterStateUpdated(fn (Set $set, ?string $state): mixed => filled($state) ? $set('hero_image_path', $state) : null)
-                    ->helperText('Liste les fichiers déjà présents dans public/media.'),
-                FileUpload::make('hero_image_path')
-                    ->label('Téléverser une image hero')
-                    ->disk('site_public')
-                    ->directory('media')
-                    ->visibility('public')
-                    ->fetchFileInformation(false)
-                    ->preventFilePathTampering(true, fn (string $file): bool => MediaFiles::isPublicAllowed($file, 'media'))
-                    ->image()
-                    ->imagePreviewHeight('220')
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'])
-                    ->helperText('Déposer une nouvelle image dans public/media, ou choisir une image existante ci-dessus.'),
-                RichEditor::make('content')
+                MediaPicker::make('hero_media_id')
+                    ->label('Image hero')
+                    ->relationship('heroMedia', 'display_name')
+                    ->imagesOnly()
+                    ->helperText('Choisir une image de la médiathèque centrale.'),
+                MaracujaRichEditor::make('content')
                     ->label('Texte principal')
                     ->visible(fn (?Page $record): bool => (bool) $record?->isText())
                     ->columnSpanFull()
@@ -169,8 +152,8 @@ class PageResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('hero_title')
                     ->searchable(),
-                ImageColumn::make('hero_image_path')
-                    ->getStateUsing(fn (Page $record): ?string => MediaFiles::url($record->hero_image_path)),
+                ImageColumn::make('hero_media_id')
+                    ->getStateUsing(fn (Page $record): ?string => $record->heroImageUrl()),
                 TextColumn::make('seo_title')
                     ->searchable(),
                 IconColumn::make('is_published')

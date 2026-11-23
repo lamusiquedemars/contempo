@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Events;
 use App\Filament\Resources\Events\Pages\ManageEvents;
 use App\Modules\Events\Models\Event;
 use App\Modules\Venues\Models\Venue;
-use App\Support\MediaFiles;
 use App\Support\Modules;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -13,21 +12,20 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Maracuja\SiteCore\Media\Filament\Forms\Components\MaracujaRichEditor;
+use Maracuja\SiteCore\Media\Filament\Forms\Components\MediaPicker;
 use UnitEnum;
 
 class EventResource extends Resource
@@ -128,25 +126,14 @@ class EventResource extends Resource
                         Textarea::make('excerpt')
                             ->label('Résumé')
                             ->columnSpanFull(),
-                        RichEditor::make('description')
+                        MaracujaRichEditor::make('description')
                             ->label('Description')
                             ->columnSpanFull(),
-                        Select::make('existing_image_path')
-                            ->label('Choisir une image existante')
-                            ->options(fn (): array => MediaFiles::options('events'))
-                            ->searchable()
-                            ->live()
-                            ->dehydrated(false)
-                            ->afterStateUpdated(fn (Set $set, ?string $state): mixed => filled($state) ? $set('image_path', $state) : null)
-                            ->helperText('Liste les fichiers déjà présents dans public/storage/events.'),
-                        FileUpload::make('image_path')
+                        MediaPicker::make('image_media_id')
                             ->label('Image')
-                            ->disk('public')
-                            ->directory('events')
-                            ->visibility('public')
-                            ->fetchFileInformation(false)
-                            ->preventFilePathTampering(true, fn (string $file): bool => MediaFiles::isAllowed($file, 'events'))
-                            ->image(),
+                            ->relationship('imageMedia', 'display_name')
+                            ->imagesOnly()
+                            ->helperText('Choisir une image de la médiathèque centrale.'),
                     ]),
                 Section::make('Liens')
                     ->columns(2)
