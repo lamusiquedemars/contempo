@@ -1,11 +1,5 @@
 <?php
 
-$audienceProvider = __DIR__.'/../vendor/maracuja-digital/site-core-audience/src/Providers/AudienceServiceProvider.php';
-
-if (is_file($audienceProvider)) {
-    require_once $audienceProvider;
-}
-
 use App\Console\Commands\MaracujaDoctorCommand;
 use App\Console\Commands\MaracujaMediaAuditCommand;
 use App\Console\Commands\MaracujaMediaMigrateCommand;
