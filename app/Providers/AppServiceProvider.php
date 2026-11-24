@@ -32,7 +32,6 @@ class AppServiceProvider extends ServiceProvider
         spl_autoload_register(static function (string $class): void {
             foreach ([
                 'Maracuja\\SiteCore\\Foundation\\' => base_path('vendor/maracuja-digital/site-core-foundation/src/'),
-                'Maracuja\\SiteCore\\Audience\\' => base_path('vendor/maracuja-digital/site-core-audience/src/'),
                 'Maracuja\\SiteCore\\Gallery\\' => base_path('vendor/maracuja-digital/site-core-gallery/src/'),
                 'Maracuja\\SiteCore\\ProfessionalWorkspace\\' => base_path('vendor/maracuja-digital/site-core-professional-workspace/src/'),
             ] as $prefix => $directory) {
