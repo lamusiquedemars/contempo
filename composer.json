@@ -86,7 +86,10 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "maracuja-digital/site-core-audience",
+                "maracuja-digital/site-core-brevo"
+            ]
         }
     },
     "config": {
