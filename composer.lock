@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d8a967709f881461a60f524766b6b09",
+    "content-hash": "a5209db7ba613d16d4b10910286a39b2",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -3471,44 +3471,6 @@
                 }
             ],
             "time": "2026-10-21T01:43:35+00:00"
-        },
-        {
-            "name": "maracuja-digital/site-core-audience",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "../maracuja-site-core/packages/audience",
-                "reference": "21efed3917cfb6ff4b3c584cf2dc67492f9ad2d6"
-            },
-            "require": {
-                "filament/filament": "^4.0",
-                "illuminate/database": "^13.0",
-                "illuminate/mail": "^13.0",
-                "illuminate/support": "^13.0",
-                "maracuja-digital/site-core-media": "dev-main",
-                "php": "^8.4"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Maracuja\\SiteCore\\Audience\\Providers\\AudienceServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Maracuja\\SiteCore\\Audience\\": "src/"
-                }
-            },
-            "license": [
-                "proprietary"
-            ],
-            "description": "Consentement marketing, contacts, segments et campagnes de Maracuja Site Core.",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
         },
         {
             "name": "maracuja-digital/site-core-contact",
@@ -11011,7 +10973,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "maracuja-digital/site-core-audience": 20,
         "maracuja-digital/site-core-contact": 20,
         "maracuja-digital/site-core-events": 20,
         "maracuja-digital/site-core-foundation": 20,
