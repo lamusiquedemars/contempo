@@ -19,6 +19,7 @@
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa="/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
@@ -36,5 +37,10 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <env name="MARACUJA_MODULE_AUDIENCE" value="true"/>
+        <env name="MARACUJA_MODULE_BREVO" value="true"/>
+        <env name="MARACUJA_MODULE_NEWS" value="false"/>
+        <env name="MARACUJA_AUDIENCE_LOAD_MIGRATIONS" value="true"/>
+        <env name="MARACUJA_BREVO_LOAD_MIGRATIONS" value="true"/>
     </php>
 </phpunit>

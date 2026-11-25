@@ -32,7 +32,7 @@
         <x-site.card title="Les instruments" kicker="Sélection" image="/media/instrument.jpg" :url="route('pages.show', 'instruments')">
             Des modèles contemporains, des instruments anciens soigneusement sélectionnés, et des instruments d'étude réglés pour accompagner chaque parcours.
         </x-site.card>
-        <x-site.card title="Les services" kicker="Accompagnement" image="/media/entretien.jpg" :url="route('pages.show', 'services')">
+        <x-site.card title="Les services" kicker="Accompagnement" image="/media/entretien.jpg" :url="$servicesUrl">
             De la fabrication sur mesure à la vente, de la location à la restauration, l'expérience de l'atelier sert les besoins réels des musiciens.
         </x-site.card>
     </x-site.grid>

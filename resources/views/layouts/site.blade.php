@@ -51,10 +51,13 @@
         </button>
 
         <nav class="site-nav" data-nav-menu aria-label="Navigation principale">
+            @php($servicesPageIsPublished = \App\Support\Modules::enabled('pages') && \App\Modules\Pages\Models\Page::query()->where('slug', 'services')->where('is_published', true)->exists())
             @if (\App\Support\Modules::enabled('pages'))
                 <a href="{{ route('pages.show', 'atelier') }}">L'atelier</a>
                 <a href="{{ route('pages.show', 'instruments') }}">Instruments</a>
-                <a href="{{ route('pages.show', 'services') }}">Services</a>
+                @if ($servicesPageIsPublished)
+                    <a href="{{ route('pages.show', 'services') }}">Services</a>
+                @endif
             @endif
             @if (\App\Support\Modules::enabled('contact_form'))
                 <a href="{{ route('contact') }}">Contact</a>
