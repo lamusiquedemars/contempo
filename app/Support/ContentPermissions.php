@@ -4,9 +4,6 @@ namespace App\Support;
 
 use App\Models\User;
 use App\Modules\Articles\Models\Article;
-use App\Modules\Audience\Models\AudienceContact;
-use App\Modules\Audience\Models\AudienceSegment;
-use App\Modules\Audience\Models\SegmentMessage;
 use App\Modules\ContentSlots\Models\ContentSlot;
 use App\Modules\Events\Models\Event;
 use App\Modules\Inquiries\Models\Inquiry;
@@ -17,6 +14,9 @@ use App\Modules\Venues\Models\Venue;
 use Illuminate\Database\Eloquent\Model;
 use Maracuja\SiteCore\Gallery\Models\Gallery;
 use Maracuja\SiteCore\Media\Models\MediaAsset;
+use Maracuja\SiteCore\Audience\Models\AudienceContact;
+use Maracuja\SiteCore\Audience\Models\AudienceSegment;
+use Maracuja\SiteCore\Audience\Models\SegmentMessage;
 
 final class ContentPermissions
 {

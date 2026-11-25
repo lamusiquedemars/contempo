@@ -25,8 +25,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Maracuja\SiteCore\Gallery\Filament\Resources\Galleries\GalleryResource;
-use Maracuja\SiteCore\Media\Filament\Resources\MediaAssets\MediaAssetResource;
+use Maracuja\SiteCore\Audience\Filament\Pages\AudienceHome;
 use Maracuja\SiteCore\ProfessionalWorkspace\Filament\ProfessionalWorkspacePlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -37,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->login(config('cremona-portal.enabled') ? CremonaSsoLogin::class : Login::class)
             ->profile()
             ->brandName(fn (): string => Schema::hasTable('site_settings')
@@ -93,17 +93,27 @@ class AdminPanelProvider extends PanelProvider
             );
         }
 
-        if (Modules::enabled('audience') && is_dir(app_path('Modules/Audience/Filament/Resources'))) {
+        if (Modules::enabled('audience') && is_dir(base_path('vendor/maracuja-digital/site-core-audience/src/Filament/Resources'))) {
             $panel->discoverResources(
-                in: app_path('Modules/Audience/Filament/Resources'),
-                for: 'App\Modules\Audience\Filament\Resources',
+                in: base_path('vendor/maracuja-digital/site-core-audience/src/Filament/Resources'),
+                for: 'Maracuja\SiteCore\Audience\Filament\Resources',
+            );
+            $panel->pages([AudienceHome::class]);
+        }
+
+        if (Modules::enabled('brevo') && is_dir(base_path('vendor/maracuja-digital/site-core-brevo/src/Filament/Resources'))) {
+            $panel->discoverResources(
+                in: base_path('vendor/maracuja-digital/site-core-brevo/src/Filament/Resources'),
+                for: 'Maracuja\SiteCore\Brevo\Filament\Resources',
             );
         }
 
-        $panel->resources([
-            MediaAssetResource::class,
-            GalleryResource::class,
-        ]);
+        if (is_dir(app_path('Modules/Media/Filament/Resources'))) {
+            $panel->discoverResources(
+                in: app_path('Modules/Media/Filament/Resources'),
+                for: 'App\Modules\Media\Filament\Resources',
+            );
+        }
 
         return $panel;
     }
