@@ -36,6 +36,7 @@
         <env name="MARACUJA_BREVO_LOAD_MIGRATIONS" value="true"/>
         <env name="MARACUJA_MODULE_AUDIENCE" value="true"/>
         <env name="MARACUJA_MODULE_BREVO" value="true"/>
+        <env name="MARACUJA_MODULE_NEWS" value="false"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>
