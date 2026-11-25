@@ -26,6 +26,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Maracuja\SiteCore\Gallery\Filament\Resources\Galleries\GalleryResource;
+use Maracuja\SiteCore\Audience\Filament\Pages\AudienceHome;
 use Maracuja\SiteCore\Media\Filament\Resources\MediaAssets\MediaAssetResource;
 use Maracuja\SiteCore\ProfessionalWorkspace\Filament\ProfessionalWorkspacePlugin;
 
@@ -93,10 +94,18 @@ class AdminPanelProvider extends PanelProvider
             );
         }
 
-        if (Modules::enabled('audience') && is_dir(app_path('Modules/Audience/Filament/Resources'))) {
+        if (Modules::enabled('audience') && class_exists(AudienceHome::class)) {
             $panel->discoverResources(
-                in: app_path('Modules/Audience/Filament/Resources'),
-                for: 'App\Modules\Audience\Filament\Resources',
+                in: base_path('vendor/maracuja-digital/site-core-audience/src/Filament/Resources'),
+                for: 'Maracuja\SiteCore\Audience\Filament\Resources',
+            );
+            $panel->pages([AudienceHome::class]);
+        }
+
+        if (Modules::enabled('brevo') && is_dir(base_path('vendor/maracuja-digital/site-core-brevo/src/Filament/Resources'))) {
+            $panel->discoverResources(
+                in: base_path('vendor/maracuja-digital/site-core-brevo/src/Filament/Resources'),
+                for: 'Maracuja\SiteCore\Brevo\Filament\Resources',
             );
         }
 
