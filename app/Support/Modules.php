@@ -32,7 +32,8 @@ class Modules
             'gallery' => app_path('Modules/Gallery'),
             'contact_form' => app_path('Modules/ContactForm'),
             'inquiries' => app_path('Modules/Inquiries'),
-            'audience' => app_path('Modules/Audience'),
+            'audience' => base_path('vendor/maracuja-digital/site-core-audience'),
+            'brevo' => base_path('vendor/maracuja-digital/site-core-brevo'),
             'campaigns' => app_path('Modules/Campaigns'),
         ];
 

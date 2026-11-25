@@ -2,8 +2,7 @@
 
 namespace App\Modules\Inquiries\Filament\Resources\Inquiries;
 
-use App\Modules\Audience\Actions\CreateContactFromInquiry;
-use App\Modules\Audience\Models\AudienceContact;
+use App\Actions\CreateAudienceContactFromInquiry;
 use App\Modules\Inquiries\Enums\InquiryStatus;
 use App\Modules\Inquiries\Filament\Resources\Inquiries\Pages\ManageInquiries;
 use App\Modules\Inquiries\Models\Inquiry;
@@ -29,6 +28,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
+use Maracuja\SiteCore\Audience\Models\AudienceContact;
 use Illuminate\Support\Facades\Schema as SchemaFacade;
 use UnitEnum;
 
@@ -173,7 +173,7 @@ class InquiryResource extends Resource
                     ->icon(Heroicon::OutlinedUserPlus)
                     ->visible(fn (Inquiry $record): bool => self::canCreateAudienceContact() && filled($record->email))
                     ->action(function (Inquiry $record): void {
-                        $result = CreateContactFromInquiry::run($record);
+                        $result = CreateAudienceContactFromInquiry::run($record);
 
                         Notification::make()
                             ->title($result['created'] ? 'Contact créé' : 'Contact déjà existant')
@@ -261,7 +261,7 @@ class InquiryResource extends Resource
     {
         return Gate::allows('create', AudienceContact::class)
             && Modules::enabled('audience')
-            && class_exists(CreateContactFromInquiry::class)
+            && class_exists(CreateAudienceContactFromInquiry::class)
             && SchemaFacade::hasTable('audience_contacts');
     }
 }

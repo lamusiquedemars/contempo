@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Modules\Audience\Models\AudienceBrevoEvent;
-use App\Modules\Audience\Models\AudienceBrevoSetting;
-use App\Modules\Audience\Models\AudienceContact;
-use App\Modules\Audience\Models\AudienceSegment;
-use App\Modules\Audience\Models\SegmentMessage;
-use App\Modules\Audience\Models\SegmentMessageDelivery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Maracuja\SiteCore\Audience\Models\AudienceContact;
+use Maracuja\SiteCore\Audience\Models\AudienceSegment;
+use Maracuja\SiteCore\Audience\Models\SegmentMessage;
+use Maracuja\SiteCore\Audience\Models\SegmentMessageDelivery;
+use Maracuja\SiteCore\Brevo\Models\AudienceBrevoEvent;
+use Maracuja\SiteCore\Brevo\Models\AudienceBrevoSetting;
 use Tests\TestCase;
 
 class BrevoAudienceWebhookTest extends TestCase
@@ -57,7 +57,7 @@ class BrevoAudienceWebhookTest extends TestCase
         $this->assertSame($message->id, $event->segment_message_id);
         $this->assertSame($delivery->id, $event->segment_message_delivery_id);
         $this->assertSame($contact->id, $event->audience_contact_id);
-        $this->assertSame(123, $event->brevo_campaign_id);
+        $this->assertSame(123, $event->provider_campaign_id);
         $this->assertSame('ivo@example.test', $event->email);
         $this->assertSame('delivered', $event->event_type);
         $this->assertNotNull($event->processed_at);
@@ -146,7 +146,7 @@ class BrevoAudienceWebhookTest extends TestCase
         $this->assertDatabaseHas('audience_brevo_events', [
             'event_type' => 'mystery',
             'email' => 'ivo@example.test',
-            'brevo_campaign_id' => 123,
+            'provider_campaign_id' => 123,
         ]);
     }
 

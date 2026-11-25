@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\Modules\Audience\Models\AudienceBrevoSetting;
 use App\Modules\Media\Policies\MediaAssetPolicy;
 use App\Modules\SiteSettings\Models\SiteSetting;
 use App\Support\ContentPermissions;
@@ -16,6 +15,7 @@ use Maracuja\SiteCore\Foundation\Contracts\FoundationAccessGate;
 use Maracuja\SiteCore\Foundation\Contracts\ModuleAvailability;
 use Maracuja\SiteCore\Media\Contracts\MediaAccessGate;
 use Maracuja\SiteCore\Media\Models\MediaAsset;
+use Maracuja\SiteCore\Brevo\Models\AudienceBrevoSetting;
 use RuntimeException;
 
 class AppServiceProvider extends ServiceProvider
@@ -63,7 +63,6 @@ class AppServiceProvider extends ServiceProvider
 
         $moduleMigrationPaths = [
             app_path('Modules/Inquiries/database/migrations'),
-            app_path('Modules/Audience/database/migrations'),
             app_path('Modules/CremonaBridge/database/migrations'),
             app_path('Modules/InstrumentProjection/database/migrations'),
             app_path('Modules/Media/database/migrations'),
